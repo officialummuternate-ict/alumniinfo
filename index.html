@@ -42,7 +42,7 @@
 
             <!-- Status Cloud Database & Navigasi 2 Sisi -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <div id="dbConnectionBadge" onclick="loadDataFromCloud(true)" class="cursor-pointer hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-[11px] font-bold text-slate-300 hover:text-white transition" title="Klik untuk muat ulang data dari Google Sheets">
+                <div id="dbConnectionBadge" onclick="loadDataFromCloud(true)" class="cursor-pointer hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-[11px] font-bold text-slate-300 hover:text-white transition" title="Klik untuk muat ulang data Alumni & Program dari Google Sheets">
                     <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
                     <span id="dbStatusText">Memeriksa Database...</span>
                 </div>
@@ -259,7 +259,7 @@
                             <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Mode Admin Aktif</span>
                         </div>
                         <p class="text-xs text-slate-400 mt-0.5">
-                            Kelola penuh data alumni Informatika UMMU, program karier/pelatihan/bisnis, ganti logo portal dinamis, serta impor/ekspor Excel.
+                            Kelola penuh data alumni Informatika UMMU, program karier/pelatihan/bisnis di Google Sheets, ganti logo portal dinamis, serta impor/ekspor Excel.
                         </p>
                     </div>
                 </div>
@@ -309,13 +309,13 @@
         </div>
 
         <!-- =============================================================== -->
-        <!-- FITUR BARU: PUSAT PENINGKATAN KARIER, PELATIHAN & JEJARING BISNIS-->
+        <!-- PUSAT PENINGKATAN KARIER, PELATIHAN TEKNIS & JEJARING BISNIS     -->
         <!-- =============================================================== -->
         <section id="ecosystemHubSection" class="mb-10 bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
                 <div>
                     <div class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full mb-2">
-                        <i class="fas fa-network-wired"></i> Ekosistem Kolaborasi Alumni Informatika
+                        <i class="fas fa-network-wired"></i> Ekosistem Kolaborasi Alumni Informatika (Tersinkronisasi Google Sheets)
                     </div>
                     <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Program Peningkatan Karier, Pelatihan Teknis & Jejaring Bisnis</h2>
                     <p class="text-xs text-slate-500 mt-0.5">Wadah berbagi informasi lowongan kerja IT, bootcamp peningkatan skill teknis, dan direktori bisnis/usaha milik alumni Informatika UMMU.</p>
@@ -426,8 +426,8 @@
                         <input type="text" id="filterYear" placeholder="Contoh: 2025" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="resetPageAndRender()">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama / NIM / Gelar / Instansi</label>
-                        <input type="text" id="searchInput" placeholder="Ketik nama, gelar, NIM, perusahaan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="resetPageAndRender()">
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama / NPM / Gelar / Instansi</label>
+                        <input type="text" id="searchInput" placeholder="Ketik nama, gelar, NPM, perusahaan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="resetPageAndRender()">
                     </div>
                     <div class="flex items-end">
                         <button onclick="resetFilters()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl transition text-xs font-bold flex items-center justify-center gap-1.5">
@@ -443,7 +443,7 @@
                     <table class="min-w-full divide-y divide-slate-200">
                         <thead class="bg-slate-900 text-white text-[10px] uppercase tracking-wider font-extrabold">
                             <tr>
-                                <th class="px-5 py-4 text-left">NIM</th>
+                                <th class="px-5 py-4 text-left">NPM</th>
                                 <th class="px-5 py-4 text-left">Nama Alumni & Gelar</th>
                                 <th class="px-5 py-4 text-left">Program Studi & Fakultas</th>
                                 <th class="px-5 py-4 text-center">Angkatan / Thn Lulus</th>
@@ -537,7 +537,7 @@
                     <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
                         <button type="button" onclick="toggleModal('programModal')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">Batal</button>
                         <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-md transition">
-                            <i class="fas fa-paper-plane mr-1"></i> Publikasikan Program
+                            <i class="fas fa-paper-plane mr-1"></i> Publikasikan ke Google Sheets
                         </button>
                     </div>
                 </form>
@@ -661,7 +661,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NIM Informatika *</label>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NPM Informatika *</label>
                             <input type="text" id="identityNumber" required placeholder="Contoh: 121055520124010" oninput="autoFillEntryYear(this.value, 'entryYear')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
                         <div>
@@ -758,7 +758,7 @@
     </div>
 
     <!-- ================================================= -->
-    <!-- LOGIKA JAVASCRIPT UTAMA + PAGINATION + EKOSISTEM  -->
+    <!-- LOGIKA JAVASCRIPT UTAMA + CLOUD SHEETS SYNC       -->
     <!-- ================================================= -->
     <script>
         // TEMPELKAN URL GOOGLE APPS SCRIPT WEB APP (.../exec) ANDA DI SINI:
@@ -783,7 +783,7 @@
         let currentPage = 1;
         let rowsPerPage = 10;
 
-        // Data Awal Resmi Alumni Informatika UMMU (Dilengkapi front_title & back_title opsional)
+        // Data Awal Resmi Alumni Informatika UMMU
         const defaultInformatikaData = [
             { identity_number: "121055520113097", front_title: "", name: "CATUR SURANTO", back_title: "S.Kom.", birth_date: "1995-05-15", entry_year: "2013", graduation_year: "2017", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "catursuranto@gmail.com", phone: "081244556600", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "UNIVERSITAS MUHAMMADIYAH MALUKU UTARA" },
             { identity_number: "121055520124010", front_title: "", name: "EWIS JOLA A.WA BULA", back_title: "S.Kom.", birth_date: "2006-07-13", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
@@ -800,7 +800,7 @@
                 category: "Peningkatan Karier",
                 title: "Rekrutmen IT Network & System Engineer Regional Maluku Utara",
                 organizer: "Mitra Industri & Jejaring Alumni Informatika",
-                desc: "kesempatan karier bagi lulusan S1 Informatika UMMU untuk posisi Network Engineer & Linux Server Administrator. Diutamakan memahami manajemen Proxmox, MikroTik, dan Jaringan Fiber Optik.",
+                desc: "Kesempatan karier bagi lulusan S1 Informatika UMMU untuk posisi Network Engineer & Linux Server Administrator. Diutamakan memahami manajemen Proxmox, MikroTik, dan Jaringan Fiber Optik.",
                 date: "Batas Lamaran: Terbuka Setiap Bulan",
                 link: "https://bitd.ummu.ac.id"
             },
@@ -839,6 +839,7 @@
 
         // =========================================================================
         // FITUR DINAMIS: PROGRAM KARIER, PELATIHAN TEKNIS & JEJARING BISNIS ALUMNI
+        // (TERSINKRONISASI OTOMATIS KE GOOGLE SHEETS TAB Program_Alumni)
         // =========================================================================
         function renderPrograms() {
             const container = document.getElementById('programsGridContainer');
@@ -880,7 +881,6 @@
                     iconClass = 'fa-handshake text-amber-600';
                 }
 
-                // Format link apakah nomor WA atau URL
                 let actionHref = '#';
                 let rawLink = String(prog.link || '').trim();
                 if (rawLink) {
@@ -965,25 +965,48 @@
             toggleModal('programModal');
         }
 
+        // Fungsi Kirim / Hapus Data Program Karier, Pelatihan & Bisnis ke Google Sheets
+        async function pushProgramToGoogleSheets(action, progPayload) {
+            localStorage.setItem(PROGRAMS_STORAGE_KEY, JSON.stringify(allPrograms));
+            renderPrograms();
+
+            if (!gasWebAppUrl) return;
+
+            try {
+                updateDbStatusIndicator('loading', 'Menyimpan Program ke Cloud...');
+                await fetch(gasWebAppUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: action,
+                        data: progPayload,
+                        id: progPayload?.id || ''
+                    })
+                });
+                updateDbStatusIndicator('connected', 'Google Sheets Terhubung');
+            } catch (err) {
+                updateDbStatusIndicator('local', 'Tersimpan Lokal (Gagal Cloud)');
+            }
+        }
+
         function deleteProgram(id) {
             Swal.fire({
                 title: 'Hapus Program Ini?',
-                text: 'Item program akan dihapus dari daftar.',
+                text: 'Item program akan dihapus dari halaman web dan Google Sheets.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e11d48',
                 confirmButtonText: 'Ya, Hapus'
-            }).then((res) => {
+            }).then(async (res) => {
                 if (res.isConfirmed) {
                     allPrograms = allPrograms.filter(p => p.id !== id);
-                    localStorage.setItem(PROGRAMS_STORAGE_KEY, JSON.stringify(allPrograms));
-                    renderPrograms();
-                    Swal.fire('Terhapus!', 'Program berhasil dihapus.', 'success');
+                    await pushProgramToGoogleSheets('delete_program', { id: id });
+                    Swal.fire('Terhapus!', 'Program berhasil dihapus dari sistem & Google Sheets.', 'success');
                 }
             });
         }
 
-        document.getElementById('programForm').addEventListener('submit', function(e) {
+        document.getElementById('programForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const idVal = document.getElementById('prog_id').value;
             const newProg = {
@@ -1003,10 +1026,9 @@
                 allPrograms.unshift(newProg);
             }
 
-            localStorage.setItem(PROGRAMS_STORAGE_KEY, JSON.stringify(allPrograms));
-            renderPrograms();
             toggleModal('programModal');
-            Swal.fire('Berhasil Dipublikasikan!', 'Informasi program karier/pelatihan/bisnis alumni telah ditampilkan.', 'success');
+            await pushProgramToGoogleSheets('save_program', newProg);
+            Swal.fire('Berhasil Dipublikasikan!', 'Informasi program karier/pelatihan/bisnis alumni telah disimpan ke Google Sheets.', 'success');
         });
 
         // =========================================================================
@@ -1129,7 +1151,7 @@
                 html: `
                     <div class="text-left text-xs space-y-3">
                         <p class="text-slate-600 leading-relaxed">
-                            Masukkan <strong>URL Web App Google Apps Script</strong> (berakhiran <code>/exec</code>) dari Google Spreadsheet Admin Prodi Informatika agar semua input alumni tersimpan terpusat:
+                            Masukkan <strong>URL Web App Google Apps Script</strong> (berakhiran <code>/exec</code>) dari Google Spreadsheet Admin Prodi Informatika agar semua input alumni & program karier/pelatihan/bisnis tersimpan terpusat:
                         </p>
                         <input type="url" id="swal_gas_url" value="${gasWebAppUrl}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
                         <p class="text-[11px] text-slate-400">Tips: Untuk permanen di semua perangkat pengunjung, tempelkan juga URL ini pada variabel <code>DEFAULT_GAS_URL</code> di dalam file <code>index.html</code> Anda.</p>
@@ -1146,6 +1168,7 @@
                     localStorage.setItem(GAS_URL_STORAGE_KEY, gasWebAppUrl);
                     if (gasWebAppUrl) {
                         await pushDataToGoogleSheets('save', allAlumni);
+                        await pushProgramToGoogleSheets('save_program', allPrograms);
                         await loadDataFromCloud(true);
                     } else {
                         updateDbStatusIndicator('local', 'Mode Memori Lokal');
@@ -1154,10 +1177,11 @@
             });
         }
 
-        // Fungsi Ambil Data dari Google Sheets
+        // Fungsi Ambil Data Alumni & Data Program Karier/Pelatihan/Bisnis dari Google Sheets
         async function loadDataFromCloud(showNotification = false) {
             if (!gasWebAppUrl) {
                 updateDbStatusIndicator('local', 'Database: Memori Lokal');
+                renderPrograms();
                 loadData();
                 return;
             }
@@ -1167,8 +1191,9 @@
                 const res = await fetch(gasWebAppUrl);
                 const result = await res.json();
 
-                if (result.status === 'success' && Array.isArray(result.data)) {
-                    if (result.data.length > 0) {
+                if (result.status === 'success') {
+                    // 1. Sinkronkan Data Alumni Informatika
+                    if (Array.isArray(result.data) && result.data.length > 0) {
                         allAlumni = result.data
                             .filter(a => String(a.department || 'Informatika').toLowerCase().includes('informatika'))
                             .map(a => ({
@@ -1181,19 +1206,30 @@
                     } else if (allAlumni.length > 0) {
                         await pushDataToGoogleSheets('save', allAlumni);
                     }
+
+                    // 2. Sinkronkan Data Program Karier, Pelatihan Teknis & Jejaring Bisnis Alumni
+                    if (Array.isArray(result.programs) && result.programs.length > 0) {
+                        allPrograms = result.programs;
+                        localStorage.setItem(PROGRAMS_STORAGE_KEY, JSON.stringify(allPrograms));
+                    } else if (allPrograms.length > 0) {
+                        await pushProgramToGoogleSheets('save_program', allPrograms);
+                    }
+
                     updateDbStatusIndicator('connected', 'Google Sheets Terhubung');
+                    renderPrograms();
                     loadData();
                     if (showNotification) {
-                        Swal.fire({ icon: 'success', title: 'Tersinkronisasi!', text: 'Data berhasil dimuat langsung dari Google Spreadsheet.', timer: 1400, showConfirmButton: false });
+                        Swal.fire({ icon: 'success', title: 'Tersinkronisasi!', text: 'Data Alumni & Program berhasil dimuat langsung dari Google Spreadsheet.', timer: 1400, showConfirmButton: false });
                     }
                 }
             } catch (err) {
                 updateDbStatusIndicator('local', 'Offline / Cache Lokal');
+                renderPrograms();
                 loadData();
             }
         }
 
-        // Fungsi Kirim / Simpan / Hapus Data ke Google Sheets
+        // Fungsi Kirim / Simpan / Hapus Data Alumni ke Google Sheets
         async function pushDataToGoogleSheets(action, payloadData) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlumni));
             loadData();
@@ -1596,7 +1632,6 @@
             const totalPages = Math.ceil(totalItems / rowsPerPage);
             if (totalPages <= 1) return;
 
-            // Tombol Sebelumnya
             const prevBtn = document.createElement('button');
             prevBtn.className = `px-3 py-1.5 rounded-lg text-xs font-bold border transition ${currentPage === 1 ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-blue-50 hover:text-blue-600'}`;
             prevBtn.innerHTML = `<i class="fas fa-chevron-left mr-1"></i> Prev`;
@@ -1604,7 +1639,6 @@
             prevBtn.onclick = () => { if (currentPage > 1) goToPage(currentPage - 1); };
             container.appendChild(prevBtn);
 
-            // Nomor Halaman
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, startPage + 4);
             if (endPage - startPage < 4) {
@@ -1619,7 +1653,6 @@
                 container.appendChild(pageBtn);
             }
 
-            // Tombol Selanjutnya
             const nextBtn = document.createElement('button');
             nextBtn.className = `px-3 py-1.5 rounded-lg text-xs font-bold border transition ${currentPage === totalPages ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white text-slate-700 border-slate-200 hover:bg-blue-50 hover:text-blue-600'}`;
             nextBtn.innerHTML = `Next <i class="fas fa-chevron-right ml-1"></i>`;
@@ -1663,7 +1696,6 @@
                 return;
             }
 
-            // Hitung pemotongan baris untuk Pagination
             let paginatedItems = filteredAlumni;
             let startIndex = 0;
             let endIndex = totalFilteredCount;
