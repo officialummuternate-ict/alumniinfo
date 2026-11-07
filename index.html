@@ -79,7 +79,7 @@
                             Direktori & Penelusuran Alumni <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Informatika UMMU</span>
                         </h1>
                         <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Silakan lakukan pengecekan NIM Anda atau lengkapi formulir Tracer Study di bawah ini untuk memperbarui data karir dan profesi Anda.
+                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Silakan lakukan pengecekan NIM Anda atau lengkapi formulir Tracer Study di bawah ini untuk memperbarui data angkatan masuk, tahun lulus, dan karir Anda.
                         </p>
                         <div class="pt-2 flex flex-wrap gap-3">
                             <a href="#formInputAlumniCard" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-extrabold px-5 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-2">
@@ -126,7 +126,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NIM Informatika *</label>
-                            <input type="text" id="pub_nim" required placeholder="Contoh: 121055520124010" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <input type="text" id="pub_nim" required placeholder="Contoh: 121055520124010" oninput="autoFillEntryYear(this.value, 'pub_entry_year')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Lengkap (Sesuai Ijazah) *</label>
@@ -137,12 +137,8 @@
                             <input type="date" id="pub_birth" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Fakultas (Otomatis)</label>
-                            <input type="text" id="pub_faculty" value="Teknik" readonly class="w-full bg-slate-100 border border-slate-200 text-slate-500 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Program Studi (Otomatis)</label>
-                            <input type="text" id="pub_department" value="Informatika" readonly class="w-full bg-slate-100 border border-slate-200 text-blue-700 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Angkatan Masuk *</label>
+                            <input type="number" id="pub_entry_year" min="1999" max="2030" required placeholder="Contoh: 2021" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tahun Lulus *</label>
@@ -151,6 +147,14 @@
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">IPK Terakhir *</label>
                             <input type="text" id="pub_gpa" required placeholder="Contoh: 3.75" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Fakultas (Otomatis)</label>
+                            <input type="text" id="pub_faculty" value="Teknik" readonly class="w-full bg-slate-100 border border-slate-200 text-slate-500 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Program Studi (Otomatis)</label>
+                            <input type="text" id="pub_department" value="Informatika" readonly class="w-full bg-slate-100 border border-slate-200 text-blue-700 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Email Aktif *</label>
@@ -182,7 +186,7 @@
                                 <option value="Lainnya">Bidang Lainnya</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="sm:col-span-2 lg:col-span-3">
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Instansi / Perusahaan / Kampus S2</label>
                             <input type="text" id="pub_company" placeholder="Contoh: PT Telkom Indonesia / Diskominfo" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
@@ -217,7 +221,7 @@
                             <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Mode Admin Aktif</span>
                         </div>
                         <p class="text-xs text-slate-400 mt-0.5">
-                            Kelola penuh data alumni Informatika UMMU, sinkronisasi PDDikti Informatika, impor/ekspor Excel, serta edit/hapus data.
+                            Kelola penuh data alumni Informatika UMMU (termasuk Angkatan Masuk & Tahun Lulus), sinkronisasi PDDikti, serta impor/ekspor Excel.
                         </p>
                     </div>
                 </div>
@@ -301,7 +305,7 @@
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                     <div>
                         <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Status Karir</label>
                         <select id="filterStatus" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onchange="renderTable()">
@@ -313,12 +317,16 @@
                         </select>
                     </div>
                     <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Angkatan Masuk</label>
+                        <input type="text" id="filterEntryYear" placeholder="Contoh: 2021" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="renderTable()">
+                    </div>
+                    <div>
                         <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Tahun Lulus</label>
                         <input type="text" id="filterYear" placeholder="Contoh: 2025" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="renderTable()">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama / NIM / Instansi / Profesi</label>
-                        <input type="text" id="searchInput" placeholder="Ketik nama, NIM, atau perusahaan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="renderTable()">
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama / NIM / Instansi</label>
+                        <input type="text" id="searchInput" placeholder="Ketik nama, NIM, perusahaan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="renderTable()">
                     </div>
                     <div class="flex items-end">
                         <button onclick="resetFilters()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl transition text-xs font-bold flex items-center justify-center gap-1.5">
@@ -337,7 +345,7 @@
                                 <th class="px-5 py-4 text-left">NIM</th>
                                 <th class="px-5 py-4 text-left">Nama Alumni Informatika</th>
                                 <th class="px-5 py-4 text-left">Program Studi & Fakultas</th>
-                                <th class="px-5 py-4 text-center">Thn Lulus</th>
+                                <th class="px-5 py-4 text-center">Angkatan / Thn Lulus</th>
                                 <th class="px-5 py-4 text-center">IPK</th>
                                 <th class="px-5 py-4 text-left">Status Karir, Profesi & Instansi</th>
                                 <th id="thAdminAction" class="px-5 py-4 text-center hidden">Aksi Admin</th>
@@ -413,8 +421,8 @@
         <div class="modal-container bg-white w-full md:max-w-2xl mx-auto rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-full">
             <div class="bg-slate-900 p-5 flex justify-between items-center text-white shrink-0">
                 <div>
-                    <p id="modalTitle" class="text-lg font-extrabold tracking-tight">Kelola Data Alumni Informatika</p>
-                    <p id="modalSubtitle" class="text-[11px] text-cyan-300 font-medium">Program Studi Informatika - Fakultas Teknik UMMU</p>
+                    <p id="modalTitle" class="text-lg font-extrabold tracking-tight">Tambah Alumni Informatika (Admin)</p>
+                    <p id="modalSubtitle" class="text-[11px] text-cyan-300 font-medium">Input data lulusan baru Program Studi Informatika UMMU</p>
                 </div>
                 <div class="modal-close cursor-pointer text-slate-400 hover:text-white transition" onclick="toggleModal('addModal')">
                     <i class="fas fa-times text-xl"></i>
@@ -428,7 +436,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NIM Informatika *</label>
-                            <input type="text" id="identityNumber" required placeholder="Contoh: 121055520124010" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <input type="text" id="identityNumber" required placeholder="Contoh: 121055520124010" oninput="autoFillEntryYear(this.value, 'entryYear')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Lengkap *</label>
@@ -438,9 +446,16 @@
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tanggal Lahir *</label>
                             <input type="date" id="birthDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
-                        <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tahun Lulus *</label>
-                            <input type="number" id="graduationYear" min="2003" max="2030" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition" placeholder="Contoh: 2025">
+                        <!-- FITUR ANGKATAN MASUK & TAHUN LULUS BERDAMPINGAN -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Angkatan Masuk *</label>
+                                <input type="number" id="entryYear" min="1999" max="2030" required placeholder="Contoh: 2021" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tahun Lulus *</label>
+                                <input type="number" id="graduationYear" min="2003" max="2030" required placeholder="Contoh: 2025" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            </div>
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Fakultas (Terkunci)</label>
@@ -504,7 +519,7 @@
     <!-- LOGIKA JAVASCRIPT UTAMA (KHUSUS INFORMATIKA)      -->
     <!-- ================================================= -->
     <script>
-        const STORAGE_KEY = 'ummu_alumni_informatika_only_v1';
+        const STORAGE_KEY = 'ummu_alumni_informatika_only_v2';
         const ADMIN_SESSION_KEY = 'ummu_admin_inf_logged_in';
 
         let allAlumni = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -512,17 +527,30 @@
         let isAdminLoggedIn = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
         let currentViewMode = 'alumni'; // 'alumni' atau 'admin'
 
-        // Data Awal Resmi Alumni Informatika UMMU (Sesuai Data Master Kampus Anda)
+        // Data Awal Resmi Alumni Informatika UMMU (Dilengkapi entry_year / Angkatan Masuk)
         const defaultInformatikaData = [
-            { identity_number: "121055520124010", name: "EWIS JOLA A.WA BULA", birth_date: "2006-07-13", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
-            { identity_number: "121055520124011", name: "IRFAN IKBAL", birth_date: "2005-10-02", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.60", email: "irfanikbalangga@gmail.com", phone: "085240648372", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Startup Digital Ternate" },
-            { identity_number: "121055520124019", name: "SELFI KALIADI", birth_date: "2006-06-19", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.85", email: "selfikaliadi26@gmail.com", phone: "081230876769", employment_status: "Studi Lanjut", job_role: "Data & AI Specialist", company_name: "Universitas Gadjah Mada" },
-            { identity_number: "121055520124026", name: "MUKADDIM RIZAL LAHILA", birth_date: "2006-06-21", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.70", email: "mukadimr@gmail.com", phone: "081356377742", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "Biro Informasi Teknologi & Data (BITD) UMMU" },
-            { identity_number: "121055520124056", name: "FATRIN IDRIS", birth_date: "2004-07-12", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.68", email: "fatrinidris@gmail.com", phone: "082136282807", employment_status: "Bekerja", job_role: "ASN / Instansi Pemerintahan", company_name: "Dinas Kominfo Maluku Utara" }
+            { identity_number: "121055520124010", name: "EWIS JOLA A.WA BULA", birth_date: "2006-07-13", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
+            { identity_number: "121055520124011", name: "IRFAN IKBAL", birth_date: "2005-10-02", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.60", email: "irfanikbalangga@gmail.com", phone: "085240648372", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Startup Digital Ternate" },
+            { identity_number: "121055520124019", name: "SELFI KALIADI", birth_date: "2006-06-19", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.85", email: "selfikaliadi26@gmail.com", phone: "081230876769", employment_status: "Studi Lanjut", job_role: "Data & AI Specialist", company_name: "Universitas Gadjah Mada" },
+            { identity_number: "121055520124026", name: "MUKADDIM RIZAL LAHILA", birth_date: "2006-06-21", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.70", email: "mukadimr@gmail.com", phone: "081356377742", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "Biro Informasi Teknologi & Data (BITD) UMMU" },
+            { identity_number: "121055520124056", name: "FATRIN IDRIS", birth_date: "2004-07-12", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.68", email: "fatrinidris@gmail.com", phone: "082136282807", employment_status: "Bekerja", job_role: "ASN / Instansi Pemerintahan", company_name: "Dinas Kominfo Maluku Utara" }
         ];
 
+        // Fungsi bantu deteksi otomatis Angkatan Masuk dari pola NIM UMMU (1210555201 + 2 digit tahun)
+        function autoFillEntryYear(nimValue, targetInputId) {
+            const cleanNim = String(nimValue || '').trim();
+            const targetEl = document.getElementById(targetInputId);
+            if (!targetEl || targetEl.value !== '') return;
+
+            if (cleanNim.length >= 12 && cleanNim.startsWith('1210555201')) {
+                const twoDigitYear = parseInt(cleanNim.substring(10, 12), 10);
+                if (!isNaN(twoDigitYear) && twoDigitYear >= 0 && twoDigitYear <= 30) {
+                    targetEl.value = 2000 + twoDigitYear;
+                }
+            }
+        }
+
         function initApp() {
-            // Pastikan hanya data Informatika yang ada di penyimpanan
             allAlumni = allAlumni.filter(a => String(a.department || '').toLowerCase().includes('informatika'));
             if (allAlumni.length === 0) {
                 allAlumni = [...defaultInformatikaData];
@@ -629,8 +657,8 @@
                             <div><strong>Nama:</strong> ${found.name}</div>
                             <div><strong>NIM:</strong> ${found.identity_number}</div>
                             <div><strong>Program Studi:</strong> Informatika (Fakultas Teknik)</div>
-                            <div><strong>Tahun Lulus:</strong> ${found.graduation_year} | <strong>IPK:</strong> ${found.gpa}</div>
-                            <div><strong>Status Karir:</strong> ${found.employment_status}</div>
+                            <div><strong>Angkatan Masuk:</strong> ${found.entry_year || '-'} | <strong>Tahun Lulus:</strong> ${found.graduation_year}</div>
+                            <div><strong>IPK:</strong> ${found.gpa} | <strong>Status Karir:</strong> ${found.employment_status}</div>
                             <div><strong>Profesi / Instansi:</strong> ${found.job_role || '-'} di ${found.company_name || '-'}</div>
                         </div>
                         <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir atau instansi tempat kerja Anda?</p>
@@ -645,6 +673,7 @@
                         document.getElementById('pub_nim').value = found.identity_number;
                         document.getElementById('pub_name').value = found.name;
                         document.getElementById('pub_birth').value = found.birth_date;
+                        document.getElementById('pub_entry_year').value = found.entry_year || '';
                         document.getElementById('pub_year').value = found.graduation_year;
                         document.getElementById('pub_gpa').value = found.gpa;
                         document.getElementById('pub_email').value = found.email;
@@ -664,6 +693,7 @@
                     confirmButtonColor: '#059669'
                 }).then(() => {
                     document.getElementById('pub_nim').value = nim;
+                    autoFillEntryYear(nim, 'pub_entry_year');
                     document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
                     document.getElementById('pub_name').focus();
                 });
@@ -680,6 +710,7 @@
                 birth_date: document.getElementById('pub_birth').value,
                 faculty: "Teknik",
                 department: "Informatika",
+                entry_year: String(document.getElementById('pub_entry_year').value),
                 graduation_year: String(document.getElementById('pub_year').value),
                 gpa: document.getElementById('pub_gpa').value,
                 email: document.getElementById('pub_email').value,
@@ -745,6 +776,7 @@
 
         function renderTable() {
             const statusFilter = document.getElementById('filterStatus').value;
+            const entryYearFilter = document.getElementById('filterEntryYear').value.trim();
             const yearFilter = document.getElementById('filterYear').value.trim();
             const searchInput = document.getElementById('searchInput').value.toLowerCase();
             
@@ -752,13 +784,15 @@
             tbody.innerHTML = '';
 
             filteredAlumni = allAlumni.filter(item => {
+                const itemEntryYear = String(item.entry_year || '');
                 const matchStatus = statusFilter === 'all' || item.employment_status === statusFilter;
+                const matchEntryYear = !entryYearFilter || itemEntryYear.includes(entryYearFilter);
                 const matchYear = !yearFilter || String(item.graduation_year).includes(yearFilter);
                 const matchSearch = item.name.toLowerCase().includes(searchInput) || 
                                     item.identity_number.toLowerCase().includes(searchInput) || 
                                     (item.job_role && item.job_role.toLowerCase().includes(searchInput)) ||
                                     (item.company_name && item.company_name.toLowerCase().includes(searchInput));
-                return matchStatus && matchYear && matchSearch;
+                return matchStatus && matchEntryYear && matchYear && matchSearch;
             });
 
             document.getElementById('totalFiltered').innerText = filteredAlumni.length;
@@ -776,6 +810,8 @@
                 if (item.employment_status === 'Bekerja') badgeColor = 'bg-emerald-50 text-emerald-700 border-emerald-200';
                 else if (item.employment_status === 'Wirausaha') badgeColor = 'bg-amber-50 text-amber-700 border-amber-200';
                 else if (item.employment_status === 'Studi Lanjut') badgeColor = 'bg-indigo-50 text-indigo-700 border-indigo-200';
+
+                const entryYr = item.entry_year || (parseInt(item.graduation_year, 10) ? String(parseInt(item.graduation_year, 10) - 4) : '-');
 
                 // Kontak detail hanya tampil di mode Admin
                 const contactInfo = currentViewMode === 'admin' 
@@ -806,7 +842,10 @@
                         <span class="font-extrabold text-blue-700 block mb-0.5 text-xs"><i class="fas fa-laptop-code mr-1"></i>Informatika</span>
                         <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">FAKULTAS TEKNIK</span>
                     </td>
-                    <td class="px-5 py-4 text-center font-extrabold text-slate-700 text-xs">${item.graduation_year}</td>
+                    <td class="px-5 py-4 text-center">
+                        <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold text-[10px] block mb-0.5">Masuk: ${entryYr}</span>
+                        <span class="font-extrabold text-emerald-700 text-xs">Lulus: ${item.graduation_year}</span>
+                    </td>
                     <td class="px-5 py-4 text-center font-extrabold text-blue-600 text-xs">${item.gpa}</td>
                     <td class="px-5 py-4">
                         <div class="flex items-center gap-1.5 mb-1">
@@ -837,11 +876,11 @@
             setTimeout(() => {
                 const extraInformatikaPDDikti = [
                     ...defaultInformatikaData,
-                    { identity_number: "121055520120003", name: "RIZALDI AHMAD", birth_date: "2002-03-14", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.78", email: "rizaldi.inf@gmail.com", phone: "081244559900", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "PT Bank Rakyat Indonesia (Persero)" },
-                    { identity_number: "121055520120015", name: "NURLAILA HASAN", birth_date: "2002-11-20", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.82", email: "nurlaila.inf@gmail.com", phone: "082188990011", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "RSUD Dr. H. Chasan Boesoirie" },
-                    { identity_number: "121055520119007", name: "FAHRUL ROZI", birth_date: "2001-05-09", graduation_year: "2023", faculty: "Teknik", department: "Informatika", gpa: "3.65", email: "fahrul.inf@gmail.com", phone: "085244112233", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Indonesia Weda Bay Industrial Park (IWIP)" },
-                    { identity_number: "121055520118012", name: "SITI HARDIYANTI", birth_date: "2000-08-17", graduation_year: "2022", faculty: "Teknik", department: "Informatika", gpa: "3.88", email: "hardiyanti.inf@gmail.com", phone: "081344556611", employment_status: "Studi Lanjut", job_role: "Pendidik / Dosen / Akademisi", company_name: "Magister Teknik Informatika - ITS" },
-                    { identity_number: "121055520117004", name: "M. TAUFIK HIDAYAT", birth_date: "1999-01-25", graduation_year: "2021", faculty: "Teknik", department: "Informatika", gpa: "3.55", email: "taufik.inf@gmail.com", phone: "082299887711", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Moloku Digital House" }
+                    { identity_number: "121055520120003", name: "RIZALDI AHMAD", birth_date: "2002-03-14", entry_year: "2020", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.78", email: "rizaldi.inf@gmail.com", phone: "081244559900", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "PT Bank Rakyat Indonesia (Persero)" },
+                    { identity_number: "121055520120015", name: "NURLAILA HASAN", birth_date: "2002-11-20", entry_year: "2020", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.82", email: "nurlaila.inf@gmail.com", phone: "082188990011", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "RSUD Dr. H. Chasan Boesoirie" },
+                    { identity_number: "121055520119007", name: "FAHRUL ROZI", birth_date: "2001-05-09", entry_year: "2019", graduation_year: "2023", faculty: "Teknik", department: "Informatika", gpa: "3.65", email: "fahrul.inf@gmail.com", phone: "085244112233", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Indonesia Weda Bay Industrial Park (IWIP)" },
+                    { identity_number: "121055520118012", name: "SITI HARDIYANTI", birth_date: "2000-08-17", entry_year: "2018", graduation_year: "2022", faculty: "Teknik", department: "Informatika", gpa: "3.88", email: "hardiyanti.inf@gmail.com", phone: "081344556611", employment_status: "Studi Lanjut", job_role: "Pendidik / Dosen / Akademisi", company_name: "Magister Teknik Informatika - ITS" },
+                    { identity_number: "121055520117004", name: "M. TAUFIK HIDAYAT", birth_date: "1999-01-25", entry_year: "2017", graduation_year: "2021", faculty: "Teknik", department: "Informatika", gpa: "3.55", email: "taufik.inf@gmail.com", phone: "082299887711", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Moloku Digital House" }
                 ];
 
                 let added = 0;
@@ -889,6 +928,7 @@
 
             document.getElementById('name').value = item.name;
             document.getElementById('birthDate').value = item.birth_date;
+            document.getElementById('entryYear').value = item.entry_year || (parseInt(item.graduation_year, 10) - 4);
             document.getElementById('graduationYear').value = item.graduation_year;
             document.getElementById('faculty').value = 'Teknik';
             document.getElementById('department').value = 'Informatika';
@@ -918,6 +958,7 @@
 
             document.getElementById('name').value = item.name;
             document.getElementById('birthDate').value = item.birth_date;
+            document.getElementById('entryYear').value = item.entry_year || (parseInt(item.graduation_year, 10) - 4);
             document.getElementById('graduationYear').value = item.graduation_year;
             document.getElementById('faculty').value = 'Teknik';
             document.getElementById('department').value = 'Informatika';
@@ -940,6 +981,7 @@
                 identity_number: nim,
                 name: document.getElementById('name').value.toUpperCase(),
                 birth_date: document.getElementById('birthDate').value,
+                entry_year: String(document.getElementById('entryYear').value),
                 graduation_year: String(document.getElementById('graduationYear').value),
                 faculty: "Teknik",
                 department: "Informatika",
@@ -1003,7 +1045,7 @@
             });
         }
 
-        // Import File Excel (Hanya menerima/mengunci Prodi Informatika)
+        // Import File Excel (Mendukung kolom entry_year / Angkatan Masuk)
         document.getElementById('importExcel').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1024,17 +1066,20 @@
                             const nim = String(r.identity_number).trim();
                             const rawDept = String(r.department || 'Informatika').trim();
 
-                            // Jika di file excel tertulis prodi lain selain Informatika, lewati otomatis
                             if (rawDept !== '' && !rawDept.toLowerCase().includes('informatika')) {
                                 skippedNonInf++;
                                 return;
                             }
 
+                            const gradYr = String(r.graduation_year || '2025');
+                            const entryYr = String(r.entry_year || (parseInt(gradYr, 10) - 4));
+
                             const newRow = {
                                 identity_number: nim,
                                 name: String(r.name).toUpperCase(),
                                 birth_date: r.birth_date || '2004-01-01',
-                                graduation_year: String(r.graduation_year || '2025'),
+                                entry_year: entryYr,
+                                graduation_year: gradYr,
                                 faculty: "Teknik",
                                 department: "Informatika",
                                 gpa: String(r.gpa || '3.65'),
@@ -1072,8 +1117,8 @@
 
         function downloadSampleTemplate() {
             const ws_data = [
-                ['identity_number', 'name', 'birth_date', 'graduation_year', 'faculty', 'department', 'gpa', 'email', 'phone', 'employment_status', 'job_role', 'company_name'],
-                ['121055520124010', 'EWIS JOLA A.WA BULA', '2006-07-13', '2025', 'Teknik', 'Informatika', '3.75', 'ewiswabula@gmail.com', '082284238540', 'Bekerja', 'Network & Infrastructure Engineer', 'PT Telkom Indonesia']
+                ['identity_number', 'name', 'birth_date', 'entry_year', 'graduation_year', 'faculty', 'department', 'gpa', 'email', 'phone', 'employment_status', 'job_role', 'company_name'],
+                ['121055520124010', 'EWIS JOLA A.WA BULA', '2006-07-13', '2021', '2025', 'Teknik', 'Informatika', '3.75', 'ewiswabula@gmail.com', '082284238540', 'Bekerja', 'Network & Infrastructure Engineer', 'PT Telkom Indonesia']
             ];
             const ws = XLSX.utils.aoa_to_sheet(ws_data);
             const wb = XLSX.utils.book_new();
@@ -1089,6 +1134,7 @@
                 "Nama Lengkap": item.name,
                 "Fakultas": "Teknik",
                 "Program Studi": "Informatika",
+                "Angkatan Masuk": item.entry_year || '-',
                 "Tahun Lulus": item.graduation_year,
                 "IPK": item.gpa,
                 "Status Karir": item.employment_status,
@@ -1113,6 +1159,7 @@
 
         function resetFilters() {
             document.getElementById('filterStatus').value = 'all';
+            document.getElementById('filterEntryYear').value = '';
             document.getElementById('filterYear').value = '';
             document.getElementById('searchInput').value = '';
             renderTable();
