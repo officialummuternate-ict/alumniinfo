@@ -39,8 +39,13 @@
                 </div>
             </div>
 
-            <!-- Navigasi Mode Tampilan (2 Sisi: Alumni & Admin) -->
+            <!-- Status Cloud Database & Navigasi 2 Sisi -->
             <div class="flex items-center gap-2 sm:gap-3">
+                <div id="dbConnectionBadge" onclick="loadDataFromCloud(true)" class="cursor-pointer hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-[11px] font-bold text-slate-300 hover:text-white transition" title="Klik untuk muat ulang data dari Google Sheets">
+                    <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span id="dbStatusText">Memeriksa Database...</span>
+                </div>
+
                 <div class="bg-slate-800/90 p-1 rounded-xl border border-slate-700 flex items-center">
                     <button id="tabBtnAlumni" onclick="switchView('alumni')" class="px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow">
                         <i class="fas fa-user-graduate"></i> <span>Sisi Alumni</span>
@@ -50,7 +55,7 @@
                     </button>
                 </div>
 
-                <!-- Tombol Logout Admin (Hanya muncul saat Admin Login) -->
+                <!-- Tombol Logout Admin -->
                 <button id="btnAdminLogout" onclick="logoutAdmin()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold px-3.5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5" title="Keluar dari Mode Admin">
                     <i class="fas fa-sign-out-alt"></i> <span class="hidden sm:inline">Logout</span>
                 </button>
@@ -73,13 +78,13 @@
                     <div class="lg:col-span-7 space-y-4">
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-bold">
                             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Portal Resmi Tracer Study Program Studi Informatika (Kode PDDikti: 55201)
+                            Database Terintegrasi Google Sheets - Prodi Informatika (55201)
                         </div>
                         <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
                             Direktori & Penelusuran Alumni <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Informatika UMMU</span>
                         </h1>
                         <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Silakan lakukan pengecekan NIM Anda atau lengkapi formulir Tracer Study di bawah ini untuk memperbarui data angkatan masuk, tahun lulus, dan karir Anda.
+                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Setiap data yang Anda input atau perbarui pada halaman ini akan langsung tersimpan secara <em>real-time</em> ke dalam Google Spreadsheet Admin Prodi Informatika.
                         </p>
                         <div class="pt-2 flex flex-wrap gap-3">
                             <a href="#formInputAlumniCard" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-extrabold px-5 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-2">
@@ -114,15 +119,15 @@
                         </div>
                         <div>
                             <h2 id="pubFormHeaderTitle" class="text-base sm:text-lg font-extrabold">Formulir Pendataan Alumni Informatika (Input Mandiri)</h2>
-                            <p id="pubFormHeaderDesc" class="text-[11px] text-blue-200">Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Data otomatis tersimpan ke direktori.</p>
+                            <p id="pubFormHeaderDesc" class="text-[11px] text-blue-200">Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Otomatis masuk ke Google Sheets Prodi.</p>
                         </div>
                     </div>
                     <span id="pubFormBadge" class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full font-bold self-start sm:self-center">
-                        <i class="fas fa-lock-open mr-1"></i> Form Publik Alumni
+                        <i class="fas fa-cloud-upload-alt mr-1"></i> Terhubung ke Database
                     </span>
                 </div>
 
-                <!-- Banner Status Terverifikasi (Muncul saat mode Update setelah verifikasi Tgl Lahir & Email sukses) -->
+                <!-- Banner Status Terverifikasi -->
                 <div id="verifiedUpdateBanner" class="hidden bg-emerald-50 border-b border-emerald-200 px-6 py-3.5 flex flex-wrap items-center justify-between gap-2">
                     <div class="flex items-center gap-2 text-xs text-emerald-800 font-bold">
                         <i class="fas fa-check-circle text-emerald-600 text-base"></i>
@@ -233,13 +238,16 @@
                             <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Mode Admin Aktif</span>
                         </div>
                         <p class="text-xs text-slate-400 mt-0.5">
-                            Kelola penuh data alumni Informatika UMMU (termasuk Angkatan Masuk & Tahun Lulus), sinkronisasi PDDikti, serta impor/ekspor Excel.
+                            Kelola penuh data alumni Informatika UMMU, koneksi Google Sheets API, sinkronisasi PDDikti, serta impor/ekspor Excel.
                         </p>
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                    <button onclick="openGasConfigModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shadow transition flex items-center gap-2">
+                        <i class="fas fa-table"></i> Hubungkan Google Sheets API
+                    </button>
                     <button onclick="downloadSampleTemplate()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2">
-                        <i class="fas fa-download text-cyan-400"></i> Template Excel Informatika
+                        <i class="fas fa-download text-cyan-400"></i> Template Excel
                     </button>
                 </div>
             </div>
@@ -257,6 +265,9 @@
                         <i class="fas fa-file-import"></i> Import Excel Informatika
                         <input type="file" id="importExcel" class="hidden" accept=".xlsx, .xls, .csv">
                     </label>
+                    <button onclick="loadDataFromCloud(true)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                        <i class="fas fa-cloud-download-alt text-blue-600"></i> Refresh dari Google Sheets
+                    </button>
                 </div>
                 
                 <div class="flex flex-wrap gap-2 w-full lg:w-auto justify-end">
@@ -383,7 +394,7 @@
                 <div class="w-7 h-7 bg-blue-600 text-white rounded-lg flex items-center justify-center font-extrabold"><i class="fas fa-code text-xs"></i></div>
                 <span>&copy; 2026 Program Studi Informatika - Fakultas Teknik UMMU.</span>
             </div>
-            <p>Sistem Informasi Tracer Study & Direktori Alumni Informatika (Dilengkapi Verifikasi Keamanan Alumni).</p>
+            <p>Sistem Informasi Tracer Study & Direktori Alumni Informatika (Integrasi Google Sheets Database).</p>
         </div>
     </footer>
 
@@ -404,9 +415,9 @@
                 <button onclick="toggleModal('loginAdminModal')" class="text-slate-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
             </div>
             <form id="adminLoginForm" class="p-6 space-y-4">
-                <!-- <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 font-semibold">
+                <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 font-semibold">
                     <i class="fas fa-info-circle mr-1"></i> Akun Demo Admin: Username <strong>admin</strong> | Password <strong>admin123</strong>
-                </div> -->
+                </div>
                 <div>
                     <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1">Username Admin</label>
                     <input type="text" id="adminUsername" required placeholder="admin" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
@@ -458,7 +469,6 @@
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tanggal Lahir *</label>
                             <input type="date" id="birthDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
-                        <!-- FITUR ANGKATAN MASUK & TAHUN LULUS BERDAMPINGAN -->
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Angkatan Masuk *</label>
@@ -528,18 +538,23 @@
     </div>
 
     <!-- ================================================= -->
-    <!-- LOGIKA JAVASCRIPT UTAMA (DENGAN VERIFIKASI ALUMNI)-->
+    <!-- LOGIKA JAVASCRIPT UTAMA + GOOGLE SHEETS CLOUD API -->
     <!-- ================================================= -->
     <script>
-        const STORAGE_KEY = 'ummu_alumni_informatika_only_v3';
+        // TEMPELKAN URL GOOGLE APPS SCRIPT WEB APP (.../exec) ANDA DI SINI:
+        const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzVffHudEpZSMyaQgNRyqwxT85pSW5IIKncqUTuXtnVxINZoahr60lUbs2zn4AtWimUaA/exec'; 
+
+        const STORAGE_KEY = 'ummu_alumni_informatika_only_v4';
+        const GAS_URL_STORAGE_KEY = 'ummu_alumni_gas_webapp_url';
         const ADMIN_SESSION_KEY = 'ummu_admin_inf_logged_in';
 
+        let gasWebAppUrl = localStorage.getItem(GAS_URL_STORAGE_KEY) || DEFAULT_GAS_URL;
         let allAlumni = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
         let filteredAlumni = [];
         let isAdminLoggedIn = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
         let currentViewMode = 'alumni'; // 'alumni' atau 'admin'
 
-        // Data Awal Resmi Alumni Informatika UMMU (Termasuk data Catur Suranto & alumni lainnya)
+        // Data Awal Resmi Alumni Informatika UMMU
         const defaultInformatikaData = [
             { identity_number: "121055520113097", name: "CATUR SURANTO", birth_date: "1995-05-15", entry_year: "2013", graduation_year: "2017", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "catursuranto@gmail.com", phone: "081244556600", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "UNIVERSITAS MUHAMMADIYAH MALUKU UTARA" },
             { identity_number: "121055520124010", name: "EWIS JOLA A.WA BULA", birth_date: "2006-07-13", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
@@ -549,7 +564,114 @@
             { identity_number: "121055520124056", name: "FATRIN IDRIS", birth_date: "2004-07-12", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.68", email: "fatrinidris@gmail.com", phone: "082136282807", employment_status: "Bekerja", job_role: "ASN / Instansi Pemerintahan", company_name: "Dinas Kominfo Maluku Utara" }
         ];
 
-        // Fungsi bantu deteksi otomatis Angkatan Masuk dari pola NIM UMMU (1210555201 + 2 digit tahun)
+        function updateDbStatusIndicator(state, message) {
+            const dot = document.getElementById('dbStatusDot');
+            const text = document.getElementById('dbStatusText');
+            if (!dot || !text) return;
+
+            if (state === 'connected') {
+                dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                text.innerText = message || 'Google Sheets Aktif';
+            } else if (state === 'loading') {
+                dot.className = 'w-2 h-2 rounded-full bg-cyan-400 animate-ping';
+                text.innerText = message || 'Menyinkronkan...';
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+                text.innerText = message || 'Mode Memori Lokal';
+            }
+        }
+
+        // Pengaturan URL Google Apps Script via Pop-up Admin
+        function openGasConfigModal() {
+            Swal.fire({
+                title: 'Hubungkan Google Sheets API',
+                html: `
+                    <div class="text-left text-xs space-y-3">
+                        <p class="text-slate-600 leading-relaxed">
+                            Masukkan <strong>URL Web App Google Apps Script</strong> (berakhiran <code>/exec</code>) dari Google Spreadsheet Admin Prodi Informatika agar semua input alumni tersimpan terpusat:
+                        </p>
+                        <input type="url" id="swal_gas_url" value="${gasWebAppUrl}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="text-[11px] text-slate-400">Tips: Untuk permanen di semua perangkat pengunjung, tempelkan juga URL ini pada variabel <code>DEFAULT_GAS_URL</code> di dalam file <code>index.html</code> Anda.</p>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Simpan & Sinkronkan Sekarang',
+                cancelButtonText: 'Tutup',
+                confirmButtonColor: '#059669'
+            }).then(async (res) => {
+                if (res.isConfirmed) {
+                    const urlVal = document.getElementById('swal_gas_url').value.trim();
+                    gasWebAppUrl = urlVal;
+                    localStorage.setItem(GAS_URL_STORAGE_KEY, gasWebAppUrl);
+                    if (gasWebAppUrl) {
+                        // Kirim data lokal saat ini ke Google Sheets lalu muat ulang
+                        await pushDataToGoogleSheets('save', allAlumni);
+                        await loadDataFromCloud(true);
+                    } else {
+                        updateDbStatusIndicator('local', 'Mode Memori Lokal');
+                    }
+                }
+            });
+        }
+
+        // Fungsi Ambil Data dari Google Sheets
+        async function loadDataFromCloud(showNotification = false) {
+            if (!gasWebAppUrl) {
+                updateDbStatusIndicator('local', 'Database: Memori Lokal');
+                loadData();
+                return;
+            }
+
+            try {
+                updateDbStatusIndicator('loading', 'Memuat Google Sheets...');
+                const res = await fetch(gasWebAppUrl);
+                const result = await res.json();
+
+                if (result.status === 'success' && Array.isArray(result.data)) {
+                    if (result.data.length > 0) {
+                        allAlumni = result.data.filter(a => String(a.department || 'Informatika').toLowerCase().includes('informatika'));
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlumni));
+                    } else if (allAlumni.length > 0) {
+                        // Jika Sheet masih kosong baru dibuat, unggah data awal otomatis
+                        await pushDataToGoogleSheets('save', allAlumni);
+                    }
+                    updateDbStatusIndicator('connected', 'Google Sheets Terhubung');
+                    loadData();
+                    if (showNotification) {
+                        Swal.fire({ icon: 'success', title: 'Tersinkronisasi!', text: 'Data berhasil dimuat langsung dari Google Spreadsheet.', timer: 1400, showConfirmButton: false });
+                    }
+                }
+            } catch (err) {
+                updateDbStatusIndicator('local', 'Offline / Cache Lokal');
+                loadData();
+            }
+        }
+
+        // Fungsi Kirim / Simpan / Hapus Data ke Google Sheets
+        async function pushDataToGoogleSheets(action, payloadData) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlumni));
+            loadData();
+
+            if (!gasWebAppUrl) return;
+
+            try {
+                updateDbStatusIndicator('loading', 'Menyimpan ke Cloud...');
+                await fetch(gasWebAppUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: action,
+                        data: payloadData,
+                        identity_number: payloadData?.identity_number || ''
+                    })
+                });
+                updateDbStatusIndicator('connected', 'Tersimpan di Google Sheets');
+            } catch (err) {
+                updateDbStatusIndicator('local', 'Tersimpan Lokal (Gagal Cloud)');
+            }
+        }
+
+        // Fungsi bantu deteksi otomatis Angkatan Masuk dari pola NIM UMMU
         function autoFillEntryYear(nimValue, targetInputId) {
             const cleanNim = String(nimValue || '').trim();
             const targetEl = document.getElementById(targetInputId);
@@ -573,6 +695,7 @@
                 document.getElementById('btnAdminLogout').classList.remove('hidden');
             }
             loadData();
+            loadDataFromCloud(false);
         }
 
         // Fungsi Berpindah Antara Sisi Alumni & Sisi Admin
@@ -652,7 +775,7 @@
         }
 
         // =========================================================================
-        // FITUR UTAMA: CEK NIM & VERIFIKASI TANGGAL LAHIR + EMAIL TERDAFTAR ALUMNI
+        // CEK NIM & VERIFIKASI TANGGAL LAHIR + EMAIL TERDAFTAR ALUMNI
         // =========================================================================
         function checkMyNim(nimParam) {
             const nim = nimParam || document.getElementById('quickCheckNim').value.trim();
@@ -682,7 +805,6 @@
                     confirmButtonColor: '#2563eb'
                 }).then((res) => {
                     if (res.isConfirmed) {
-                        // Panggil Pop-up Verifikasi Tanggal Lahir & Email Terdaftar terlebih dahulu
                         promptVerifyAlumniIdentity(found);
                     }
                 });
@@ -723,7 +845,7 @@
                         </div>
                     </div>
                 `,
-                icon: 'shield',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: '<i class="fas fa-check-circle mr-1"></i> Verifikasi & Lanjutkan',
                 cancelButtonText: 'Batal',
@@ -749,26 +871,23 @@
 
                     return true;
                 }
-            }).then((verifyResult) => {
+            }).then(async (verifyResult) => {
                 if (verifyResult.isConfirmed) {
                     if (pendingNewData) {
-                        // Jika alumni sebelumnya sudah mengisi form mandiri lalu klik simpan
                         const idx = allAlumni.findIndex(a => a.identity_number === alumniRecord.identity_number);
                         if (idx !== -1) {
                             allAlumni[idx] = pendingNewData;
-                            saveToStorage();
+                            await pushDataToGoogleSheets('save', pendingNewData);
                             cancelVerifiedUpdateMode();
-                            Swal.fire('Berhasil Diperbarui!', 'Identitas terverifikasi dan data karir Anda telah berhasil diperbarui.', 'success');
+                            Swal.fire('Berhasil Diperbarui!', 'Identitas terverifikasi dan data karir Anda telah tersimpan ke database.', 'success');
                         }
                     } else {
-                        // Isi form mandiri dan aktifkan mode edit terverifikasi
                         activateVerifiedUpdateMode(alumniRecord);
                     }
                 }
             });
         }
 
-        // Mengaktifkan Mode Edit pada Form Publik setelah Lolos Verifikasi Tanggal Lahir & Email
         function activateVerifiedUpdateMode(found) {
             document.getElementById('pub_verified_nim').value = found.identity_number;
             const nimInput = document.getElementById('pub_nim');
@@ -788,7 +907,6 @@
             document.getElementById('pub_job_role').value = found.job_role || 'Software / Web Developer';
             document.getElementById('pub_company').value = found.company_name || '';
 
-            // Ubah tampilan header form menjadi Mode Perbarui Terverifikasi
             document.getElementById('verifiedUpdateBanner').classList.remove('hidden');
             document.getElementById('pubFormHeaderTitle').innerText = `Perbarui Data Alumni: ${found.name}`;
             document.getElementById('pubFormHeaderDesc').innerText = `Identitas NIM ${found.identity_number} telah diverifikasi. Silakan ubah data yang diperlukan lalu klik Simpan.`;
@@ -807,7 +925,6 @@
             });
         }
 
-        // Keluar dari Mode Edit Terverifikasi / Reset Form Publik
         function cancelVerifiedUpdateMode() {
             document.getElementById('publicAlumniForm').reset();
             document.getElementById('pub_verified_nim').value = '';
@@ -818,13 +935,13 @@
 
             document.getElementById('verifiedUpdateBanner').classList.add('hidden');
             document.getElementById('pubFormHeaderTitle').innerText = 'Formulir Pendataan Alumni Informatika (Input Mandiri)';
-            document.getElementById('pubFormHeaderDesc').innerText = 'Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Data otomatis tersimpan ke direktori.';
+            document.getElementById('pubFormHeaderDesc').innerText = 'Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Otomatis masuk ke Google Sheets Prodi.';
             document.getElementById('pubSubmitBtn').innerHTML = `<i class="fas fa-paper-plane"></i> <span>Simpan Data Alumni Saya</span>`;
             document.getElementById('formInputAlumniCard').classList.remove('ring-2', 'ring-emerald-500');
         }
 
         // Submit Form Mandiri dari Sisi Alumni Informatika
-        document.getElementById('publicAlumniForm').addEventListener('submit', function(e) {
+        document.getElementById('publicAlumniForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const nim = document.getElementById('pub_nim').value.trim();
             const verifiedNim = document.getElementById('pub_verified_nim').value.trim();
@@ -848,21 +965,19 @@
             const existingIdx = allAlumni.findIndex(a => a.identity_number === nim);
 
             if (existingIdx !== -1) {
-                // Jika sudah melewati verifikasi Tanggal Lahir & Email sebelumnya
                 if (verifiedNim === nim) {
                     allAlumni[existingIdx] = newEntry;
-                    saveToStorage();
+                    await pushDataToGoogleSheets('save', newEntry);
                     cancelVerifiedUpdateMode();
-                    Swal.fire('Berhasil Diperbarui!', 'Data Tracer Study Alumni Informatika Anda telah berhasil diperbarui.', 'success');
+                    Swal.fire('Berhasil Diperbarui!', 'Data Tracer Study Alumni Informatika Anda telah tersimpan ke database.', 'success');
                 } else {
-                    // Jika belum diverifikasi, wajib verifikasi Tanggal Lahir & Email terdaftar dulu!
                     promptVerifyAlumniIdentity(allAlumni[existingIdx], newEntry);
                 }
             } else {
                 allAlumni.push(newEntry);
-                saveToStorage();
+                await pushDataToGoogleSheets('save', newEntry);
                 cancelVerifiedUpdateMode();
-                Swal.fire('Terima Kasih!', 'Data Anda berhasil disimpan ke dalam Direktori Alumni Informatika UMMU.', 'success');
+                Swal.fire('Terima Kasih!', 'Data Anda berhasil disimpan ke dalam Database Alumni Informatika UMMU.', 'success');
             }
         });
 
@@ -887,11 +1002,6 @@
             document.getElementById('statBekerja').innerText = bekerja;
             document.getElementById('statStudi').innerText = studi;
             document.getElementById('statAvgGpa').innerText = avgGpa;
-        }
-
-        function saveToStorage() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlumni));
-            loadData();
         }
 
         function renderTable() {
@@ -932,7 +1042,6 @@
 
                 const entryYr = item.entry_year || (parseInt(item.graduation_year, 10) ? String(parseInt(item.graduation_year, 10) - 4) : '-');
 
-                // Kontak detail hanya tampil penuh di mode Admin
                 const contactInfo = currentViewMode === 'admin' 
                     ? `<div class="text-[10px] text-slate-500 flex flex-wrap items-center gap-2 mt-0.5">
                          <span><i class="fas fa-envelope mr-1 text-slate-400"></i>${item.email || '-'}</span>
@@ -941,7 +1050,6 @@
                        </div>`
                     : `<div class="text-[10px] text-slate-400 mt-0.5"><i class="fas fa-check-circle text-emerald-500 mr-1"></i>Alumni Terverifikasi Prodi Informatika</div>`;
 
-                // Di sisi Alumni terdapat tombol "Perbarui Data" (dengan verifikasi), sedangkan di sisi Admin terdapat tombol Edit/Duplikat/Hapus langsung
                 const actionCellContent = currentViewMode === 'admin'
                     ? `<button onclick="editAlumni('${item.identity_number}')" class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg mr-1 transition" title="Edit Data (Admin)"><i class="fas fa-edit"></i></button>
                        <button onclick="duplicateAlumni('${item.identity_number}')" class="text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 p-2 rounded-lg mr-1 transition" title="Duplikat Data"><i class="fas fa-copy"></i></button>
@@ -986,16 +1094,16 @@
             });
         }
 
-        // Tarik Data PDDikti Khusus Prodi Informatika (Kode Prodi: 55201)
+        // Tarik Data PDDikti Khusus Prodi Informatika
         function syncInformatikaPDDikti() {
             Swal.fire({
                 title: 'Menarik Data PDDikti Informatika...',
-                text: 'Menyinkronkan data lulusan Program Studi Informatika (55201) Fakultas Teknik UMMU.',
+                text: 'Menyinkronkan data lulusan Program Studi Informatika (55201) ke Database.',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); }
             });
 
-            setTimeout(() => {
+            setTimeout(async () => {
                 const extraInformatikaPDDikti = [
                     ...defaultInformatikaData,
                     { identity_number: "121055520120003", name: "RIZALDI AHMAD", birth_date: "2002-03-14", entry_year: "2020", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.78", email: "rizaldi.inf@gmail.com", phone: "081244559900", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "PT Bank Rakyat Indonesia (Persero)" },
@@ -1005,16 +1113,16 @@
                     { identity_number: "121055520117004", name: "M. TAUFIK HIDAYAT", birth_date: "1999-01-25", entry_year: "2017", graduation_year: "2021", faculty: "Teknik", department: "Informatika", gpa: "3.55", email: "taufik.inf@gmail.com", phone: "082299887711", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Moloku Digital House" }
                 ];
 
-                let added = 0;
+                let newRows = [];
                 extraInformatikaPDDikti.forEach(row => {
                     if (!allAlumni.some(a => a.identity_number === row.identity_number)) {
                         allAlumni.push(row);
-                        added++;
+                        newRows.push(row);
                     }
                 });
 
-                saveToStorage();
-                Swal.fire('Sinkronisasi Berhasil!', `${added} data baru alumni Prodi Informatika berhasil ditarik ke dalam sistem.`, 'success');
+                await pushDataToGoogleSheets('save', newRows.length > 0 ? newRows : allAlumni);
+                Swal.fire('Sinkronisasi Berhasil!', `${newRows.length} data baru alumni Prodi Informatika berhasil disinkronkan ke database.`, 'success');
             }, 900);
         }
 
@@ -1094,7 +1202,7 @@
             toggleModal('addModal');
         }
 
-        document.getElementById('alumniForm').addEventListener('submit', function(e) {
+        document.getElementById('alumniForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const nim = document.getElementById('identityNumber').value.trim();
             const isEditMode = document.getElementById('isEditMode').value === 'true';
@@ -1118,6 +1226,7 @@
             if (isEditMode) {
                 const index = allAlumni.findIndex(a => a.identity_number === nim);
                 if (index !== -1) allAlumni[index] = data;
+                await pushDataToGoogleSheets('save', data);
                 Swal.fire('Diperbarui!', `Data alumni Informatika NIM ${nim} berhasil diperbarui.`, 'success');
             } else {
                 if (allAlumni.some(a => a.identity_number === nim)) {
@@ -1125,26 +1234,26 @@
                     return;
                 }
                 allAlumni.push(data);
-                Swal.fire('Tersimpan!', 'Data alumni Informatika berhasil disimpan.', 'success');
+                await pushDataToGoogleSheets('save', data);
+                Swal.fire('Tersimpan!', 'Data alumni Informatika berhasil disimpan ke database.', 'success');
             }
 
-            saveToStorage();
             toggleModal('addModal');
         });
 
         function deleteAlumni(nim) {
             Swal.fire({
                 title: 'Hapus Alumni Informatika?',
-                text: `Data dengan NIM ${nim} akan dihapus permanen.`,
+                text: `Data dengan NIM ${nim} akan dihapus permanen dari sistem & Google Sheets.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e11d48',
                 cancelButtonColor: '#94a3b8',
                 confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
                     allAlumni = allAlumni.filter(a => a.identity_number !== nim);
-                    saveToStorage();
+                    await pushDataToGoogleSheets('delete', { identity_number: nim });
                     Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
                 }
             });
@@ -1153,27 +1262,27 @@
         function clearData() {
             Swal.fire({
                 title: 'Kosongkan Tabel Alumni Informatika?',
-                text: "Seluruh data pada tabel akan direset!",
+                text: "Seluruh data pada tabel & Google Sheets akan direset!",
                 icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#e11d48',
                 confirmButtonText: 'Ya, Kosongkan'
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
                     allAlumni = [];
-                    saveToStorage();
+                    await pushDataToGoogleSheets('clear', {});
                     Swal.fire('Dikosongkan!', 'Tabel telah dikosongkan.', 'success');
                 }
             });
         }
 
-        // Import File Excel (Mendukung kolom entry_year / Angkatan Masuk)
+        // Import File Excel
         document.getElementById('importExcel').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(evt) {
+            reader.onload = async function(evt) {
                 try {
                     const data = new Uint8Array(evt.target.result);
                     const workbook = XLSX.read(data, {type: 'array'});
@@ -1182,6 +1291,7 @@
 
                     let addedCount = 0;
                     let skippedNonInf = 0;
+                    let batchToCloud = [];
 
                     rows.forEach(r => {
                         if (r.identity_number && r.name) {
@@ -1215,18 +1325,20 @@
                             const exists = allAlumni.findIndex(a => a.identity_number === nim);
                             if (exists === -1) {
                                 allAlumni.push(newRow);
-                                addedCount++;
                             } else {
                                 allAlumni[exists] = newRow;
-                                addedCount++;
                             }
+                            batchToCloud.push(newRow);
+                            addedCount++;
                         }
                     });
 
-                    saveToStorage();
+                    if (batchToCloud.length > 0) {
+                        await pushDataToGoogleSheets('save', batchToCloud);
+                    }
                     Swal.fire(
                         'Import Selesai',
-                        `${addedCount} data Alumni Informatika berhasil diproses.${skippedNonInf > 0 ? ` (${skippedNonInf} data prodi non-Informatika diabaikan otomatis)` : ''}`,
+                        `${addedCount} data Alumni Informatika berhasil diproses & dikirim ke Google Sheets.${skippedNonInf > 0 ? ` (${skippedNonInf} data non-Informatika diabaikan)` : ''}`,
                         'success'
                     );
                     document.getElementById('importExcel').value = '';
