@@ -657,31 +657,20 @@
                             <div><strong>Nama:</strong> ${found.name}</div>
                             <div><strong>NIM:</strong> ${found.identity_number}</div>
                             <div><strong>Program Studi:</strong> Informatika (Fakultas Teknik)</div>
-                            <div><strong>Angkatan Masuk:</strong> ${found.entry_year || '-'} | <strong>Tahun Lulus:</strong> ${found.graduation_year}</div>
-                            <div><strong>IPK:</strong> ${found.gpa} | <strong>Status Karir:</strong> ${found.employment_status}</div>
-                            <div><strong>Profesi / Instansi:</strong> ${found.job_role || '-'} di ${found.company_name || '-'}</div>
+                            <div><strong>Tahun Lulus:</strong> ${found.graduation_year} | <strong>IPK:</strong> ${found.gpa}</div>
+                            <div><strong>Status Karir:</strong> ${found.employment_status}</div>
                         </div>
-                        <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir atau instansi tempat kerja Anda?</p>
+                        <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir atau tempat kerja Anda?</p>
                     `,
                     icon: 'success',
                     showCancelButton: true,
-                    confirmButtonText: 'Ya, Perbarui Data Saya',
+                    confirmButtonText: 'Verifikasi & Perbarui Data',
                     cancelButtonText: 'Tutup',
                     confirmButtonColor: '#2563eb'
                 }).then((res) => {
                     if (res.isConfirmed) {
-                        document.getElementById('pub_nim').value = found.identity_number;
-                        document.getElementById('pub_name').value = found.name;
-                        document.getElementById('pub_birth').value = found.birth_date;
-                        document.getElementById('pub_entry_year').value = found.entry_year || '';
-                        document.getElementById('pub_year').value = found.graduation_year;
-                        document.getElementById('pub_gpa').value = found.gpa;
-                        document.getElementById('pub_email').value = found.email;
-                        document.getElementById('pub_phone').value = found.phone || '';
-                        document.getElementById('pub_status').value = found.employment_status;
-                        document.getElementById('pub_job_role').value = found.job_role || 'Software / Web Developer';
-                        document.getElementById('pub_company').value = found.company_name || '';
-                        document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
+                        // Panggil fungsi verifikasi tanggal lahir dan email terlebih dahulu
+                        verifyAndPromptUpdate(found);
                     }
                 });
             } else {
@@ -699,7 +688,6 @@
                 });
             }
         }
-
         // Submit Form Mandiri dari Sisi Alumni Informatika
         document.getElementById('publicAlumniForm').addEventListener('submit', function(e) {
             e.preventDefault();
