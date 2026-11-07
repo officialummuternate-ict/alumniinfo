@@ -657,91 +657,49 @@
                             <div><strong>Nama:</strong> ${found.name}</div>
                             <div><strong>NIM:</strong> ${found.identity_number}</div>
                             <div><strong>Program Studi:</strong> Informatika (Fakultas Teknik)</div>
-                            <div><strong>Tahun Lulus:</strong> ${found.graduation_year} | <strong>IPK:</strong> ${found.gpa}</div>
-                            <div><strong>Status Karir:</strong> ${found.employment_status}</div>
+                            <div><strong>Angkatan Masuk:</strong> ${found.entry_year || '-'} | <strong>Tahun Lulus:</strong> ${found.graduation_year}</div>
+                            <div><strong>IPK:</strong> ${found.gpa} | <strong>Status Karir:</strong> ${found.employment_status}</div>
+                            <div><strong>Profesi / Instansi:</strong> ${found.job_role || '-'} di ${found.company_name || '-'}</div>
                         </div>
-                        <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir atau tempat kerja Anda?</p>
+                        <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir atau instansi tempat kerja Anda?</p>
                     `,
                     icon: 'success',
                     showCancelButton: true,
-                    confirmButtonText: 'Verifikasi & Perbarui Data',
+                    confirmButtonText: 'Ya, Perbarui Data Saya',
                     cancelButtonText: 'Tutup',
                     confirmButtonColor: '#2563eb'
                 }).then((res) => {
                     if (res.isConfirmed) {
-                       // Fungsi dipanggil saat tombol "Cek NIM" atau verifikasi awal ditekan
-    function verifyAndPromptUpdate(item) {
-        Swal.fire({
-            title: 'Verifikasi Identitas Alumni',
-            html: `
-                <p class="text-xs text-slate-500 mb-4">Demi keamanan data, mohon masukkan <strong>Tanggal Lahir</strong> dan <strong>Email</strong> yang terdaftar untuk NIM <strong>${item.identity_number}</strong> (${item.name}):</p>
-                <div class="text-left space-y-3 text-xs">
-                    <div>
-                        <label class="block font-extrabold uppercase text-slate-600 mb-1">Tanggal Lahir *</label>
-                        <input type="date" id="verifyBirthDate" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-extrabold uppercase text-slate-600 mb-1">Email Terdaftar *</label>
-                        <input type="email" id="verifyEmail" placeholder="nama@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                </div>
-            `,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Verifikasi & Lanjutkan',
-            cancelButtonText: 'Batal',
-            confirmButtonColor: '#2563eb',
-            preConfirm: () => {
-                const birthDate = document.getElementById('verifyBirthDate').value;
-                const email = document.getElementById('verifyEmail').value.trim().toLowerCase();
-
-                if (!birthDate || !email) {
-                    Swal.showValidationMessage('Tanggal lahir dan email wajib diisi!');
-                    return false;
-                }
-
-                // Cocokkan dengan data database lokal/storage
-                // Format tanggal lahir biasanya YYYY-MM-DD
-                if (birthDate !== item.birth_date || email !== String(item.email || '').toLowerCase()) {
-                    Swal.showValidationMessage('Tanggal lahir atau email yang Anda masukkan tidak cocok dengan data di sistem!');
-                    return false;
-                }
-
-                return { birthDate, email };
+                        document.getElementById('pub_nim').value = found.identity_number;
+                        document.getElementById('pub_name').value = found.name;
+                        document.getElementById('pub_birth').value = found.birth_date;
+                        document.getElementById('pub_entry_year').value = found.entry_year || '';
+                        document.getElementById('pub_year').value = found.graduation_year;
+                        document.getElementById('pub_gpa').value = found.gpa;
+                        document.getElementById('pub_email').value = found.email;
+                        document.getElementById('pub_phone').value = found.phone || '';
+                        document.getElementById('pub_status').value = found.employment_status;
+                        document.getElementById('pub_job_role').value = found.job_role || 'Software / Web Developer';
+                        document.getElementById('pub_company').value = found.company_name || '';
+                        document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'NIM Belum Terdaftar',
+                    text: `NIM ${nim} belum tercatat di direktori Alumni Informatika. Silakan isi Formulir Pendataan di bawah ini.`,
+                    icon: 'info',
+                    confirmButtonText: 'Isi Formulir Sekarang',
+                    confirmButtonColor: '#059669'
+                }).then(() => {
+                    document.getElementById('pub_nim').value = nim;
+                    autoFillEntryYear(nim, 'pub_entry_year');
+                    document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('pub_name').focus();
+                });
             }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Jika verifikasi berhasil, buka form pembaruan data (Modal Edit/Form Publik)
-                openUpdateFormForAlumni(item);
-            }
-        });
-    }
-
-    // Membuka form pembaruan data setelah verifikasi sukses
-    function openUpdateFormForAlumni(item) {
-        document.getElementById('modalTitle').innerText = 'Perbarui Data Karir Alumni';
-        document.getElementById('modalSubtitle').innerText = `Halo, ${item.name}. Silakan perbarui informasi status karir atau instansi Anda.`;
-        document.getElementById('isEditMode').value = 'true';
-        
-        const idInput = document.getElementById('identityNumber');
-        idInput.value = item.identity_number;
-        idInput.readOnly = true;
-        idInput.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
-
-        document.getElementById('name').value = item.name;
-        document.getElementById('birthDate').value = item.birth_date;
-        document.getElementById('entryYear').value = item.entry_year || (parseInt(item.graduation_year, 10) - 4);
-        document.getElementById('graduationYear').value = item.graduation_year;
-        document.getElementById('gpa').value = item.gpa;
-        document.getElementById('email').value = item.email;
-        document.getElementById('phone').value = item.phone || '';
-        document.getElementById('employmentStatus').value = item.employment_status;
-        document.getElementById('jobRole').value = item.job_role || 'Software / Web Developer';
-        document.getElementById('companyName').value = item.company_name || '';
-
-        toggleModal('addModal');
-    }
         }
+
         // Submit Form Mandiri dari Sisi Alumni Informatika
         document.getElementById('publicAlumniForm').addEventListener('submit', function(e) {
             e.preventDefault();
