@@ -93,8 +93,8 @@
 
                     <!-- Kotak Cek Cepat NIM Alumni Informatika -->
                     <div class="lg:col-span-5 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15">
-                        <h3 class="text-sm font-extrabold text-white mb-1"><i class="fas fa-id-card text-cyan-400 mr-1.5"></i> Cek Data NIM Informatika Anda</h3>
-                        <p class="text-[11px] text-slate-300 mb-4">Masukkan NIM Anda (contoh: 1210555201...) untuk mengecek apakah data Anda sudah tercatat di database alumni Informatika.</p>
+                        <h3 class="text-sm font-extrabold text-white mb-1"><i class="fas fa-id-card text-cyan-400 mr-1.5"></i> Cek & Perbarui Data NIM Anda</h3>
+                        <p class="text-[11px] text-slate-300 mb-4">Masukkan NIM Anda (contoh: 1210555201...) untuk mengecek status terdaftar atau memperbarui data karir dengan verifikasi keamanan.</p>
                         <div class="flex gap-2">
                             <input type="text" id="quickCheckNim" placeholder="Ketik NIM Informatika..." class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white font-bold placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
                             <button onclick="checkMyNim()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl text-xs font-extrabold shrink-0 transition shadow">
@@ -106,23 +106,35 @@
             </div>
 
             <!-- Formulir Input Mandiri Khusus Alumni Informatika -->
-            <div id="formInputAlumniCard" class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden mb-10">
+            <div id="formInputAlumniCard" class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden mb-10 transition-all duration-300">
                 <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 px-6 py-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 text-lg">
                             <i class="fas fa-user-check"></i>
                         </div>
                         <div>
-                            <h2 class="text-base sm:text-lg font-extrabold">Formulir Pendataan Alumni Informatika (Input Mandiri)</h2>
-                            <p class="text-[11px] text-blue-200">Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Data otomatis tersimpan ke direktori.</p>
+                            <h2 id="pubFormHeaderTitle" class="text-base sm:text-lg font-extrabold">Formulir Pendataan Alumni Informatika (Input Mandiri)</h2>
+                            <p id="pubFormHeaderDesc" class="text-[11px] text-blue-200">Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Data otomatis tersimpan ke direktori.</p>
                         </div>
                     </div>
-                    <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full font-bold self-start sm:self-center">
+                    <span id="pubFormBadge" class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full font-bold self-start sm:self-center">
                         <i class="fas fa-lock-open mr-1"></i> Form Publik Alumni
                     </span>
                 </div>
 
+                <!-- Banner Status Terverifikasi (Muncul saat mode Update setelah verifikasi Tgl Lahir & Email sukses) -->
+                <div id="verifiedUpdateBanner" class="hidden bg-emerald-50 border-b border-emerald-200 px-6 py-3.5 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 text-xs text-emerald-800 font-bold">
+                        <i class="fas fa-check-circle text-emerald-600 text-base"></i>
+                        <span>Identitas Terverifikasi! Silakan perbarui data karir, instansi, atau informasi Anda di bawah ini.</span>
+                    </div>
+                    <button type="button" onclick="cancelVerifiedUpdateMode()" class="text-[11px] bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 px-3 py-1 rounded-lg font-bold transition">
+                        <i class="fas fa-times mr-1"></i> Batalkan Mode Edit
+                    </button>
+                </div>
+
                 <form id="publicAlumniForm" class="p-6 sm:p-8 space-y-5">
+                    <input type="hidden" id="pub_verified_nim" value="">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NIM Informatika *</label>
@@ -188,16 +200,16 @@
                         </div>
                         <div class="sm:col-span-2 lg:col-span-3">
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Instansi / Perusahaan / Kampus S2</label>
-                            <input type="text" id="pub_company" placeholder="Contoh: PT Telkom Indonesia / Diskominfo" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <input type="text" id="pub_company" placeholder="Contoh: PT Telkom Indonesia / Diskominfo / UNIVERSITAS MUHAMMADIYAH MALUKU UTARA" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
                     </div>
 
                     <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p class="text-[11px] text-slate-500"><i class="fas fa-shield-alt text-blue-600 mr-1"></i> Nomor WhatsApp dan Tanggal Lahir Anda disembunyikan pada tabel publik dan hanya dapat diakses oleh Admin Prodi.</p>
+                        <p class="text-[11px] text-slate-500"><i class="fas fa-shield-alt text-blue-600 mr-1"></i> Tanggal Lahir dan Email Anda digunakan sebagai kunci verifikasi keamanan saat Anda ingin memperbarui data di kemudian hari.</p>
                         <div class="flex gap-3 w-full sm:w-auto justify-end">
-                            <button type="reset" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">Reset Form</button>
-                            <button type="submit" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold shadow-lg shadow-blue-600/25 transition flex items-center gap-2">
-                                <i class="fas fa-paper-plane"></i> Simpan Data Alumni Saya
+                            <button type="button" onclick="cancelVerifiedUpdateMode()" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">Reset Form</button>
+                            <button type="submit" id="pubSubmitBtn" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold shadow-lg shadow-blue-600/25 transition flex items-center gap-2">
+                                <i class="fas fa-paper-plane"></i> <span>Simpan Data Alumni Saya</span>
                             </button>
                         </div>
                     </div>
@@ -348,7 +360,7 @@
                                 <th class="px-5 py-4 text-center">Angkatan / Thn Lulus</th>
                                 <th class="px-5 py-4 text-center">IPK</th>
                                 <th class="px-5 py-4 text-left">Status Karir, Profesi & Instansi</th>
-                                <th id="thAdminAction" class="px-5 py-4 text-center hidden">Aksi Admin</th>
+                                <th class="px-5 py-4 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="alumniTableBody" class="bg-white divide-y divide-slate-100 text-xs">
@@ -371,7 +383,7 @@
                 <div class="w-7 h-7 bg-blue-600 text-white rounded-lg flex items-center justify-center font-extrabold"><i class="fas fa-code text-xs"></i></div>
                 <span>&copy; 2026 Program Studi Informatika - Fakultas Teknik UMMU.</span>
             </div>
-            <p>Sistem Informasi Tracer Study & Direktori Alumni Informatika (Mode Publik Alumni & Admin).</p>
+            <p>Sistem Informasi Tracer Study & Direktori Alumni Informatika (Dilengkapi Verifikasi Keamanan Alumni).</p>
         </div>
     </footer>
 
@@ -516,10 +528,10 @@
     </div>
 
     <!-- ================================================= -->
-    <!-- LOGIKA JAVASCRIPT UTAMA (KHUSUS INFORMATIKA)      -->
+    <!-- LOGIKA JAVASCRIPT UTAMA (DENGAN VERIFIKASI ALUMNI)-->
     <!-- ================================================= -->
     <script>
-        const STORAGE_KEY = 'ummu_alumni_informatika_only_v2';
+        const STORAGE_KEY = 'ummu_alumni_informatika_only_v3';
         const ADMIN_SESSION_KEY = 'ummu_admin_inf_logged_in';
 
         let allAlumni = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -527,8 +539,9 @@
         let isAdminLoggedIn = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
         let currentViewMode = 'alumni'; // 'alumni' atau 'admin'
 
-        // Data Awal Resmi Alumni Informatika UMMU (Dilengkapi entry_year / Angkatan Masuk)
+        // Data Awal Resmi Alumni Informatika UMMU (Termasuk data Catur Suranto & alumni lainnya)
         const defaultInformatikaData = [
+            { identity_number: "121055520113097", name: "CATUR SURANTO", birth_date: "1995-05-15", entry_year: "2013", graduation_year: "2017", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "catursuranto@gmail.com", phone: "081244556600", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "UNIVERSITAS MUHAMMADIYAH MALUKU UTARA" },
             { identity_number: "121055520124010", name: "EWIS JOLA A.WA BULA", birth_date: "2006-07-13", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
             { identity_number: "121055520124011", name: "IRFAN IKBAL", birth_date: "2005-10-02", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.60", email: "irfanikbalangga@gmail.com", phone: "085240648372", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Startup Digital Ternate" },
             { identity_number: "121055520124019", name: "SELFI KALIADI", birth_date: "2006-06-19", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.85", email: "selfikaliadi26@gmail.com", phone: "081230876769", employment_status: "Studi Lanjut", job_role: "Data & AI Specialist", company_name: "Universitas Gadjah Mada" },
@@ -574,13 +587,11 @@
             const adminSec = document.getElementById('adminViewSection');
             const tabAlumni = document.getElementById('tabBtnAlumni');
             const tabAdmin = document.getElementById('tabBtnAdmin');
-            const thAction = document.getElementById('thAdminAction');
             const roleBadge = document.getElementById('viewRoleBadge');
 
             if (mode === 'admin') {
                 alumniSec.classList.add('hidden');
                 adminSec.classList.remove('hidden');
-                thAction.classList.remove('hidden');
 
                 tabAdmin.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow";
                 tabAlumni.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white";
@@ -589,7 +600,6 @@
             } else {
                 adminSec.classList.add('hidden');
                 alumniSec.classList.remove('hidden');
-                thAction.classList.add('hidden');
 
                 tabAlumni.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow";
                 tabAdmin.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white";
@@ -641,9 +651,11 @@
             Swal.fire('Berhasil Logout', 'Anda kembali ke halaman publik Alumni Informatika.', 'info');
         }
 
-        // Cek Cepat NIM dari Sisi Alumni
-        function checkMyNim() {
-            const nim = document.getElementById('quickCheckNim').value.trim();
+        // =========================================================================
+        // FITUR UTAMA: CEK NIM & VERIFIKASI TANGGAL LAHIR + EMAIL TERDAFTAR ALUMNI
+        // =========================================================================
+        function checkMyNim(nimParam) {
+            const nim = nimParam || document.getElementById('quickCheckNim').value.trim();
             if (!nim) {
                 Swal.fire('Masukkan NIM', 'Silakan ketik Nomor Induk Mahasiswa (NIM) Informatika Anda.', 'warning');
                 return;
@@ -670,18 +682,8 @@
                     confirmButtonColor: '#2563eb'
                 }).then((res) => {
                     if (res.isConfirmed) {
-                        document.getElementById('pub_nim').value = found.identity_number;
-                        document.getElementById('pub_name').value = found.name;
-                        document.getElementById('pub_birth').value = found.birth_date;
-                        document.getElementById('pub_entry_year').value = found.entry_year || '';
-                        document.getElementById('pub_year').value = found.graduation_year;
-                        document.getElementById('pub_gpa').value = found.gpa;
-                        document.getElementById('pub_email').value = found.email;
-                        document.getElementById('pub_phone').value = found.phone || '';
-                        document.getElementById('pub_status').value = found.employment_status;
-                        document.getElementById('pub_job_role').value = found.job_role || 'Software / Web Developer';
-                        document.getElementById('pub_company').value = found.company_name || '';
-                        document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
+                        // Panggil Pop-up Verifikasi Tanggal Lahir & Email Terdaftar terlebih dahulu
+                        promptVerifyAlumniIdentity(found);
                     }
                 });
             } else {
@@ -692,6 +694,7 @@
                     confirmButtonText: 'Isi Formulir Sekarang',
                     confirmButtonColor: '#059669'
                 }).then(() => {
+                    cancelVerifiedUpdateMode();
                     document.getElementById('pub_nim').value = nim;
                     autoFillEntryYear(nim, 'pub_entry_year');
                     document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
@@ -700,10 +703,132 @@
             }
         }
 
+        // Pop-up Verifikasi Keamanan: Wajib Cocok Tanggal Lahir & Email Terdaftar
+        function promptVerifyAlumniIdentity(alumniRecord, pendingNewData = null) {
+            Swal.fire({
+                title: 'Verifikasi Keamanan Alumni',
+                html: `
+                    <div class="text-left text-xs space-y-3 mt-1">
+                        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 leading-relaxed">
+                            <i class="fas fa-user-lock text-amber-600 mr-1"></i>
+                            Untuk melindungi data <strong>${alumniRecord.name} (${alumniRecord.identity_number})</strong>, silakan verifikasi <strong>Tanggal Lahir</strong> dan <strong>Email yang terdaftar</strong> terlebih dahulu sebelum melakukan perubahan data.
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Tanggal Lahir Terdaftar *</label>
+                            <input type="date" id="swal_verify_birth" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Email Terdaftar *</label>
+                            <input type="email" id="swal_verify_email" placeholder="Masukkan email yang terdaftar..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+                `,
+                icon: 'shield',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-check-circle mr-1"></i> Verifikasi & Lanjutkan',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#64748b',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const inputBirth = document.getElementById('swal_verify_birth').value.trim();
+                    const inputEmail = document.getElementById('swal_verify_email').value.trim().toLowerCase();
+
+                    if (!inputBirth || !inputEmail) {
+                        Swal.showValidationMessage('Mohon isi Tanggal Lahir dan Email terdaftar Anda!');
+                        return false;
+                    }
+
+                    const registeredBirth = String(alumniRecord.birth_date || '').trim();
+                    const registeredEmail = String(alumniRecord.email || '').trim().toLowerCase();
+
+                    if (inputBirth !== registeredBirth || inputEmail !== registeredEmail) {
+                        Swal.showValidationMessage('Verifikasi Gagal! Tanggal Lahir atau Email tidak sesuai dengan data yang terdaftar.');
+                        return false;
+                    }
+
+                    return true;
+                }
+            }).then((verifyResult) => {
+                if (verifyResult.isConfirmed) {
+                    if (pendingNewData) {
+                        // Jika alumni sebelumnya sudah mengisi form mandiri lalu klik simpan
+                        const idx = allAlumni.findIndex(a => a.identity_number === alumniRecord.identity_number);
+                        if (idx !== -1) {
+                            allAlumni[idx] = pendingNewData;
+                            saveToStorage();
+                            cancelVerifiedUpdateMode();
+                            Swal.fire('Berhasil Diperbarui!', 'Identitas terverifikasi dan data karir Anda telah berhasil diperbarui.', 'success');
+                        }
+                    } else {
+                        // Isi form mandiri dan aktifkan mode edit terverifikasi
+                        activateVerifiedUpdateMode(alumniRecord);
+                    }
+                }
+            });
+        }
+
+        // Mengaktifkan Mode Edit pada Form Publik setelah Lolos Verifikasi Tanggal Lahir & Email
+        function activateVerifiedUpdateMode(found) {
+            document.getElementById('pub_verified_nim').value = found.identity_number;
+            const nimInput = document.getElementById('pub_nim');
+            nimInput.value = found.identity_number;
+            nimInput.readOnly = true;
+            nimInput.classList.remove('bg-slate-50');
+            nimInput.classList.add('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+
+            document.getElementById('pub_name').value = found.name;
+            document.getElementById('pub_birth').value = found.birth_date;
+            document.getElementById('pub_entry_year').value = found.entry_year || (parseInt(found.graduation_year, 10) - 4);
+            document.getElementById('pub_year').value = found.graduation_year;
+            document.getElementById('pub_gpa').value = found.gpa;
+            document.getElementById('pub_email').value = found.email;
+            document.getElementById('pub_phone').value = found.phone || '';
+            document.getElementById('pub_status').value = found.employment_status;
+            document.getElementById('pub_job_role').value = found.job_role || 'Software / Web Developer';
+            document.getElementById('pub_company').value = found.company_name || '';
+
+            // Ubah tampilan header form menjadi Mode Perbarui Terverifikasi
+            document.getElementById('verifiedUpdateBanner').classList.remove('hidden');
+            document.getElementById('pubFormHeaderTitle').innerText = `Perbarui Data Alumni: ${found.name}`;
+            document.getElementById('pubFormHeaderDesc').innerText = `Identitas NIM ${found.identity_number} telah diverifikasi. Silakan ubah data yang diperlukan lalu klik Simpan.`;
+            document.getElementById('pubSubmitBtn').innerHTML = `<i class="fas fa-save"></i> <span>Simpan Perubahan Data Saya</span>`;
+            document.getElementById('formInputAlumniCard').classList.add('ring-2', 'ring-emerald-500');
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Verifikasi Berhasil!',
+                text: 'Silakan perbarui data karir atau email Anda pada formulir.',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('pub_company').focus();
+            });
+        }
+
+        // Keluar dari Mode Edit Terverifikasi / Reset Form Publik
+        function cancelVerifiedUpdateMode() {
+            document.getElementById('publicAlumniForm').reset();
+            document.getElementById('pub_verified_nim').value = '';
+            const nimInput = document.getElementById('pub_nim');
+            nimInput.readOnly = false;
+            nimInput.classList.remove('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+            nimInput.classList.add('bg-slate-50');
+
+            document.getElementById('verifiedUpdateBanner').classList.add('hidden');
+            document.getElementById('pubFormHeaderTitle').innerText = 'Formulir Pendataan Alumni Informatika (Input Mandiri)';
+            document.getElementById('pubFormHeaderDesc').innerText = 'Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Data otomatis tersimpan ke direktori.';
+            document.getElementById('pubSubmitBtn').innerHTML = `<i class="fas fa-paper-plane"></i> <span>Simpan Data Alumni Saya</span>`;
+            document.getElementById('formInputAlumniCard').classList.remove('ring-2', 'ring-emerald-500');
+        }
+
         // Submit Form Mandiri dari Sisi Alumni Informatika
         document.getElementById('publicAlumniForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nim = document.getElementById('pub_nim').value.trim();
+            const verifiedNim = document.getElementById('pub_verified_nim').value.trim();
+
             const newEntry = {
                 identity_number: nim,
                 name: document.getElementById('pub_name').value.toUpperCase(),
@@ -713,35 +838,30 @@
                 entry_year: String(document.getElementById('pub_entry_year').value),
                 graduation_year: String(document.getElementById('pub_year').value),
                 gpa: document.getElementById('pub_gpa').value,
-                email: document.getElementById('pub_email').value,
-                phone: document.getElementById('pub_phone').value,
+                email: document.getElementById('pub_email').value.trim(),
+                phone: document.getElementById('pub_phone').value.trim(),
                 employment_status: document.getElementById('pub_status').value,
                 job_role: document.getElementById('pub_job_role').value,
                 company_name: document.getElementById('pub_company').value || '-'
             };
 
             const existingIdx = allAlumni.findIndex(a => a.identity_number === nim);
+
             if (existingIdx !== -1) {
-                Swal.fire({
-                    title: 'NIM Sudah Terdaftar',
-                    text: `NIM ${nim} (${allAlumni[existingIdx].name}) sudah ada. Apakah Anda ingin memperbarui data karir Anda?`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Perbarui Data',
-                    cancelButtonText: 'Batal',
-                    confirmButtonColor: '#2563eb'
-                }).then((res) => {
-                    if (res.isConfirmed) {
-                        allAlumni[existingIdx] = newEntry;
-                        saveToStorage();
-                        this.reset();
-                        Swal.fire('Berhasil Diperbarui!', 'Data Tracer Study Alumni Informatika Anda telah diperbarui.', 'success');
-                    }
-                });
+                // Jika sudah melewati verifikasi Tanggal Lahir & Email sebelumnya
+                if (verifiedNim === nim) {
+                    allAlumni[existingIdx] = newEntry;
+                    saveToStorage();
+                    cancelVerifiedUpdateMode();
+                    Swal.fire('Berhasil Diperbarui!', 'Data Tracer Study Alumni Informatika Anda telah berhasil diperbarui.', 'success');
+                } else {
+                    // Jika belum diverifikasi, wajib verifikasi Tanggal Lahir & Email terdaftar dulu!
+                    promptVerifyAlumniIdentity(allAlumni[existingIdx], newEntry);
+                }
             } else {
                 allAlumni.push(newEntry);
                 saveToStorage();
-                this.reset();
+                cancelVerifiedUpdateMode();
                 Swal.fire('Terima Kasih!', 'Data Anda berhasil disimpan ke dalam Direktori Alumni Informatika UMMU.', 'success');
             }
         });
@@ -800,8 +920,7 @@
             updateStatistics(filteredAlumni);
 
             if (filteredAlumni.length === 0) {
-                const colSpan = currentViewMode === 'admin' ? 7 : 6;
-                tbody.innerHTML = `<tr><td colspan="${colSpan}" class="text-center py-10 text-slate-400 font-semibold text-sm">Tidak ada data alumni Informatika yang ditemukan.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-10 text-slate-400 font-semibold text-sm">Tidak ada data alumni Informatika yang ditemukan.</td></tr>`;
                 return;
             }
 
@@ -813,7 +932,7 @@
 
                 const entryYr = item.entry_year || (parseInt(item.graduation_year, 10) ? String(parseInt(item.graduation_year, 10) - 4) : '-');
 
-                // Kontak detail hanya tampil di mode Admin
+                // Kontak detail hanya tampil penuh di mode Admin
                 const contactInfo = currentViewMode === 'admin' 
                     ? `<div class="text-[10px] text-slate-500 flex flex-wrap items-center gap-2 mt-0.5">
                          <span><i class="fas fa-envelope mr-1 text-slate-400"></i>${item.email || '-'}</span>
@@ -822,13 +941,14 @@
                        </div>`
                     : `<div class="text-[10px] text-slate-400 mt-0.5"><i class="fas fa-check-circle text-emerald-500 mr-1"></i>Alumni Terverifikasi Prodi Informatika</div>`;
 
-                const adminActionsCell = currentViewMode === 'admin'
-                    ? `<td class="px-5 py-4 text-center whitespace-nowrap">
-                         <button onclick="editAlumni('${item.identity_number}')" class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg mr-1 transition" title="Edit Data"><i class="fas fa-edit"></i></button>
-                         <button onclick="duplicateAlumni('${item.identity_number}')" class="text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 p-2 rounded-lg mr-1 transition" title="Duplikat Data"><i class="fas fa-copy"></i></button>
-                         <button onclick="deleteAlumni('${item.identity_number}')" class="text-rose-500 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 p-2 rounded-lg transition" title="Hapus Data"><i class="fas fa-trash-alt"></i></button>
-                       </td>`
-                    : '';
+                // Di sisi Alumni terdapat tombol "Perbarui Data" (dengan verifikasi), sedangkan di sisi Admin terdapat tombol Edit/Duplikat/Hapus langsung
+                const actionCellContent = currentViewMode === 'admin'
+                    ? `<button onclick="editAlumni('${item.identity_number}')" class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg mr-1 transition" title="Edit Data (Admin)"><i class="fas fa-edit"></i></button>
+                       <button onclick="duplicateAlumni('${item.identity_number}')" class="text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 p-2 rounded-lg mr-1 transition" title="Duplikat Data"><i class="fas fa-copy"></i></button>
+                       <button onclick="deleteAlumni('${item.identity_number}')" class="text-rose-500 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 p-2 rounded-lg transition" title="Hapus Data"><i class="fas fa-trash-alt"></i></button>`
+                    : `<button onclick="checkMyNim('${item.identity_number}')" class="text-blue-600 hover:text-white bg-blue-50 hover:bg-blue-600 border border-blue-200 px-3 py-1.5 rounded-xl text-[11px] font-extrabold transition flex items-center gap-1.5 mx-auto" title="Verifikasi Tanggal Lahir & Email untuk memperbarui data">
+                         <i class="fas fa-user-lock"></i> <span>Perbarui</span>
+                       </button>`;
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition border-b border-slate-100 last:border-0";
@@ -858,7 +978,9 @@
                             <i class="fas fa-building mr-1"></i>${item.company_name || '-'}
                         </div>
                     </td>
-                    ${adminActionsCell}
+                    <td class="px-5 py-4 text-center whitespace-nowrap">
+                        ${actionCellContent}
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -986,8 +1108,8 @@
                 faculty: "Teknik",
                 department: "Informatika",
                 gpa: document.getElementById('gpa').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
                 employment_status: document.getElementById('employmentStatus').value,
                 job_role: document.getElementById('jobRole').value,
                 company_name: document.getElementById('companyName').value || '-'
