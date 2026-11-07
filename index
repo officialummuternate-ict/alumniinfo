@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Resmi Alumni Informatika - UMMU</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SheetJS untuk Export/Import Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .modal { transition: opacity 0.25s ease; }
+        body.modal-active { overflow: hidden; }
+        .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+    <!-- ========================================== -->
+    <!-- TOP NAVIGATION BAR (SWITCH ALUMNI & ADMIN) -->
+    <!-- ========================================== -->
+    <nav class="glass-nav text-white shadow-lg sticky top-0 z-40 border-b border-slate-800">
+        <div class="container mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center max-w-7xl gap-3">
+            <!-- Brand Logo Informatika UMMU -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('alumni')">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center font-extrabold text-lg shadow-md border border-white/20">
+                    <i class="fas fa-laptop-code text-sm"></i>
+                </div>
+                <div>
+                    <span class="text-base sm:text-lg font-extrabold tracking-wide block leading-none">ALUMNI INFORMATIKA</span>
+                    <span class="text-[11px] text-cyan-300 font-medium">Fakultas Teknik - Universitas Muhammadiyah Maluku Utara</span>
+                </div>
+            </div>
+
+            <!-- Navigasi Mode Tampilan (2 Sisi: Alumni & Admin) -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="bg-slate-800/90 p-1 rounded-xl border border-slate-700 flex items-center">
+                    <button id="tabBtnAlumni" onclick="switchView('alumni')" class="px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow">
+                        <i class="fas fa-user-graduate"></i> <span>Sisi Alumni</span>
+                    </button>
+                    <button id="tabBtnAdmin" onclick="handleAdminAccess()" class="px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white">
+                        <i class="fas fa-user-shield"></i> <span>Sisi Admin</span>
+                    </button>
+                </div>
+
+                <!-- Tombol Logout Admin (Hanya muncul saat Admin Login) -->
+                <button id="btnAdminLogout" onclick="logoutAdmin()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold px-3.5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5" title="Keluar dari Mode Admin">
+                    <i class="fas fa-sign-out-alt"></i> <span class="hidden sm:inline">Logout</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- KONTEN UTAMA                               -->
+    <!-- ========================================== -->
+    <main class="container mx-auto px-4 py-8 max-w-7xl flex-1">
+
+        <!-- ================================================= -->
+        <!-- BAGIAN 1: SISI ALUMNI / PUBLIK                    -->
+        <!-- ================================================= -->
+        <div id="alumniViewSection">
+            <!-- Hero Section Khusus Alumni Informatika -->
+            <div class="mb-8 rounded-3xl bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950 text-white p-6 sm:p-10 shadow-xl relative overflow-hidden border border-blue-900/50">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-bold">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Portal Resmi Tracer Study Program Studi Informatika (Kode PDDikti: 55201)
+                        </div>
+                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                            Direktori & Penelusuran Alumni <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Informatika UMMU</span>
+                        </h1>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
+                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Silakan lakukan pengecekan NIM Anda atau lengkapi formulir Tracer Study di bawah ini untuk memperbarui data karir dan profesi Anda.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <a href="#formInputAlumniCard" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-extrabold px-5 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-2">
+                                <i class="fas fa-pen-to-square"></i> Input Data Alumni Sekarang
+                            </a>
+                            <a href="#direktoriTabelSection" class="bg-white/10 hover:bg-white/20 text-white border border-white/15 text-xs font-bold px-5 py-3.5 rounded-xl transition flex items-center gap-2">
+                                <i class="fas fa-users"></i> Lihat Direktori Alumni Informatika
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Kotak Cek Cepat NIM Alumni Informatika -->
+                    <div class="lg:col-span-5 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15">
+                        <h3 class="text-sm font-extrabold text-white mb-1"><i class="fas fa-id-card text-cyan-400 mr-1.5"></i> Cek Data NIM Informatika Anda</h3>
+                        <p class="text-[11px] text-slate-300 mb-4">Masukkan NIM Anda (contoh: 1210555201...) untuk mengecek apakah data Anda sudah tercatat di database alumni Informatika.</p>
+                        <div class="flex gap-2">
+                            <input type="text" id="quickCheckNim" placeholder="Ketik NIM Informatika..." class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white font-bold placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <button onclick="checkMyNim()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl text-xs font-extrabold shrink-0 transition shadow">
+                                Cek NIM
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulir Input Mandiri Khusus Alumni Informatika -->
+            <div id="formInputAlumniCard" class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden mb-10">
+                <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 px-6 py-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 text-lg">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-extrabold">Formulir Pendataan Alumni Informatika (Input Mandiri)</h2>
+                            <p class="text-[11px] text-blue-200">Khusus lulusan Program Studi Informatika - Fakultas Teknik UMMU. Data otomatis tersimpan ke direktori.</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full font-bold self-start sm:self-center">
+                        <i class="fas fa-lock-open mr-1"></i> Form Publik Alumni
+                    </span>
+                </div>
+
+                <form id="publicAlumniForm" class="p-6 sm:p-8 space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NIM Informatika *</label>
+                            <input type="text" id="pub_nim" required placeholder="Contoh: 121055520124010" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Lengkap (Sesuai Ijazah) *</label>
+                            <input type="text" id="pub_name" required placeholder="Nama Lengkap Anda" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tanggal Lahir *</label>
+                            <input type="date" id="pub_birth" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Fakultas (Otomatis)</label>
+                            <input type="text" id="pub_faculty" value="Teknik" readonly class="w-full bg-slate-100 border border-slate-200 text-slate-500 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Program Studi (Otomatis)</label>
+                            <input type="text" id="pub_department" value="Informatika" readonly class="w-full bg-slate-100 border border-slate-200 text-blue-700 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tahun Lulus *</label>
+                            <input type="number" id="pub_year" min="2003" max="2030" required placeholder="Contoh: 2025" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">IPK Terakhir *</label>
+                            <input type="text" id="pub_gpa" required placeholder="Contoh: 3.75" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Email Aktif *</label>
+                            <input type="email" id="pub_email" required placeholder="nama@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">No. WhatsApp Aktif *</label>
+                            <input type="text" id="pub_phone" required placeholder="0812xxxxxxxx" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Status Karir Saat Ini *</label>
+                            <select id="pub_status" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                                <option value="Bekerja">Bekerja</option>
+                                <option value="Wirausaha">Wirausaha / Technopreneur</option>
+                                <option value="Studi Lanjut">Studi Lanjut (S2/S3)</option>
+                                <option value="Belum Bekerja">Sedang Mencari Kerja</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Bidang Pekerjaan / Keahlian IT</label>
+                            <select id="pub_job_role" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                                <option value="Software / Web Developer">Software / Web Developer</option>
+                                <option value="Network & Infrastructure Engineer">Network & Infrastructure Engineer</option>
+                                <option value="IT Support & System Admin">IT Support & System Admin</option>
+                                <option value="Data & AI Specialist">Data & AI Specialist</option>
+                                <option value="ASN / Instansi Pemerintahan">ASN / Instansi Pemerintahan</option>
+                                <option value="Pendidik / Dosen / Akademisi">Pendidik / Dosen / Akademisi</option>
+                                <option value="Wirausaha / Startup Digital">Wirausaha / Startup Digital</option>
+                                <option value="Lainnya">Bidang Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Instansi / Perusahaan / Kampus S2</label>
+                            <input type="text" id="pub_company" placeholder="Contoh: PT Telkom Indonesia / Diskominfo" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-[11px] text-slate-500"><i class="fas fa-shield-alt text-blue-600 mr-1"></i> Nomor WhatsApp dan Tanggal Lahir Anda disembunyikan pada tabel publik dan hanya dapat diakses oleh Admin Prodi.</p>
+                        <div class="flex gap-3 w-full sm:w-auto justify-end">
+                            <button type="reset" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">Reset Form</button>
+                            <button type="submit" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold shadow-lg shadow-blue-600/25 transition flex items-center gap-2">
+                                <i class="fas fa-paper-plane"></i> Simpan Data Alumni Saya
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================================================= -->
+        <!-- BAGIAN 2: SISI ADMINISTRATOR PRODI INFORMATIKA    -->
+        <!-- ================================================= -->
+        <div id="adminViewSection" class="hidden">
+            <!-- Header Banner Admin -->
+            <div class="mb-6 p-5 rounded-2xl bg-slate-900 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-l-4 border-cyan-500">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shrink-0">
+                        <i class="fas fa-user-shield text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-base sm:text-lg font-extrabold">Panel Admin Tracer Study - Prodi Informatika</h2>
+                            <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Mode Admin Aktif</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Kelola penuh data alumni Informatika UMMU, sinkronisasi PDDikti Informatika, impor/ekspor Excel, serta edit/hapus data.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                    <button onclick="downloadSampleTemplate()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                        <i class="fas fa-download text-cyan-400"></i> Template Excel Informatika
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Panel Khusus Admin -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm mb-6 flex flex-wrap gap-3 justify-between items-center border border-slate-200">
+                <div class="flex flex-wrap gap-2 w-full lg:w-auto">
+                    <button onclick="openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition flex items-center gap-1.5">
+                        <i class="fas fa-user-plus"></i> Tambah Alumni Informatika
+                    </button>
+                    <button onclick="syncInformatikaPDDikti()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition flex items-center gap-1.5">
+                        <i class="fas fa-sync"></i> Tarik Data PDDikti Informatika
+                    </button>
+                    <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md cursor-pointer transition flex items-center gap-1.5">
+                        <i class="fas fa-file-import"></i> Import Excel Informatika
+                        <input type="file" id="importExcel" class="hidden" accept=".xlsx, .xls, .csv">
+                    </label>
+                </div>
+                
+                <div class="flex flex-wrap gap-2 w-full lg:w-auto justify-end">
+                    <button onclick="clearData()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                        <i class="fas fa-trash-alt"></i> Reset Tabel
+                    </button>
+                    <button onclick="exportToExcel()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5">
+                        <i class="fas fa-file-excel"></i> Export Excel Informatika
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================= -->
+        <!-- BAGIAN BERSAMA: STATISTIK & TABEL DIREKTORI       -->
+        <!-- ================================================= -->
+        <div id="direktoriTabelSection">
+            <!-- Kartu Statistik Ringkas Alumni Informatika -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold shrink-0"><i class="fas fa-users"></i></div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-800" id="statTotal">0</div>
+                        <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">Alumni Informatika</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold shrink-0"><i class="fas fa-briefcase"></i></div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-800" id="statBekerja">0</div>
+                        <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">Bekerja / Technopreneur</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold shrink-0"><i class="fas fa-user-graduate"></i></div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-800" id="statStudi">0</div>
+                        <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">Studi Lanjut (S2/S3)</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold shrink-0"><i class="fas fa-award"></i></div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-800" id="statAvgGpa">0.00</div>
+                        <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">Rata-rata IPK</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Pencarian Direktori Informatika -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm mb-6 border border-slate-200 space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <h3 class="text-sm font-extrabold text-slate-800">
+                        <i class="fas fa-laptop-code text-blue-600 mr-1.5"></i> Direktori Lulusan Program Studi Informatika - Fakultas Teknik UMMU
+                    </h3>
+                    <span id="viewRoleBadge" class="text-[11px] font-bold px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                        <i class="fas fa-globe mr-1"></i> Mode Tampilan: Publik / Alumni
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Status Karir</label>
+                        <select id="filterStatus" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onchange="renderTable()">
+                            <option value="all">Semua Status Karir</option>
+                            <option value="Bekerja">Bekerja</option>
+                            <option value="Wirausaha">Wirausaha</option>
+                            <option value="Studi Lanjut">Studi Lanjut</option>
+                            <option value="Belum Bekerja">Sedang Mencari Kerja</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Tahun Lulus</label>
+                        <input type="text" id="filterYear" placeholder="Contoh: 2025" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="renderTable()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Cari Nama / NIM / Instansi / Profesi</label>
+                        <input type="text" id="searchInput" placeholder="Ketik nama, NIM, atau perusahaan..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-semibold focus:ring-2 focus:ring-blue-500" onkeyup="renderTable()">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="resetFilters()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl transition text-xs font-bold flex items-center justify-center gap-1.5">
+                            <i class="fas fa-sync-alt"></i> Reset Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Direktori Alumni Informatika -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-900 text-white text-[10px] uppercase tracking-wider font-extrabold">
+                            <tr>
+                                <th class="px-5 py-4 text-left">NIM</th>
+                                <th class="px-5 py-4 text-left">Nama Alumni Informatika</th>
+                                <th class="px-5 py-4 text-left">Program Studi & Fakultas</th>
+                                <th class="px-5 py-4 text-center">Thn Lulus</th>
+                                <th class="px-5 py-4 text-center">IPK</th>
+                                <th class="px-5 py-4 text-left">Status Karir, Profesi & Instansi</th>
+                                <th id="thAdminAction" class="px-5 py-4 text-center hidden">Aksi Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alumniTableBody" class="bg-white divide-y divide-slate-100 text-xs">
+                            <!-- Diisi otomatis oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 border-t border-slate-100 bg-slate-50 text-[11px] text-slate-600 flex justify-between font-bold">
+                    <span>Data Terfilter: <strong id="totalFiltered" class="text-slate-900 text-xs">0</strong> Alumni Informatika</span>
+                    <span>Total Database: <strong id="totalAll" class="text-slate-900 text-xs">0</strong> Alumni Informatika</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 py-8 border-t border-slate-800 mt-12">
+        <div class="container mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium text-center md:text-left">
+            <div class="flex items-center space-x-3">
+                <div class="w-7 h-7 bg-blue-600 text-white rounded-lg flex items-center justify-center font-extrabold"><i class="fas fa-code text-xs"></i></div>
+                <span>&copy; 2026 Program Studi Informatika - Fakultas Teknik UMMU.</span>
+            </div>
+            <p>Sistem Informasi Tracer Study & Direktori Alumni Informatika (Mode Publik Alumni & Admin).</p>
+        </div>
+    </footer>
+
+    <!-- ================================================= -->
+    <!-- MODAL LOGIN ADMINISTRATOR                         -->
+    <!-- ================================================= -->
+    <div id="loginAdminModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50 p-4">
+        <div class="modal-overlay absolute w-full h-full bg-slate-900/60 backdrop-blur-sm" onclick="toggleModal('loginAdminModal')"></div>
+        <div class="modal-container bg-white w-full max-w-md mx-auto rounded-3xl shadow-2xl z-50 overflow-hidden">
+            <div class="bg-slate-900 p-6 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-lg"><i class="fas fa-user-shield"></i></div>
+                    <div>
+                        <h3 class="text-base font-extrabold">Login Admin Prodi Informatika</h3>
+                        <p class="text-[11px] text-slate-400">Masuk untuk mengelola penuh database alumni</p>
+                    </div>
+                </div>
+                <button onclick="toggleModal('loginAdminModal')" class="text-slate-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
+            </div>
+            <form id="adminLoginForm" class="p-6 space-y-4">
+                <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 font-semibold">
+                    <i class="fas fa-info-circle mr-1"></i> Akun Demo Admin: Username <strong>admin</strong> | Password <strong>admin123</strong>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1">Username Admin</label>
+                    <input type="text" id="adminUsername" required placeholder="admin" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1">Password</label>
+                    <input type="password" id="adminPassword" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="toggleModal('loginAdminModal')" class="px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Batal</button>
+                    <button type="submit" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold shadow-lg transition">
+                        <i class="fas fa-sign-in-alt mr-1"></i> Masuk Panel Admin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- MODAL FORM ADMIN (TAMBAH, EDIT, DUPLIKAT)         -->
+    <!-- ================================================= -->
+    <div id="addModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50 p-4">
+        <div class="modal-overlay absolute w-full h-full bg-slate-900/60 backdrop-blur-sm" onclick="toggleModal('addModal')"></div>
+        <div class="modal-container bg-white w-full md:max-w-2xl mx-auto rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-full">
+            <div class="bg-slate-900 p-5 flex justify-between items-center text-white shrink-0">
+                <div>
+                    <p id="modalTitle" class="text-lg font-extrabold tracking-tight">Kelola Data Alumni Informatika</p>
+                    <p id="modalSubtitle" class="text-[11px] text-cyan-300 font-medium">Program Studi Informatika - Fakultas Teknik UMMU</p>
+                </div>
+                <div class="modal-close cursor-pointer text-slate-400 hover:text-white transition" onclick="toggleModal('addModal')">
+                    <i class="fas fa-times text-xl"></i>
+                </div>
+            </div>
+            
+            <div class="p-6 overflow-y-auto">
+                <form id="alumniForm" class="space-y-4">
+                    <input type="hidden" id="isEditMode" value="false">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NIM Informatika *</label>
+                            <input type="text" id="identityNumber" required placeholder="Contoh: 121055520124010" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Lengkap *</label>
+                            <input type="text" id="name" required placeholder="Nama sesuai ijazah" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tanggal Lahir *</label>
+                            <input type="date" id="birthDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Tahun Lulus *</label>
+                            <input type="number" id="graduationYear" min="2003" max="2030" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition" placeholder="Contoh: 2025">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Fakultas (Terkunci)</label>
+                            <input type="text" id="faculty" value="Teknik" readonly class="w-full bg-slate-100 border border-slate-200 text-slate-500 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Program Studi (Terkunci)</label>
+                            <input type="text" id="department" value="Informatika" readonly class="w-full bg-slate-100 border border-slate-200 text-blue-700 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">IPK Terakhir *</label>
+                            <input type="text" id="gpa" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition" placeholder="Contoh: 3.75">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Email Aktif *</label>
+                            <input type="email" id="email" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition" placeholder="nama@gmail.com">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">No. WhatsApp</label>
+                            <input type="text" id="phone" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition" placeholder="0812xxxxxxxx">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Status Karir Saat Ini</label>
+                            <select id="employmentStatus" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                                <option value="Bekerja">Bekerja</option>
+                                <option value="Wirausaha">Wirausaha</option>
+                                <option value="Studi Lanjut">Studi Lanjut</option>
+                                <option value="Belum Bekerja">Belum Bekerja</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Bidang Pekerjaan / Keahlian IT</label>
+                            <select id="jobRole" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                                <option value="Software / Web Developer">Software / Web Developer</option>
+                                <option value="Network & Infrastructure Engineer">Network & Infrastructure Engineer</option>
+                                <option value="IT Support & System Admin">IT Support & System Admin</option>
+                                <option value="Data & AI Specialist">Data & AI Specialist</option>
+                                <option value="ASN / Instansi Pemerintahan">ASN / Instansi Pemerintahan</option>
+                                <option value="Pendidik / Dosen / Akademisi">Pendidik / Dosen / Akademisi</option>
+                                <option value="Wirausaha / Startup Digital">Wirausaha / Startup Digital</option>
+                                <option value="Lainnya">Bidang Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Instansi / Perusahaan / Tempat Studi</label>
+                            <input type="text" id="companyName" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition" placeholder="Contoh: PT Telkom Indonesia / Diskominfo">
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-5 mt-6 border-t border-slate-100 gap-3">
+                        <button type="button" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-3 rounded-xl font-bold text-xs transition" onclick="toggleModal('addModal')">Batal</button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2">
+                            <i class="fas fa-save"></i> <span>Simpan Data Informatika</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- LOGIKA JAVASCRIPT UTAMA (KHUSUS INFORMATIKA)      -->
+    <!-- ================================================= -->
+    <script>
+        const STORAGE_KEY = 'ummu_alumni_informatika_only_v1';
+        const ADMIN_SESSION_KEY = 'ummu_admin_inf_logged_in';
+
+        let allAlumni = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        let filteredAlumni = [];
+        let isAdminLoggedIn = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+        let currentViewMode = 'alumni'; // 'alumni' atau 'admin'
+
+        // Data Awal Resmi Alumni Informatika UMMU (Sesuai Data Master Kampus Anda)
+        const defaultInformatikaData = [
+            { identity_number: "121055520124010", name: "EWIS JOLA A.WA BULA", birth_date: "2006-07-13", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
+            { identity_number: "121055520124011", name: "IRFAN IKBAL", birth_date: "2005-10-02", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.60", email: "irfanikbalangga@gmail.com", phone: "085240648372", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Startup Digital Ternate" },
+            { identity_number: "121055520124019", name: "SELFI KALIADI", birth_date: "2006-06-19", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.85", email: "selfikaliadi26@gmail.com", phone: "081230876769", employment_status: "Studi Lanjut", job_role: "Data & AI Specialist", company_name: "Universitas Gadjah Mada" },
+            { identity_number: "121055520124026", name: "MUKADDIM RIZAL LAHILA", birth_date: "2006-06-21", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.70", email: "mukadimr@gmail.com", phone: "081356377742", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "Biro Informasi Teknologi & Data (BITD) UMMU" },
+            { identity_number: "121055520124056", name: "FATRIN IDRIS", birth_date: "2004-07-12", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.68", email: "fatrinidris@gmail.com", phone: "082136282807", employment_status: "Bekerja", job_role: "ASN / Instansi Pemerintahan", company_name: "Dinas Kominfo Maluku Utara" }
+        ];
+
+        function initApp() {
+            // Pastikan hanya data Informatika yang ada di penyimpanan
+            allAlumni = allAlumni.filter(a => String(a.department || '').toLowerCase().includes('informatika'));
+            if (allAlumni.length === 0) {
+                allAlumni = [...defaultInformatikaData];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlumni));
+            }
+            if (isAdminLoggedIn) {
+                document.getElementById('btnAdminLogout').classList.remove('hidden');
+            }
+            loadData();
+        }
+
+        // Fungsi Berpindah Antara Sisi Alumni & Sisi Admin
+        function switchView(mode) {
+            if (mode === 'admin' && !isAdminLoggedIn) {
+                toggleModal('loginAdminModal');
+                return;
+            }
+
+            currentViewMode = mode;
+            const alumniSec = document.getElementById('alumniViewSection');
+            const adminSec = document.getElementById('adminViewSection');
+            const tabAlumni = document.getElementById('tabBtnAlumni');
+            const tabAdmin = document.getElementById('tabBtnAdmin');
+            const thAction = document.getElementById('thAdminAction');
+            const roleBadge = document.getElementById('viewRoleBadge');
+
+            if (mode === 'admin') {
+                alumniSec.classList.add('hidden');
+                adminSec.classList.remove('hidden');
+                thAction.classList.remove('hidden');
+
+                tabAdmin.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow";
+                tabAlumni.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white";
+                roleBadge.className = "text-[11px] font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200";
+                roleBadge.innerHTML = '<i class="fas fa-user-shield mr-1"></i> Mode Tampilan: Administrator Prodi Informatika';
+            } else {
+                adminSec.classList.add('hidden');
+                alumniSec.classList.remove('hidden');
+                thAction.classList.add('hidden');
+
+                tabAlumni.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 bg-blue-600 text-white shadow";
+                tabAdmin.className = "px-3.5 py-2 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 text-slate-300 hover:text-white";
+                roleBadge.className = "text-[11px] font-bold px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200";
+                roleBadge.innerHTML = '<i class="fas fa-globe mr-1"></i> Mode Tampilan: Publik / Alumni Informatika';
+            }
+
+            renderTable();
+        }
+
+        function handleAdminAccess() {
+            if (isAdminLoggedIn) {
+                switchView('admin');
+            } else {
+                toggleModal('loginAdminModal');
+            }
+        }
+
+        // Login Admin
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUsername').value.trim();
+            const pass = document.getElementById('adminPassword').value;
+
+            if (user === 'admin' && pass === 'admin123') {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+                document.getElementById('btnAdminLogout').classList.remove('hidden');
+                toggleModal('loginAdminModal');
+                this.reset();
+                switchView('admin');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Admin Berhasil',
+                    text: 'Selamat datang di Panel Admin Alumni Informatika UMMU.',
+                    timer: 1600,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire('Akses Ditolak', 'Username atau Password Admin salah!', 'error');
+            }
+        });
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem(ADMIN_SESSION_KEY);
+            document.getElementById('btnAdminLogout').classList.add('hidden');
+            switchView('alumni');
+            Swal.fire('Berhasil Logout', 'Anda kembali ke halaman publik Alumni Informatika.', 'info');
+        }
+
+        // Cek Cepat NIM dari Sisi Alumni
+        function checkMyNim() {
+            const nim = document.getElementById('quickCheckNim').value.trim();
+            if (!nim) {
+                Swal.fire('Masukkan NIM', 'Silakan ketik Nomor Induk Mahasiswa (NIM) Informatika Anda.', 'warning');
+                return;
+            }
+            const found = allAlumni.find(a => a.identity_number === nim);
+            if (found) {
+                Swal.fire({
+                    title: 'Terdaftar sebagai Alumni Informatika!',
+                    html: `
+                        <div class="text-left text-xs space-y-1.5 bg-slate-50 p-4 rounded-xl border border-slate-200 mt-2">
+                            <div><strong>Nama:</strong> ${found.name}</div>
+                            <div><strong>NIM:</strong> ${found.identity_number}</div>
+                            <div><strong>Program Studi:</strong> Informatika (Fakultas Teknik)</div>
+                            <div><strong>Tahun Lulus:</strong> ${found.graduation_year} | <strong>IPK:</strong> ${found.gpa}</div>
+                            <div><strong>Status Karir:</strong> ${found.employment_status}</div>
+                            <div><strong>Profesi / Instansi:</strong> ${found.job_role || '-'} di ${found.company_name || '-'}</div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir atau instansi tempat kerja Anda?</p>
+                    `,
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Perbarui Data Saya',
+                    cancelButtonText: 'Tutup',
+                    confirmButtonColor: '#2563eb'
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        document.getElementById('pub_nim').value = found.identity_number;
+                        document.getElementById('pub_name').value = found.name;
+                        document.getElementById('pub_birth').value = found.birth_date;
+                        document.getElementById('pub_year').value = found.graduation_year;
+                        document.getElementById('pub_gpa').value = found.gpa;
+                        document.getElementById('pub_email').value = found.email;
+                        document.getElementById('pub_phone').value = found.phone || '';
+                        document.getElementById('pub_status').value = found.employment_status;
+                        document.getElementById('pub_job_role').value = found.job_role || 'Software / Web Developer';
+                        document.getElementById('pub_company').value = found.company_name || '';
+                        document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'NIM Belum Terdaftar',
+                    text: `NIM ${nim} belum tercatat di direktori Alumni Informatika. Silakan isi Formulir Pendataan di bawah ini.`,
+                    icon: 'info',
+                    confirmButtonText: 'Isi Formulir Sekarang',
+                    confirmButtonColor: '#059669'
+                }).then(() => {
+                    document.getElementById('pub_nim').value = nim;
+                    document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('pub_name').focus();
+                });
+            }
+        }
+
+        // Submit Form Mandiri dari Sisi Alumni Informatika
+        document.getElementById('publicAlumniForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nim = document.getElementById('pub_nim').value.trim();
+            const newEntry = {
+                identity_number: nim,
+                name: document.getElementById('pub_name').value.toUpperCase(),
+                birth_date: document.getElementById('pub_birth').value,
+                faculty: "Teknik",
+                department: "Informatika",
+                graduation_year: String(document.getElementById('pub_year').value),
+                gpa: document.getElementById('pub_gpa').value,
+                email: document.getElementById('pub_email').value,
+                phone: document.getElementById('pub_phone').value,
+                employment_status: document.getElementById('pub_status').value,
+                job_role: document.getElementById('pub_job_role').value,
+                company_name: document.getElementById('pub_company').value || '-'
+            };
+
+            const existingIdx = allAlumni.findIndex(a => a.identity_number === nim);
+            if (existingIdx !== -1) {
+                Swal.fire({
+                    title: 'NIM Sudah Terdaftar',
+                    text: `NIM ${nim} (${allAlumni[existingIdx].name}) sudah ada. Apakah Anda ingin memperbarui data karir Anda?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Perbarui Data',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#2563eb'
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        allAlumni[existingIdx] = newEntry;
+                        saveToStorage();
+                        this.reset();
+                        Swal.fire('Berhasil Diperbarui!', 'Data Tracer Study Alumni Informatika Anda telah diperbarui.', 'success');
+                    }
+                });
+            } else {
+                allAlumni.push(newEntry);
+                saveToStorage();
+                this.reset();
+                Swal.fire('Terima Kasih!', 'Data Anda berhasil disimpan ke dalam Direktori Alumni Informatika UMMU.', 'success');
+            }
+        });
+
+        function loadData() {
+            allAlumni.sort((a, b) => {
+                if (b.graduation_year !== a.graduation_year) return b.graduation_year - a.graduation_year;
+                return a.name.localeCompare(b.name);
+            });
+            renderTable();
+        }
+
+        function updateStatistics(dataList) {
+            const total = dataList.length;
+            const bekerja = dataList.filter(a => a.employment_status === 'Bekerja' || a.employment_status === 'Wirausaha').length;
+            const studi = dataList.filter(a => a.employment_status === 'Studi Lanjut').length;
+            
+            let totalGpa = 0;
+            dataList.forEach(a => totalGpa += parseFloat(a.gpa || 0));
+            const avgGpa = total > 0 ? (totalGpa / total).toFixed(2) : '0.00';
+
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statBekerja').innerText = bekerja;
+            document.getElementById('statStudi').innerText = studi;
+            document.getElementById('statAvgGpa').innerText = avgGpa;
+        }
+
+        function saveToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlumni));
+            loadData();
+        }
+
+        function renderTable() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const yearFilter = document.getElementById('filterYear').value.trim();
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            
+            const tbody = document.getElementById('alumniTableBody');
+            tbody.innerHTML = '';
+
+            filteredAlumni = allAlumni.filter(item => {
+                const matchStatus = statusFilter === 'all' || item.employment_status === statusFilter;
+                const matchYear = !yearFilter || String(item.graduation_year).includes(yearFilter);
+                const matchSearch = item.name.toLowerCase().includes(searchInput) || 
+                                    item.identity_number.toLowerCase().includes(searchInput) || 
+                                    (item.job_role && item.job_role.toLowerCase().includes(searchInput)) ||
+                                    (item.company_name && item.company_name.toLowerCase().includes(searchInput));
+                return matchStatus && matchYear && matchSearch;
+            });
+
+            document.getElementById('totalFiltered').innerText = filteredAlumni.length;
+            document.getElementById('totalAll').innerText = allAlumni.length;
+            updateStatistics(filteredAlumni);
+
+            if (filteredAlumni.length === 0) {
+                const colSpan = currentViewMode === 'admin' ? 7 : 6;
+                tbody.innerHTML = `<tr><td colspan="${colSpan}" class="text-center py-10 text-slate-400 font-semibold text-sm">Tidak ada data alumni Informatika yang ditemukan.</td></tr>`;
+                return;
+            }
+
+            filteredAlumni.forEach(item => {
+                let badgeColor = 'bg-slate-50 text-slate-700 border-slate-200';
+                if (item.employment_status === 'Bekerja') badgeColor = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                else if (item.employment_status === 'Wirausaha') badgeColor = 'bg-amber-50 text-amber-700 border-amber-200';
+                else if (item.employment_status === 'Studi Lanjut') badgeColor = 'bg-indigo-50 text-indigo-700 border-indigo-200';
+
+                // Kontak detail hanya tampil di mode Admin
+                const contactInfo = currentViewMode === 'admin' 
+                    ? `<div class="text-[10px] text-slate-500 flex flex-wrap items-center gap-2 mt-0.5">
+                         <span><i class="fas fa-envelope mr-1 text-slate-400"></i>${item.email || '-'}</span>
+                         <span><i class="fas fa-phone mr-1 text-slate-400"></i>${item.phone || '-'}</span>
+                         <span><i class="fas fa-calendar mr-1 text-slate-400"></i>${item.birth_date || '-'}</span>
+                       </div>`
+                    : `<div class="text-[10px] text-slate-400 mt-0.5"><i class="fas fa-check-circle text-emerald-500 mr-1"></i>Alumni Terverifikasi Prodi Informatika</div>`;
+
+                const adminActionsCell = currentViewMode === 'admin'
+                    ? `<td class="px-5 py-4 text-center whitespace-nowrap">
+                         <button onclick="editAlumni('${item.identity_number}')" class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg mr-1 transition" title="Edit Data"><i class="fas fa-edit"></i></button>
+                         <button onclick="duplicateAlumni('${item.identity_number}')" class="text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 p-2 rounded-lg mr-1 transition" title="Duplikat Data"><i class="fas fa-copy"></i></button>
+                         <button onclick="deleteAlumni('${item.identity_number}')" class="text-rose-500 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 p-2 rounded-lg transition" title="Hapus Data"><i class="fas fa-trash-alt"></i></button>
+                       </td>`
+                    : '';
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-100 last:border-0";
+                tr.innerHTML = `
+                    <td class="px-5 py-4 font-mono font-bold text-slate-700 text-xs whitespace-nowrap">${item.identity_number}</td>
+                    <td class="px-5 py-4">
+                        <div class="font-extrabold text-slate-900 text-xs">${item.name}</div>
+                        ${contactInfo}
+                    </td>
+                    <td class="px-5 py-4 text-slate-700">
+                        <span class="font-extrabold text-blue-700 block mb-0.5 text-xs"><i class="fas fa-laptop-code mr-1"></i>Informatika</span>
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">FAKULTAS TEKNIK</span>
+                    </td>
+                    <td class="px-5 py-4 text-center font-extrabold text-slate-700 text-xs">${item.graduation_year}</td>
+                    <td class="px-5 py-4 text-center font-extrabold text-blue-600 text-xs">${item.gpa}</td>
+                    <td class="px-5 py-4">
+                        <div class="flex items-center gap-1.5 mb-1">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border ${badgeColor}">
+                                ${item.employment_status}
+                            </span>
+                            <span class="text-[10px] font-bold text-slate-600">${item.job_role || ''}</span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 font-semibold truncate max-w-[200px]" title="${item.company_name || '-'}">
+                            <i class="fas fa-building mr-1"></i>${item.company_name || '-'}
+                        </div>
+                    </td>
+                    ${adminActionsCell}
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Tarik Data PDDikti Khusus Prodi Informatika (Kode Prodi: 55201)
+        function syncInformatikaPDDikti() {
+            Swal.fire({
+                title: 'Menarik Data PDDikti Informatika...',
+                text: 'Menyinkronkan data lulusan Program Studi Informatika (55201) Fakultas Teknik UMMU.',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            setTimeout(() => {
+                const extraInformatikaPDDikti = [
+                    ...defaultInformatikaData,
+                    { identity_number: "121055520120003", name: "RIZALDI AHMAD", birth_date: "2002-03-14", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.78", email: "rizaldi.inf@gmail.com", phone: "081244559900", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "PT Bank Rakyat Indonesia (Persero)" },
+                    { identity_number: "121055520120015", name: "NURLAILA HASAN", birth_date: "2002-11-20", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.82", email: "nurlaila.inf@gmail.com", phone: "082188990011", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "RSUD Dr. H. Chasan Boesoirie" },
+                    { identity_number: "121055520119007", name: "FAHRUL ROZI", birth_date: "2001-05-09", graduation_year: "2023", faculty: "Teknik", department: "Informatika", gpa: "3.65", email: "fahrul.inf@gmail.com", phone: "085244112233", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Indonesia Weda Bay Industrial Park (IWIP)" },
+                    { identity_number: "121055520118012", name: "SITI HARDIYANTI", birth_date: "2000-08-17", graduation_year: "2022", faculty: "Teknik", department: "Informatika", gpa: "3.88", email: "hardiyanti.inf@gmail.com", phone: "081344556611", employment_status: "Studi Lanjut", job_role: "Pendidik / Dosen / Akademisi", company_name: "Magister Teknik Informatika - ITS" },
+                    { identity_number: "121055520117004", name: "M. TAUFIK HIDAYAT", birth_date: "1999-01-25", graduation_year: "2021", faculty: "Teknik", department: "Informatika", gpa: "3.55", email: "taufik.inf@gmail.com", phone: "082299887711", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Moloku Digital House" }
+                ];
+
+                let added = 0;
+                extraInformatikaPDDikti.forEach(row => {
+                    if (!allAlumni.some(a => a.identity_number === row.identity_number)) {
+                        allAlumni.push(row);
+                        added++;
+                    }
+                });
+
+                saveToStorage();
+                Swal.fire('Sinkronisasi Berhasil!', `${added} data baru alumni Prodi Informatika berhasil ditarik ke dalam sistem.`, 'success');
+            }, 900);
+        }
+
+        function openAddModal() {
+            document.getElementById('alumniForm').reset();
+            document.getElementById('faculty').value = 'Teknik';
+            document.getElementById('department').value = 'Informatika';
+            document.getElementById('modalTitle').innerText = 'Tambah Alumni Informatika (Admin)';
+            document.getElementById('modalSubtitle').innerText = 'Input data lulusan baru Program Studi Informatika UMMU';
+            document.getElementById('isEditMode').value = 'false';
+            
+            const idInput = document.getElementById('identityNumber');
+            idInput.readOnly = false;
+            idInput.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
+            idInput.classList.add('bg-slate-50');
+            
+            toggleModal('addModal');
+        }
+
+        function editAlumni(nim) {
+            const item = allAlumni.find(a => a.identity_number === nim);
+            if (!item) return;
+
+            document.getElementById('modalTitle').innerText = 'Edit Data Alumni Informatika';
+            document.getElementById('modalSubtitle').innerText = `Perbarui informasi untuk NIM ${nim}`;
+            document.getElementById('isEditMode').value = 'true';
+            
+            const idInput = document.getElementById('identityNumber');
+            idInput.value = item.identity_number;
+            idInput.readOnly = true;
+            idInput.classList.remove('bg-slate-50');
+            idInput.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
+
+            document.getElementById('name').value = item.name;
+            document.getElementById('birthDate').value = item.birth_date;
+            document.getElementById('graduationYear').value = item.graduation_year;
+            document.getElementById('faculty').value = 'Teknik';
+            document.getElementById('department').value = 'Informatika';
+            document.getElementById('gpa').value = item.gpa;
+            document.getElementById('email').value = item.email;
+            document.getElementById('phone').value = item.phone || '';
+            document.getElementById('employmentStatus').value = item.employment_status;
+            document.getElementById('jobRole').value = item.job_role || 'Software / Web Developer';
+            document.getElementById('companyName').value = item.company_name || '';
+
+            toggleModal('addModal');
+        }
+
+        function duplicateAlumni(nim) {
+            const item = allAlumni.find(a => a.identity_number === nim);
+            if (!item) return;
+
+            document.getElementById('modalTitle').innerText = 'Duplikat Data Alumni Informatika';
+            document.getElementById('modalSubtitle').innerText = 'Masukkan NIM Informatika baru untuk data hasil duplikasi ini';
+            document.getElementById('isEditMode').value = 'false';
+            
+            const idInput = document.getElementById('identityNumber');
+            idInput.value = '';
+            idInput.readOnly = false;
+            idInput.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
+            idInput.classList.add('bg-slate-50');
+
+            document.getElementById('name').value = item.name;
+            document.getElementById('birthDate').value = item.birth_date;
+            document.getElementById('graduationYear').value = item.graduation_year;
+            document.getElementById('faculty').value = 'Teknik';
+            document.getElementById('department').value = 'Informatika';
+            document.getElementById('gpa').value = item.gpa;
+            document.getElementById('email').value = item.email;
+            document.getElementById('phone').value = item.phone || '';
+            document.getElementById('employmentStatus').value = item.employment_status;
+            document.getElementById('jobRole').value = item.job_role || 'Software / Web Developer';
+            document.getElementById('companyName').value = item.company_name || '';
+
+            toggleModal('addModal');
+        }
+
+        document.getElementById('alumniForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nim = document.getElementById('identityNumber').value.trim();
+            const isEditMode = document.getElementById('isEditMode').value === 'true';
+
+            const data = {
+                identity_number: nim,
+                name: document.getElementById('name').value.toUpperCase(),
+                birth_date: document.getElementById('birthDate').value,
+                graduation_year: String(document.getElementById('graduationYear').value),
+                faculty: "Teknik",
+                department: "Informatika",
+                gpa: document.getElementById('gpa').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                employment_status: document.getElementById('employmentStatus').value,
+                job_role: document.getElementById('jobRole').value,
+                company_name: document.getElementById('companyName').value || '-'
+            };
+
+            if (isEditMode) {
+                const index = allAlumni.findIndex(a => a.identity_number === nim);
+                if (index !== -1) allAlumni[index] = data;
+                Swal.fire('Diperbarui!', `Data alumni Informatika NIM ${nim} berhasil diperbarui.`, 'success');
+            } else {
+                if (allAlumni.some(a => a.identity_number === nim)) {
+                    Swal.fire('NIM Sudah Ada', `NIM ${nim} sudah terdaftar di database Alumni Informatika.`, 'warning');
+                    return;
+                }
+                allAlumni.push(data);
+                Swal.fire('Tersimpan!', 'Data alumni Informatika berhasil disimpan.', 'success');
+            }
+
+            saveToStorage();
+            toggleModal('addModal');
+        });
+
+        function deleteAlumni(nim) {
+            Swal.fire({
+                title: 'Hapus Alumni Informatika?',
+                text: `Data dengan NIM ${nim} akan dihapus permanen.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#94a3b8',
+                confirmButtonText: 'Ya, Hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    allAlumni = allAlumni.filter(a => a.identity_number !== nim);
+                    saveToStorage();
+                    Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
+                }
+            });
+        }
+        
+        function clearData() {
+            Swal.fire({
+                title: 'Kosongkan Tabel Alumni Informatika?',
+                text: "Seluruh data pada tabel akan direset!",
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                confirmButtonText: 'Ya, Kosongkan'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    allAlumni = [];
+                    saveToStorage();
+                    Swal.fire('Dikosongkan!', 'Tabel telah dikosongkan.', 'success');
+                }
+            });
+        }
+
+        // Import File Excel (Hanya menerima/mengunci Prodi Informatika)
+        document.getElementById('importExcel').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const sheetName = workbook.SheetNames[0];
+                    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+                    let addedCount = 0;
+                    let skippedNonInf = 0;
+
+                    rows.forEach(r => {
+                        if (r.identity_number && r.name) {
+                            const nim = String(r.identity_number).trim();
+                            const rawDept = String(r.department || 'Informatika').trim();
+
+                            // Jika di file excel tertulis prodi lain selain Informatika, lewati otomatis
+                            if (rawDept !== '' && !rawDept.toLowerCase().includes('informatika')) {
+                                skippedNonInf++;
+                                return;
+                            }
+
+                            const newRow = {
+                                identity_number: nim,
+                                name: String(r.name).toUpperCase(),
+                                birth_date: r.birth_date || '2004-01-01',
+                                graduation_year: String(r.graduation_year || '2025'),
+                                faculty: "Teknik",
+                                department: "Informatika",
+                                gpa: String(r.gpa || '3.65'),
+                                email: r.email || 'alumni.inf@ummu.ac.id',
+                                phone: String(r.phone || ''),
+                                employment_status: r.employment_status || 'Bekerja',
+                                job_role: r.job_role || 'Software / Web Developer',
+                                company_name: r.company_name || '-'
+                            };
+
+                            const exists = allAlumni.findIndex(a => a.identity_number === nim);
+                            if (exists === -1) {
+                                allAlumni.push(newRow);
+                                addedCount++;
+                            } else {
+                                allAlumni[exists] = newRow;
+                                addedCount++;
+                            }
+                        }
+                    });
+
+                    saveToStorage();
+                    Swal.fire(
+                        'Import Selesai',
+                        `${addedCount} data Alumni Informatika berhasil diproses.${skippedNonInf > 0 ? ` (${skippedNonInf} data prodi non-Informatika diabaikan otomatis)` : ''}`,
+                        'success'
+                    );
+                    document.getElementById('importExcel').value = '';
+                } catch (err) {
+                    Swal.fire('Error', 'Gagal membaca file Excel: ' + err.message, 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function downloadSampleTemplate() {
+            const ws_data = [
+                ['identity_number', 'name', 'birth_date', 'graduation_year', 'faculty', 'department', 'gpa', 'email', 'phone', 'employment_status', 'job_role', 'company_name'],
+                ['121055520124010', 'EWIS JOLA A.WA BULA', '2006-07-13', '2025', 'Teknik', 'Informatika', '3.75', 'ewiswabula@gmail.com', '082284238540', 'Bekerja', 'Network & Infrastructure Engineer', 'PT Telkom Indonesia']
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Template Alumni Informatika");
+            XLSX.writeFile(wb, "template_alumni_informatika_ummu.xlsx");
+        }
+
+        function exportToExcel() {
+            if (filteredAlumni.length === 0) return Swal.fire('Kosong', 'Tidak ada data untuk diexport.', 'warning');
+            
+            const dataToExport = filteredAlumni.map(item => ({
+                "NIM": item.identity_number,
+                "Nama Lengkap": item.name,
+                "Fakultas": "Teknik",
+                "Program Studi": "Informatika",
+                "Tahun Lulus": item.graduation_year,
+                "IPK": item.gpa,
+                "Status Karir": item.employment_status,
+                "Bidang Profesi IT": item.job_role || '-',
+                "Instansi/Perusahaan": item.company_name,
+                "No. WhatsApp": item.phone,
+                "Email": item.email,
+                "Tgl Lahir": item.birth_date
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Alumni Informatika UMMU");
+            XLSX.writeFile(wb, `Alumni_Informatika_UMMU_${new Date().toISOString().split('T')[0]}.xlsx`);
+        }
+
+        function toggleModal(id) {
+            document.getElementById(id).classList.toggle('opacity-0');
+            document.getElementById(id).classList.toggle('pointer-events-none');
+            document.body.classList.toggle('modal-active');
+        }
+
+        function resetFilters() {
+            document.getElementById('filterStatus').value = 'all';
+            document.getElementById('filterYear').value = '';
+            document.getElementById('searchInput').value = '';
+            renderTable();
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
