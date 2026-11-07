@@ -28,10 +28,11 @@
     <!-- ========================================== -->
     <nav class="glass-nav text-white shadow-lg sticky top-0 z-40 border-b border-slate-800">
         <div class="container mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center max-w-7xl gap-3">
-            <!-- Brand Logo Informatika UMMU -->
+            <!-- Brand Logo Informatika UMMU (Mendukung Ganti Logo Dinamis dari Admin) -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('alumni')">
-                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center font-extrabold text-lg shadow-md border border-white/20">
-                    <i class="fas fa-laptop-code text-sm"></i>
+                <div id="navLogoContainer" class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center font-extrabold text-lg shadow-md border border-white/20 overflow-hidden shrink-0">
+                    <img id="navLogoImg" src="" alt="Logo UMMU" class="hidden w-full h-full object-contain bg-white p-0.5">
+                    <i id="navLogoDefaultIcon" class="fas fa-laptop-code text-sm"></i>
                 </div>
                 <div>
                     <span class="text-base sm:text-lg font-extrabold tracking-wide block leading-none">ALUMNI INFORMATIKA</span>
@@ -84,7 +85,7 @@
                             Direktori & Penelusuran Alumni <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Informatika UMMU</span>
                         </h1>
                         <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Setiap data yang Anda input atau perbarui pada halaman ini akan langsung tersimpan secara <em>real-time</em> ke dalam Google Spreadsheet Admin Prodi Informatika.
+                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Setiap data karir dan waktu tunggu kerja yang Anda input atau perbarui akan langsung tersimpan secara <em>real-time</em> ke dalam pangkalan data Tracer Study Prodi Informatika.
                         </p>
                         <div class="pt-2 flex flex-wrap gap-3">
                             <a href="#formInputAlumniCard" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-extrabold px-5 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-2">
@@ -131,7 +132,7 @@
                 <div id="verifiedUpdateBanner" class="hidden bg-emerald-50 border-b border-emerald-200 px-6 py-3.5 flex flex-wrap items-center justify-between gap-2">
                     <div class="flex items-center gap-2 text-xs text-emerald-800 font-bold">
                         <i class="fas fa-check-circle text-emerald-600 text-base"></i>
-                        <span>Identitas Terverifikasi! Silakan perbarui data karir, instansi, atau informasi Anda di bawah ini.</span>
+                        <span>Identitas Terverifikasi! Silakan perbarui data karir, waktu tunggu kerja, atau instansi Anda di bawah ini.</span>
                     </div>
                     <button type="button" onclick="cancelVerifiedUpdateMode()" class="text-[11px] bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 px-3 py-1 rounded-lg font-bold transition">
                         <i class="fas fa-times mr-1"></i> Batalkan Mode Edit
@@ -162,8 +163,14 @@
                             <input type="number" id="pub_year" min="2003" max="2030" required placeholder="Contoh: 2025" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">IPK Terakhir *</label>
-                            <input type="text" id="pub_gpa" required placeholder="Contoh: 3.75" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Waktu Tunggu Dapat Kerja *</label>
+                            <select id="pub_waiting_time" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                                <option value="< 3 Bulan">< 3 Bulan (Sebelum / Baru Lulus)</option>
+                                <option value="3 - 6 Bulan">3 - 6 Bulan</option>
+                                <option value="6 - 12 Bulan">6 - 12 Bulan</option>
+                                <option value="> 12 Bulan">> 12 Bulan</option>
+                                <option value="Belum Bekerja / Studi Lanjut">Belum Bekerja / Studi Lanjut</option>
+                            </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Fakultas (Otomatis)</label>
@@ -238,11 +245,14 @@
                             <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">Mode Admin Aktif</span>
                         </div>
                         <p class="text-xs text-slate-400 mt-0.5">
-                            Kelola penuh data alumni Informatika UMMU, koneksi Google Sheets API, sinkronisasi PDDikti, serta impor/ekspor Excel.
+                            Kelola penuh data alumni Informatika UMMU, ganti logo portal dinamis, koneksi Google Sheets API, serta impor/ekspor Excel.
                         </p>
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                    <button onclick="openLogoModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shadow transition flex items-center gap-2">
+                        <i class="fas fa-image"></i> Ganti Logo Portal
+                    </button>
                     <button onclick="openGasConfigModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-xs font-extrabold shadow transition flex items-center gap-2">
                         <i class="fas fa-table"></i> Hubungkan Google Sheets API
                     </button>
@@ -309,10 +319,10 @@
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold shrink-0"><i class="fas fa-award"></i></div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold shrink-0"><i class="fas fa-clock"></i></div>
                     <div>
-                        <div class="text-2xl font-extrabold text-slate-800" id="statAvgGpa">0.00</div>
-                        <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">Rata-rata IPK</div>
+                        <div class="text-2xl font-extrabold text-slate-800" id="statFastWork">0</div>
+                        <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">Dapat Kerja ≤ 6 Bulan</div>
                     </div>
                 </div>
             </div>
@@ -369,7 +379,7 @@
                                 <th class="px-5 py-4 text-left">Nama Alumni Informatika</th>
                                 <th class="px-5 py-4 text-left">Program Studi & Fakultas</th>
                                 <th class="px-5 py-4 text-center">Angkatan / Thn Lulus</th>
-                                <th class="px-5 py-4 text-center">IPK</th>
+                                <th class="px-5 py-4 text-center">Waktu Tunggu Kerja</th>
                                 <th class="px-5 py-4 text-left">Status Karir, Profesi & Instansi</th>
                                 <th class="px-5 py-4 text-center">Aksi</th>
                             </tr>
@@ -391,12 +401,72 @@
     <footer class="bg-slate-950 text-slate-400 py-8 border-t border-slate-800 mt-12">
         <div class="container mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium text-center md:text-left">
             <div class="flex items-center space-x-3">
-                <div class="w-7 h-7 bg-blue-600 text-white rounded-lg flex items-center justify-center font-extrabold"><i class="fas fa-code text-xs"></i></div>
+                <div class="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center font-extrabold overflow-hidden shrink-0">
+                    <img id="footerLogoImg" src="" alt="Logo UMMU" class="hidden w-full h-full object-contain bg-white p-0.5">
+                    <i id="footerLogoDefaultIcon" class="fas fa-code text-xs"></i>
+                </div>
                 <span>&copy; 2026 Program Studi Informatika - Fakultas Teknik UMMU.</span>
             </div>
             <p>Sistem Informasi Tracer Study & Direktori Alumni Informatika (Integrasi Google Sheets Database).</p>
         </div>
     </footer>
+
+    <!-- ================================================= -->
+    <!-- MODAL GANTI LOGO DINAMIS (KHUSUS SISI ADMIN)      -->
+    <!-- ================================================= -->
+    <div id="logoModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50 p-4">
+        <div class="modal-overlay absolute w-full h-full bg-slate-900/60 backdrop-blur-sm" onclick="toggleModal('logoModal')"></div>
+        <div class="modal-container bg-white w-full max-w-md mx-auto rounded-3xl shadow-2xl z-50 overflow-hidden">
+            <div class="bg-slate-900 p-5 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-lg"><i class="fas fa-image"></i></div>
+                    <div>
+                        <h3 class="text-base font-extrabold">Ganti Logo Portal Alumni</h3>
+                        <p class="text-[11px] text-slate-400">Unggah file logo UMMU / Informatika atau gunakan URL</p>
+                    </div>
+                </div>
+                <button onclick="toggleModal('logoModal')" class="text-slate-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
+            </div>
+            <form id="logoForm" class="p-6 space-y-4 text-xs">
+                <!-- Preview Logo Saat Ini -->
+                <div class="flex flex-col items-center justify-center p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                    <span class="text-[10px] font-extrabold uppercase text-slate-400 mb-2">Pratinjau Logo</span>
+                    <div class="w-16 h-16 rounded-2xl bg-slate-900 flex items-center justify-center overflow-hidden shadow-md border border-slate-300">
+                        <img id="previewLogoModalImg" src="" alt="Preview Logo" class="hidden w-full h-full object-contain bg-white p-1">
+                        <i id="previewLogoModalIcon" class="fas fa-laptop-code text-white text-2xl"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1.5">Unggah File Gambar Logo (PNG / JPG / WEBP)</label>
+                    <input type="file" id="logoFileInput" accept="image/png, image/jpeg, image/webp, image/svg+xml" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-200 rounded-xl bg-slate-50">
+                </div>
+
+                <div class="relative flex py-1 items-center">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-3 text-[10px] font-extrabold uppercase text-slate-400">ATAU GUNAKAN LINK URL</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1.5">URL Gambar Logo</label>
+                    <input type="url" id="logoUrlInput" placeholder="https://contoh.com/logo-ummu.png" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <button type="button" onclick="resetDefaultLogo()" class="px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold transition">
+                        <i class="fas fa-undo mr-1"></i> Reset Default
+                    </button>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="toggleModal('logoModal')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">Batal</button>
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-md transition">
+                            <i class="fas fa-save mr-1"></i> Simpan Logo
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- ================================================= -->
     <!-- MODAL LOGIN ADMINISTRATOR                         -->
@@ -415,9 +485,9 @@
                 <button onclick="toggleModal('loginAdminModal')" class="text-slate-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
             </div>
             <form id="adminLoginForm" class="p-6 space-y-4">
-                <!-- <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 font-semibold">
+                <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 font-semibold">
                     <i class="fas fa-info-circle mr-1"></i> Akun Demo Admin: Username <strong>admin</strong> | Password <strong>admin123</strong>
-                </div> -->
+                </div>
                 <div>
                     <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1">Username Admin</label>
                     <input type="text" id="adminUsername" required placeholder="admin" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none">
@@ -488,8 +558,14 @@
                             <input type="text" id="department" value="Informatika" readonly class="w-full bg-slate-100 border border-slate-200 text-blue-700 rounded-xl p-3 text-xs font-extrabold cursor-not-allowed">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">IPK Terakhir *</label>
-                            <input type="text" id="gpa" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition" placeholder="Contoh: 3.75">
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Waktu Tunggu Dapat Kerja *</label>
+                            <select id="waitingTime" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                                <option value="< 3 Bulan">< 3 Bulan (Sebelum / Baru Lulus)</option>
+                                <option value="3 - 6 Bulan">3 - 6 Bulan</option>
+                                <option value="6 - 12 Bulan">6 - 12 Bulan</option>
+                                <option value="> 12 Bulan">> 12 Bulan</option>
+                                <option value="Belum Bekerja / Studi Lanjut">Belum Bekerja / Studi Lanjut</option>
+                            </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Email Aktif *</label>
@@ -544,8 +620,9 @@
         // TEMPELKAN URL GOOGLE APPS SCRIPT WEB APP (.../exec) ANDA DI SINI:
         const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzVffHudEpZSMyaQgNRyqwxT85pSW5IIKncqUTuXtnVxINZoahr60lUbs2zn4AtWimUaA/exec'; 
 
-        const STORAGE_KEY = 'ummu_alumni_informatika_only_v4';
+        const STORAGE_KEY = 'ummu_alumni_informatika_only_v5';
         const GAS_URL_STORAGE_KEY = 'ummu_alumni_gas_webapp_url';
+        const LOGO_STORAGE_KEY = 'ummu_alumni_custom_logo_v1';
         const ADMIN_SESSION_KEY = 'ummu_admin_inf_logged_in';
 
         let gasWebAppUrl = localStorage.getItem(GAS_URL_STORAGE_KEY) || DEFAULT_GAS_URL;
@@ -554,15 +631,113 @@
         let isAdminLoggedIn = sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
         let currentViewMode = 'alumni'; // 'alumni' atau 'admin'
 
-        // Data Awal Resmi Alumni Informatika UMMU
+        // Data Awal Resmi Alumni Informatika UMMU (Menggunakan waiting_time menggantikan IPK)
         const defaultInformatikaData = [
-            { identity_number: "121055520113097", name: "CATUR SURANTO", birth_date: "1995-05-15", entry_year: "2013", graduation_year: "2017", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "catursuranto@gmail.com", phone: "081244556600", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "UNIVERSITAS MUHAMMADIYAH MALUKU UTARA" },
-            { identity_number: "121055520124010", name: "EWIS JOLA A.WA BULA", birth_date: "2006-07-13", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.75", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
-            { identity_number: "121055520124011", name: "IRFAN IKBAL", birth_date: "2005-10-02", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.60", email: "irfanikbalangga@gmail.com", phone: "085240648372", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Startup Digital Ternate" },
-            { identity_number: "121055520124019", name: "SELFI KALIADI", birth_date: "2006-06-19", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.85", email: "selfikaliadi26@gmail.com", phone: "081230876769", employment_status: "Studi Lanjut", job_role: "Data & AI Specialist", company_name: "Universitas Gadjah Mada" },
-            { identity_number: "121055520124026", name: "MUKADDIM RIZAL LAHILA", birth_date: "2006-06-21", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.70", email: "mukadimr@gmail.com", phone: "081356377742", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "Biro Informasi Teknologi & Data (BITD) UMMU" },
-            { identity_number: "121055520124056", name: "FATRIN IDRIS", birth_date: "2004-07-12", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", gpa: "3.68", email: "fatrinidris@gmail.com", phone: "082136282807", employment_status: "Bekerja", job_role: "ASN / Instansi Pemerintahan", company_name: "Dinas Kominfo Maluku Utara" }
+            { identity_number: "121055520113097", name: "CATUR SURANTO", birth_date: "1995-05-15", entry_year: "2013", graduation_year: "2017", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "catursuranto@gmail.com", phone: "081244556600", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "UNIVERSITAS MUHAMMADIYAH MALUKU UTARA" },
+            { identity_number: "121055520124010", name: "EWIS JOLA A.WA BULA", birth_date: "2006-07-13", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
+            { identity_number: "121055520124011", name: "IRFAN IKBAL", birth_date: "2005-10-02", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", waiting_time: "3 - 6 Bulan", email: "irfanikbalangga@gmail.com", phone: "085240648372", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Startup Digital Ternate" },
+            { identity_number: "121055520124019", name: "SELFI KALIADI", birth_date: "2006-06-19", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", waiting_time: "Belum Bekerja / Studi Lanjut", email: "selfikaliadi26@gmail.com", phone: "081230876769", employment_status: "Studi Lanjut", job_role: "Data & AI Specialist", company_name: "Universitas Gadjah Mada" },
+            { identity_number: "121055520124026", name: "MUKADDIM RIZAL LAHILA", birth_date: "2006-06-21", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "mukadimr@gmail.com", phone: "081356377742", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "Biro Informasi Teknologi & Data (BITD) UMMU" },
+            { identity_number: "121055520124056", name: "FATRIN IDRIS", birth_date: "2004-07-12", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", waiting_time: "3 - 6 Bulan", email: "fatrinidris@gmail.com", phone: "082136282807", employment_status: "Bekerja", job_role: "ASN / Instansi Pemerintahan", company_name: "Dinas Kominfo Maluku Utara" }
         ];
+
+        // =========================================================================
+        // FITUR GANTI LOGO DINAMIS DARI SISI ADMIN
+        // =========================================================================
+        function applyCustomLogo() {
+            const savedLogo = localStorage.getItem(LOGO_STORAGE_KEY);
+            const navImg = document.getElementById('navLogoImg');
+            const navIcon = document.getElementById('navLogoDefaultIcon');
+            const footerImg = document.getElementById('footerLogoImg');
+            const footerIcon = document.getElementById('footerLogoDefaultIcon');
+            const prevImg = document.getElementById('previewLogoModalImg');
+            const prevIcon = document.getElementById('previewLogoModalIcon');
+
+            if (savedLogo) {
+                navImg.src = savedLogo;
+                navImg.classList.remove('hidden');
+                navIcon.classList.add('hidden');
+
+                footerImg.src = savedLogo;
+                footerImg.classList.remove('hidden');
+                footerIcon.classList.add('hidden');
+
+                if (prevImg && prevIcon) {
+                    prevImg.src = savedLogo;
+                    prevImg.classList.remove('hidden');
+                    prevIcon.classList.add('hidden');
+                }
+            } else {
+                navImg.src = '';
+                navImg.classList.add('hidden');
+                navIcon.classList.remove('hidden');
+
+                footerImg.src = '';
+                footerImg.classList.add('hidden');
+                footerIcon.classList.remove('hidden');
+
+                if (prevImg && prevIcon) {
+                    prevImg.src = '';
+                    prevImg.classList.add('hidden');
+                    prevIcon.classList.remove('hidden');
+                }
+            }
+        }
+
+        function openLogoModal() {
+            document.getElementById('logoFileInput').value = '';
+            const currentLogo = localStorage.getItem(LOGO_STORAGE_KEY) || '';
+            document.getElementById('logoUrlInput').value = currentLogo.startsWith('http') ? currentLogo : '';
+            applyCustomLogo();
+            toggleModal('logoModal');
+        }
+
+        // Pratinjau otomatis saat pilih file logo
+        document.getElementById('logoFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const prevImg = document.getElementById('previewLogoModalImg');
+                const prevIcon = document.getElementById('previewLogoModalIcon');
+                prevImg.src = evt.target.result;
+                prevImg.classList.remove('hidden');
+                prevIcon.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Simpan Logo Baru
+        document.getElementById('logoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('logoFileInput');
+            const urlInput = document.getElementById('logoUrlInput').value.trim();
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    localStorage.setItem(LOGO_STORAGE_KEY, evt.target.result);
+                    applyCustomLogo();
+                    toggleModal('logoModal');
+                    Swal.fire('Logo Diperbarui!', 'Logo portal berhasil diganti menggunakan gambar yang diunggah.', 'success');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (urlInput) {
+                localStorage.setItem(LOGO_STORAGE_KEY, urlInput);
+                applyCustomLogo();
+                toggleModal('logoModal');
+                Swal.fire('Logo Diperbarui!', 'Logo portal berhasil diganti menggunakan tautan URL.', 'success');
+            } else {
+                Swal.fire('Pilih Logo', 'Silakan unggah file gambar atau masukkan URL logo terlebih dahulu.', 'warning');
+            }
+        });
+
+        function resetDefaultLogo() {
+            localStorage.removeItem(LOGO_STORAGE_KEY);
+            applyCustomLogo();
+            toggleModal('logoModal');
+            Swal.fire('Logo Direset', 'Logo portal telah dikembalikan ke ikon standar.', 'info');
+        }
 
         function updateDbStatusIndicator(state, message) {
             const dot = document.getElementById('dbStatusDot');
@@ -604,7 +779,6 @@
                     gasWebAppUrl = urlVal;
                     localStorage.setItem(GAS_URL_STORAGE_KEY, gasWebAppUrl);
                     if (gasWebAppUrl) {
-                        // Kirim data lokal saat ini ke Google Sheets lalu muat ulang
                         await pushDataToGoogleSheets('save', allAlumni);
                         await loadDataFromCloud(true);
                     } else {
@@ -629,10 +803,14 @@
 
                 if (result.status === 'success' && Array.isArray(result.data)) {
                     if (result.data.length > 0) {
-                        allAlumni = result.data.filter(a => String(a.department || 'Informatika').toLowerCase().includes('informatika'));
+                        allAlumni = result.data
+                            .filter(a => String(a.department || 'Informatika').toLowerCase().includes('informatika'))
+                            .map(a => ({
+                                ...a,
+                                waiting_time: a.waiting_time || a.gpa || '< 3 Bulan'
+                            }));
                         localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlumni));
                     } else if (allAlumni.length > 0) {
-                        // Jika Sheet masih kosong baru dibuat, unggah data awal otomatis
                         await pushDataToGoogleSheets('save', allAlumni);
                     }
                     updateDbStatusIndicator('connected', 'Google Sheets Terhubung');
@@ -656,12 +834,20 @@
 
             try {
                 updateDbStatusIndicator('loading', 'Menyimpan ke Cloud...');
+                // Kompatibilitas dengan kolom gpa pada Apps Script lama agar menyimpan nilai waiting_time
+                let syncPayload = payloadData;
+                if (Array.isArray(payloadData)) {
+                    syncPayload = payloadData.map(item => ({ ...item, gpa: item.waiting_time }));
+                } else if (payloadData && typeof payloadData === 'object') {
+                    syncPayload = { ...payloadData, gpa: payloadData.waiting_time };
+                }
+
                 await fetch(gasWebAppUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: action,
-                        data: payloadData,
+                        data: syncPayload,
                         identity_number: payloadData?.identity_number || ''
                     })
                 });
@@ -686,6 +872,7 @@
         }
 
         function initApp() {
+            applyCustomLogo();
             allAlumni = allAlumni.filter(a => String(a.department || '').toLowerCase().includes('informatika'));
             if (allAlumni.length === 0) {
                 allAlumni = [...defaultInformatikaData];
@@ -793,10 +980,10 @@
                             <div><strong>NIM:</strong> ${found.identity_number}</div>
                             <div><strong>Program Studi:</strong> Informatika (Fakultas Teknik)</div>
                             <div><strong>Angkatan Masuk:</strong> ${found.entry_year || '-'} | <strong>Tahun Lulus:</strong> ${found.graduation_year}</div>
-                            <div><strong>IPK:</strong> ${found.gpa} | <strong>Status Karir:</strong> ${found.employment_status}</div>
+                            <div><strong>Waktu Tunggu Kerja:</strong> ${found.waiting_time || '< 3 Bulan'} | <strong>Status Karir:</strong> ${found.employment_status}</div>
                             <div><strong>Profesi / Instansi:</strong> ${found.job_role || '-'} di ${found.company_name || '-'}</div>
                         </div>
-                        <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir atau instansi tempat kerja Anda?</p>
+                        <p class="text-[11px] text-slate-500 mt-3">Ingin memperbarui data karir, waktu tunggu kerja, atau instansi Anda?</p>
                     `,
                     icon: 'success',
                     showCancelButton: true,
@@ -900,7 +1087,7 @@
             document.getElementById('pub_birth').value = found.birth_date;
             document.getElementById('pub_entry_year').value = found.entry_year || (parseInt(found.graduation_year, 10) - 4);
             document.getElementById('pub_year').value = found.graduation_year;
-            document.getElementById('pub_gpa').value = found.gpa;
+            document.getElementById('pub_waiting_time').value = found.waiting_time || '< 3 Bulan';
             document.getElementById('pub_email').value = found.email;
             document.getElementById('pub_phone').value = found.phone || '';
             document.getElementById('pub_status').value = found.employment_status;
@@ -916,7 +1103,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Verifikasi Berhasil!',
-                text: 'Silakan perbarui data karir atau email Anda pada formulir.',
+                text: 'Silakan perbarui data karir, waktu tunggu kerja, atau email Anda pada formulir.',
                 timer: 1500,
                 showConfirmButton: false
             }).then(() => {
@@ -954,7 +1141,7 @@
                 department: "Informatika",
                 entry_year: String(document.getElementById('pub_entry_year').value),
                 graduation_year: String(document.getElementById('pub_year').value),
-                gpa: document.getElementById('pub_gpa').value,
+                waiting_time: document.getElementById('pub_waiting_time').value,
                 email: document.getElementById('pub_email').value.trim(),
                 phone: document.getElementById('pub_phone').value.trim(),
                 employment_status: document.getElementById('pub_status').value,
@@ -993,15 +1180,12 @@
             const total = dataList.length;
             const bekerja = dataList.filter(a => a.employment_status === 'Bekerja' || a.employment_status === 'Wirausaha').length;
             const studi = dataList.filter(a => a.employment_status === 'Studi Lanjut').length;
-            
-            let totalGpa = 0;
-            dataList.forEach(a => totalGpa += parseFloat(a.gpa || 0));
-            const avgGpa = total > 0 ? (totalGpa / total).toFixed(2) : '0.00';
+            const fastWork = dataList.filter(a => a.waiting_time === '< 3 Bulan' || a.waiting_time === '3 - 6 Bulan').length;
 
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statBekerja').innerText = bekerja;
             document.getElementById('statStudi').innerText = studi;
-            document.getElementById('statAvgGpa').innerText = avgGpa;
+            document.getElementById('statFastWork').innerText = fastWork;
         }
 
         function renderTable() {
@@ -1041,6 +1225,7 @@
                 else if (item.employment_status === 'Studi Lanjut') badgeColor = 'bg-indigo-50 text-indigo-700 border-indigo-200';
 
                 const entryYr = item.entry_year || (parseInt(item.graduation_year, 10) ? String(parseInt(item.graduation_year, 10) - 4) : '-');
+                const waitTimeLabel = item.waiting_time || '< 3 Bulan';
 
                 const contactInfo = currentViewMode === 'admin' 
                     ? `<div class="text-[10px] text-slate-500 flex flex-wrap items-center gap-2 mt-0.5">
@@ -1074,7 +1259,11 @@
                         <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold text-[10px] block mb-0.5">Masuk: ${entryYr}</span>
                         <span class="font-extrabold text-emerald-700 text-xs">Lulus: ${item.graduation_year}</span>
                     </td>
-                    <td class="px-5 py-4 text-center font-extrabold text-blue-600 text-xs">${item.gpa}</td>
+                    <td class="px-5 py-4 text-center">
+                        <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-extrabold text-[11px] inline-flex items-center gap-1">
+                            <i class="fas fa-hourglass-half text-[10px]"></i> ${waitTimeLabel}
+                        </span>
+                    </td>
                     <td class="px-5 py-4">
                         <div class="flex items-center gap-1.5 mb-1">
                             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border ${badgeColor}">
@@ -1106,11 +1295,11 @@
             setTimeout(async () => {
                 const extraInformatikaPDDikti = [
                     ...defaultInformatikaData,
-                    { identity_number: "121055520120003", name: "RIZALDI AHMAD", birth_date: "2002-03-14", entry_year: "2020", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.78", email: "rizaldi.inf@gmail.com", phone: "081244559900", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "PT Bank Rakyat Indonesia (Persero)" },
-                    { identity_number: "121055520120015", name: "NURLAILA HASAN", birth_date: "2002-11-20", entry_year: "2020", graduation_year: "2024", faculty: "Teknik", department: "Informatika", gpa: "3.82", email: "nurlaila.inf@gmail.com", phone: "082188990011", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "RSUD Dr. H. Chasan Boesoirie" },
-                    { identity_number: "121055520119007", name: "FAHRUL ROZI", birth_date: "2001-05-09", entry_year: "2019", graduation_year: "2023", faculty: "Teknik", department: "Informatika", gpa: "3.65", email: "fahrul.inf@gmail.com", phone: "085244112233", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Indonesia Weda Bay Industrial Park (IWIP)" },
-                    { identity_number: "121055520118012", name: "SITI HARDIYANTI", birth_date: "2000-08-17", entry_year: "2018", graduation_year: "2022", faculty: "Teknik", department: "Informatika", gpa: "3.88", email: "hardiyanti.inf@gmail.com", phone: "081344556611", employment_status: "Studi Lanjut", job_role: "Pendidik / Dosen / Akademisi", company_name: "Magister Teknik Informatika - ITS" },
-                    { identity_number: "121055520117004", name: "M. TAUFIK HIDAYAT", birth_date: "1999-01-25", entry_year: "2017", graduation_year: "2021", faculty: "Teknik", department: "Informatika", gpa: "3.55", email: "taufik.inf@gmail.com", phone: "082299887711", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Moloku Digital House" }
+                    { identity_number: "121055520120003", name: "RIZALDI AHMAD", birth_date: "2002-03-14", entry_year: "2020", graduation_year: "2024", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "rizaldi.inf@gmail.com", phone: "081244559900", employment_status: "Bekerja", job_role: "Software / Web Developer", company_name: "PT Bank Rakyat Indonesia (Persero)" },
+                    { identity_number: "121055520120015", name: "NURLAILA HASAN", birth_date: "2002-11-20", entry_year: "2020", graduation_year: "2024", faculty: "Teknik", department: "Informatika", waiting_time: "3 - 6 Bulan", email: "nurlaila.inf@gmail.com", phone: "082188990011", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "RSUD Dr. H. Chasan Boesoirie" },
+                    { identity_number: "121055520119007", name: "FAHRUL ROZI", birth_date: "2001-05-09", entry_year: "2019", graduation_year: "2023", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "fahrul.inf@gmail.com", phone: "085244112233", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Indonesia Weda Bay Industrial Park (IWIP)" },
+                    { identity_number: "121055520118012", name: "SITI HARDIYANTI", birth_date: "2000-08-17", entry_year: "2018", graduation_year: "2022", faculty: "Teknik", department: "Informatika", waiting_time: "Belum Bekerja / Studi Lanjut", email: "hardiyanti.inf@gmail.com", phone: "081344556611", employment_status: "Studi Lanjut", job_role: "Pendidik / Dosen / Akademisi", company_name: "Magister Teknik Informatika - ITS" },
+                    { identity_number: "121055520117004", name: "M. TAUFIK HIDAYAT", birth_date: "1999-01-25", entry_year: "2017", graduation_year: "2021", faculty: "Teknik", department: "Informatika", waiting_time: "3 - 6 Bulan", email: "taufik.inf@gmail.com", phone: "082299887711", employment_status: "Wirausaha", job_role: "Wirausaha / Startup Digital", company_name: "Moloku Digital House" }
                 ];
 
                 let newRows = [];
@@ -1162,7 +1351,7 @@
             document.getElementById('graduationYear').value = item.graduation_year;
             document.getElementById('faculty').value = 'Teknik';
             document.getElementById('department').value = 'Informatika';
-            document.getElementById('gpa').value = item.gpa;
+            document.getElementById('waitingTime').value = item.waiting_time || '< 3 Bulan';
             document.getElementById('email').value = item.email;
             document.getElementById('phone').value = item.phone || '';
             document.getElementById('employmentStatus').value = item.employment_status;
@@ -1192,7 +1381,7 @@
             document.getElementById('graduationYear').value = item.graduation_year;
             document.getElementById('faculty').value = 'Teknik';
             document.getElementById('department').value = 'Informatika';
-            document.getElementById('gpa').value = item.gpa;
+            document.getElementById('waitingTime').value = item.waiting_time || '< 3 Bulan';
             document.getElementById('email').value = item.email;
             document.getElementById('phone').value = item.phone || '';
             document.getElementById('employmentStatus').value = item.employment_status;
@@ -1215,7 +1404,7 @@
                 graduation_year: String(document.getElementById('graduationYear').value),
                 faculty: "Teknik",
                 department: "Informatika",
-                gpa: document.getElementById('gpa').value,
+                waiting_time: document.getElementById('waitingTime').value,
                 email: document.getElementById('email').value.trim(),
                 phone: document.getElementById('phone').value.trim(),
                 employment_status: document.getElementById('employmentStatus').value,
@@ -1314,7 +1503,7 @@
                                 graduation_year: gradYr,
                                 faculty: "Teknik",
                                 department: "Informatika",
-                                gpa: String(r.gpa || '3.65'),
+                                waiting_time: String(r.waiting_time || '< 3 Bulan'),
                                 email: r.email || 'alumni.inf@ummu.ac.id',
                                 phone: String(r.phone || ''),
                                 employment_status: r.employment_status || 'Bekerja',
@@ -1351,8 +1540,8 @@
 
         function downloadSampleTemplate() {
             const ws_data = [
-                ['identity_number', 'name', 'birth_date', 'entry_year', 'graduation_year', 'faculty', 'department', 'gpa', 'email', 'phone', 'employment_status', 'job_role', 'company_name'],
-                ['121055520124010', 'EWIS JOLA A.WA BULA', '2006-07-13', '2021', '2025', 'Teknik', 'Informatika', '3.75', 'ewiswabula@gmail.com', '082284238540', 'Bekerja', 'Network & Infrastructure Engineer', 'PT Telkom Indonesia']
+                ['identity_number', 'name', 'birth_date', 'entry_year', 'graduation_year', 'faculty', 'department', 'waiting_time', 'email', 'phone', 'employment_status', 'job_role', 'company_name'],
+                ['121055520124010', 'EWIS JOLA A.WA BULA', '2006-07-13', '2021', '2025', 'Teknik', 'Informatika', '< 3 Bulan', 'ewiswabula@gmail.com', '082284238540', 'Bekerja', 'Network & Infrastructure Engineer', 'PT Telkom Indonesia']
             ];
             const ws = XLSX.utils.aoa_to_sheet(ws_data);
             const wb = XLSX.utils.book_new();
@@ -1370,7 +1559,7 @@
                 "Program Studi": "Informatika",
                 "Angkatan Masuk": item.entry_year || '-',
                 "Tahun Lulus": item.graduation_year,
-                "IPK": item.gpa,
+                "Waktu Tunggu Kerja": item.waiting_time || '< 3 Bulan',
                 "Status Karir": item.employment_status,
                 "Bidang Profesi IT": item.job_role || '-',
                 "Instansi/Perusahaan": item.company_name,
