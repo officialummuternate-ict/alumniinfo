@@ -79,7 +79,7 @@
                     <div class="lg:col-span-7 space-y-4">
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-bold">
                             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Database - Prodi Informatika (55201)
+                            Database Prodi Informatika (55201)
                         </div>
                         <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
                             Direktori & Ekosistem Karir <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Alumni Informatika UMMU</span>
@@ -100,12 +100,15 @@
                         </div>
                     </div>
 
-                    <!-- Kotak Cek Cepat NIM Alumni Informatika -->
+                    <!-- Kotak Cek Cepat NPM Alumni Informatika -->
                     <div class="lg:col-span-5 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15">
-                        <h3 class="text-sm font-extrabold text-white mb-1"><i class="fas fa-id-card text-cyan-400 mr-1.5"></i> Cek & Perbarui Data NPM Anda</h3>
-                        <p class="text-[11px] text-slate-300 mb-4">Masukkan NPM Anda (contoh: 1210555201...) untuk mengecek status terdaftar atau memperbarui data karir & gelar dengan verifikasi keamanan.</p>
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="text-sm font-extrabold text-white"><i class="fas fa-id-card text-cyan-400 mr-1.5"></i> Cek & Perbarui Data NPM Anda</h3>
+                            <span id="quickCheckCounter" class="text-[10px] font-mono font-bold text-cyan-300 bg-slate-900/70 px-2 py-0.5 rounded-md">0/15 digit</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mb-4">Masukkan 15 digit angka NPM Informatika Anda (tanpa huruf & spasi, contoh: 121055520124010).</p>
                         <div class="flex gap-2">
-                            <input type="text" id="quickCheckNim" placeholder="Ketik NIM Informatika..." class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white font-bold placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                            <input type="text" id="quickCheckNim" inputmode="numeric" maxlength="15" oninput="sanitizeNpmInput(this, null, 'quickCheckCounter')" placeholder="Ketik 15 angka NPM..." class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white font-mono font-bold placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
                             <button onclick="checkMyNim()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl text-xs font-extrabold shrink-0 transition shadow">
                                 Cek NPM
                             </button>
@@ -146,8 +149,12 @@
                     <input type="hidden" id="pub_verified_nim" value="">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                         <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NPM Informatika *</label>
-                            <input type="text" id="pub_nim" required placeholder="Contoh: 121055520124010" oninput="autoFillEntryYear(this.value, 'pub_entry_year')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider">NPM Informatika (15 Angka) *</label>
+                                <span id="pubNpmCounter" class="text-[10px] font-mono font-bold text-slate-400">0/15 digit</span>
+                            </div>
+                            <input type="text" id="pub_nim" required inputmode="numeric" minlength="15" maxlength="15" pattern="\d{15}" title="NPM wajib berisi tepat 15 digit angka tanpa huruf dan spasi" placeholder="Contoh: 121055520124010" oninput="sanitizeNpmInput(this, 'pub_entry_year', 'pubNpmCounter')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <span class="text-[10px] text-slate-400 font-medium mt-1 block">Wajib 15 digit angka (tanpa huruf/spasi).</span>
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Gelar Depan <span class="text-slate-400 font-normal">(Opsional)</span></label>
@@ -315,7 +322,7 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
                 <div>
                     <div class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full mb-2">
-                        <i class="fas fa-network-wired"></i> Ekosistem Kolaborasi Alumni Informatika
+                        <i class="fas fa-network-wired"></i> Ekosistem Kolaborasi Alumni Informatika (Tersinkronisasi Google Sheets)
                     </div>
                     <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Program Peningkatan Karier, Pelatihan Teknis & Jejaring Bisnis</h2>
                     <p class="text-xs text-slate-500 mt-0.5">Wadah berbagi informasi lowongan kerja IT, bootcamp peningkatan skill teknis, dan direktori bisnis/usaha milik alumni Informatika UMMU.</p>
@@ -443,7 +450,7 @@
                     <table class="min-w-full divide-y divide-slate-200">
                         <thead class="bg-slate-900 text-white text-[10px] uppercase tracking-wider font-extrabold">
                             <tr>
-                                <th class="px-5 py-4 text-left">NPM</th>
+                                <th class="px-5 py-4 text-left">NPM (15 Digit)</th>
                                 <th class="px-5 py-4 text-left">Nama Alumni & Gelar</th>
                                 <th class="px-5 py-4 text-left">Program Studi & Fakultas</th>
                                 <th class="px-5 py-4 text-center">Angkatan / Thn Lulus</th>
@@ -537,7 +544,7 @@
                     <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
                         <button type="button" onclick="toggleModal('programModal')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">Batal</button>
                         <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-md transition">
-                            <i class="fas fa-paper-plane mr-1"></i> Publikasikan ke Google Sheets
+                            <i class="fas fa-paper-plane mr-1"></i> Publikasikan
                         </button>
                     </div>
                 </form>
@@ -661,8 +668,12 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">NPM Informatika *</label>
-                            <input type="text" id="identityNumber" required placeholder="Contoh: 121055520124010" oninput="autoFillEntryYear(this.value, 'entryYear')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider">NPM Informatika (15 Angka) *</label>
+                                <span id="adminNpmCounter" class="text-[10px] font-mono font-bold text-slate-400">0/15 digit</span>
+                            </div>
+                            <input type="text" id="identityNumber" required inputmode="numeric" minlength="15" maxlength="15" pattern="\d{15}" title="NPM wajib berisi tepat 15 digit angka tanpa huruf dan spasi" placeholder="Contoh: 121055520124010" oninput="sanitizeNpmInput(this, 'entryYear', 'adminNpmCounter')" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
+                            <span class="text-[10px] text-slate-400 font-medium mt-1 block">Hanya angka (wajib tepat 15 digit, tanpa huruf/spasi).</span>
                         </div>
                         <div>
                             <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Nama Lengkap (Tanpa Gelar) *</label>
@@ -733,6 +744,7 @@
                             <select id="jobRole" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition">
                                 <option value="Software / Web Developer">Software / Web Developer</option>
                                 <option value="Network & Infrastructure Engineer">Network & Infrastructure Engineer</option>
+                                <option value="Network Engineering & Hadware">Network Engineering & Hadware</option>
                                 <option value="IT Support & System Admin">IT Support & System Admin</option>
                                 <option value="Data & AI Specialist">Data & AI Specialist</option>
                                 <option value="ASN / Instansi Pemerintahan">ASN / Instansi Pemerintahan</option>
@@ -758,7 +770,7 @@
     </div>
 
     <!-- ================================================= -->
-    <!-- LOGIKA JAVASCRIPT UTAMA + CLOUD SHEETS SYNC       -->
+    <!-- LOGIKA JAVASCRIPT UTAMA + VALIDASI NPM 15 DIGIT   -->
     <!-- ================================================= -->
     <script>
         // TEMPELKAN URL GOOGLE APPS SCRIPT WEB APP (.../exec) ANDA DI SINI:
@@ -783,7 +795,7 @@
         let currentPage = 1;
         let rowsPerPage = 10;
 
-        // Data Awal Resmi Alumni Informatika UMMU
+        // Data Awal Resmi Alumni Informatika UMMU (15 Digit NPM)
         const defaultInformatikaData = [
             { identity_number: "121055520113097", front_title: "", name: "CATUR SURANTO", back_title: "S.Kom.", birth_date: "1995-05-15", entry_year: "2013", graduation_year: "2017", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "catursuranto@gmail.com", phone: "081244556600", employment_status: "Bekerja", job_role: "IT Support & System Admin", company_name: "UNIVERSITAS MUHAMMADIYAH MALUKU UTARA" },
             { identity_number: "121055520124010", front_title: "", name: "EWIS JOLA A.WA BULA", back_title: "S.Kom.", birth_date: "2006-07-13", entry_year: "2021", graduation_year: "2025", faculty: "Teknik", department: "Informatika", waiting_time: "< 3 Bulan", email: "ewiswabula@gmail.com", phone: "082284238540", employment_status: "Bekerja", job_role: "Network & Infrastructure Engineer", company_name: "PT Telkom Indonesia" },
@@ -824,6 +836,53 @@
             }
         ];
 
+        // =========================================================================
+        // FUNGSI VALIDASI & SANITASI NPM INFORMATIKA (WAJIB 15 DIGIT ANGKA MURNI)
+        // =========================================================================
+        function sanitizeNpmInput(inputEl, targetEntryYearId = null, counterBadgeId = null) {
+            // Hapus semua karakter selain angka (huruf, spasi, simbol langsung dibuang) dan batasi 15 digit
+            const digitsOnly = String(inputEl.value || '').replace(/\D+/g, '').slice(0, 15);
+            inputEl.value = digitsOnly;
+
+            if (counterBadgeId) {
+                updateNpmCounterBadge(counterBadgeId, digitsOnly.length);
+            }
+
+            if (targetEntryYearId) {
+                autoFillEntryYear(digitsOnly, targetEntryYearId);
+            }
+        }
+
+        function updateNpmCounterBadge(counterBadgeId, len) {
+            const badge = document.getElementById(counterBadgeId);
+            if (!badge) return;
+            badge.innerText = `${len}/15 digit`;
+            if (len === 15) {
+                badge.className = 'text-[10px] font-mono font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200';
+            } else if (len > 0) {
+                badge.className = 'text-[10px] font-mono font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200';
+            } else {
+                badge.className = 'text-[10px] font-mono font-bold text-slate-400';
+            }
+        }
+
+        function isValidNpm15(npmValue) {
+            return /^\d{15}$/.test(String(npmValue || '').trim());
+        }
+
+        function autoFillEntryYear(nimValue, targetInputId) {
+            const cleanNim = String(nimValue || '').trim();
+            const targetEl = document.getElementById(targetInputId);
+            if (!targetEl || targetEl.value !== '') return;
+
+            if (cleanNim.length >= 12 && cleanNim.startsWith('1210555201')) {
+                const twoDigitYear = parseInt(cleanNim.substring(10, 12), 10);
+                if (!isNaN(twoDigitYear) && twoDigitYear >= 0 && twoDigitYear <= 30) {
+                    targetEl.value = 2000 + twoDigitYear;
+                }
+            }
+        }
+
         // Fungsi memformat Nama Lengkap dengan Gelar Depan & Belakang (Jika ada)
         function formatFullNameWithTitles(item) {
             const front = String(item.front_title || '').trim();
@@ -839,7 +898,6 @@
 
         // =========================================================================
         // FITUR DINAMIS: PROGRAM KARIER, PELATIHAN TEKNIS & JEJARING BISNIS ALUMNI
-        // (TERSINKRONISASI OTOMATIS KE GOOGLE SHEETS TAB Program_Alumni)
         // =========================================================================
         function renderPrograms() {
             const container = document.getElementById('programsGridContainer');
@@ -965,7 +1023,6 @@
             toggleModal('programModal');
         }
 
-        // Fungsi Kirim / Hapus Data Program Karier, Pelatihan & Bisnis ke Google Sheets
         async function pushProgramToGoogleSheets(action, progPayload) {
             localStorage.setItem(PROGRAMS_STORAGE_KEY, JSON.stringify(allPrograms));
             renderPrograms();
@@ -1177,7 +1234,7 @@
             });
         }
 
-        // Fungsi Ambil Data Alumni & Data Program Karier/Pelatihan/Bisnis dari Google Sheets
+        // Fungsi Ambil Data Alumni & Data Program dari Google Sheets
         async function loadDataFromCloud(showNotification = false) {
             if (!gasWebAppUrl) {
                 updateDbStatusIndicator('local', 'Database: Memori Lokal');
@@ -1192,7 +1249,6 @@
                 const result = await res.json();
 
                 if (result.status === 'success') {
-                    // 1. Sinkronkan Data Alumni Informatika
                     if (Array.isArray(result.data) && result.data.length > 0) {
                         allAlumni = result.data
                             .filter(a => String(a.department || 'Informatika').toLowerCase().includes('informatika'))
@@ -1207,7 +1263,6 @@
                         await pushDataToGoogleSheets('save', allAlumni);
                     }
 
-                    // 2. Sinkronkan Data Program Karier, Pelatihan Teknis & Jejaring Bisnis Alumni
                     if (Array.isArray(result.programs) && result.programs.length > 0) {
                         allPrograms = result.programs;
                         localStorage.setItem(PROGRAMS_STORAGE_KEY, JSON.stringify(allPrograms));
@@ -1257,19 +1312,6 @@
                 updateDbStatusIndicator('connected', 'Tersimpan di Google Sheets');
             } catch (err) {
                 updateDbStatusIndicator('local', 'Tersimpan Lokal (Gagal Cloud)');
-            }
-        }
-
-        function autoFillEntryYear(nimValue, targetInputId) {
-            const cleanNim = String(nimValue || '').trim();
-            const targetEl = document.getElementById(targetInputId);
-            if (!targetEl || targetEl.value !== '') return;
-
-            if (cleanNim.length >= 12 && cleanNim.startsWith('1210555201')) {
-                const twoDigitYear = parseInt(cleanNim.substring(10, 12), 10);
-                if (!isNaN(twoDigitYear) && twoDigitYear >= 0 && twoDigitYear <= 30) {
-                    targetEl.value = 2000 + twoDigitYear;
-                }
             }
         }
 
@@ -1370,12 +1412,16 @@
         }
 
         // =========================================================================
-        // CEK NIM & VERIFIKASI TANGGAL LAHIR + EMAIL TERDAFTAR ALUMNI
+        // CEK NPM (WAJIB 15 DIGIT ANGKA) & VERIFIKASI TANGGAL LAHIR + EMAIL ALUMNI
         // =========================================================================
         function checkMyNim(nimParam) {
-            const nim = nimParam || document.getElementById('quickCheckNim').value.trim();
-            if (!nim) {
-                Swal.fire('Masukkan NIM', 'Silakan ketik Nomor Induk Mahasiswa (NIM) Informatika Anda.', 'warning');
+            const nim = (nimParam || document.getElementById('quickCheckNim').value).replace(/\D+/g, '');
+            if (!isValidNpm15(nim)) {
+                Swal.fire(
+                    'Format NPM Tidak Valid',
+                    `NPM Informatika wajib berupa angka murni dan berjumlah tepat 15 digit (saat ini: ${nim.length} digit). Tidak boleh mengandung huruf atau spasi.`,
+                    'warning'
+                );
                 return;
             }
             const found = allAlumni.find(a => a.identity_number === nim);
@@ -1386,7 +1432,7 @@
                     html: `
                         <div class="text-left text-xs space-y-1.5 bg-slate-50 p-4 rounded-xl border border-slate-200 mt-2">
                             <div><strong>Nama & Gelar:</strong> ${fullNameDisplay}</div>
-                            <div><strong>NIM:</strong> ${found.identity_number}</div>
+                            <div><strong>NPM:</strong> ${found.identity_number}</div>
                             <div><strong>Program Studi:</strong> Informatika (Fakultas Teknik)</div>
                             <div><strong>Angkatan Masuk:</strong> ${found.entry_year || '-'} | <strong>Tahun Lulus:</strong> ${found.graduation_year}</div>
                             <div><strong>Waktu Tunggu Kerja:</strong> ${found.waiting_time || '< 3 Bulan'} | <strong>Status Karir:</strong> ${found.employment_status}</div>
@@ -1406,15 +1452,16 @@
                 });
             } else {
                 Swal.fire({
-                    title: 'NIM Belum Terdaftar',
-                    text: `NIM ${nim} belum tercatat di direktori Alumni Informatika. Silakan isi Formulir Pendataan di bawah ini.`,
+                    title: 'NPM Belum Terdaftar',
+                    text: `NPM ${nim} belum tercatat di direktori Alumni Informatika. Silakan isi Formulir Pendataan di bawah ini.`,
                     icon: 'info',
                     confirmButtonText: 'Isi Formulir Sekarang',
                     confirmButtonColor: '#059669'
                 }).then(() => {
                     cancelVerifiedUpdateMode();
-                    document.getElementById('pub_nim').value = nim;
-                    autoFillEntryYear(nim, 'pub_entry_year');
+                    const pubNimEl = document.getElementById('pub_nim');
+                    pubNimEl.value = nim;
+                    sanitizeNpmInput(pubNimEl, 'pub_entry_year', 'pubNpmCounter');
                     document.getElementById('formInputAlumniCard').scrollIntoView({ behavior: 'smooth' });
                     document.getElementById('pub_name').focus();
                 });
@@ -1492,6 +1539,7 @@
             nimInput.readOnly = true;
             nimInput.classList.remove('bg-slate-50');
             nimInput.classList.add('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
+            updateNpmCounterBadge('pubNpmCounter', found.identity_number.length);
 
             document.getElementById('pub_front_title').value = found.front_title || '';
             document.getElementById('pub_name').value = found.name;
@@ -1508,7 +1556,7 @@
 
             document.getElementById('verifiedUpdateBanner').classList.remove('hidden');
             document.getElementById('pubFormHeaderTitle').innerText = `Perbarui Data Alumni: ${formatFullNameWithTitles(found)}`;
-            document.getElementById('pubFormHeaderDesc').innerText = `Identitas NIM ${found.identity_number} telah diverifikasi. Silakan ubah data yang diperlukan lalu klik Simpan.`;
+            document.getElementById('pubFormHeaderDesc').innerText = `Identitas NPM ${found.identity_number} telah diverifikasi. Silakan ubah data yang diperlukan lalu klik Simpan.`;
             document.getElementById('pubSubmitBtn').innerHTML = `<i class="fas fa-save"></i> <span>Simpan Perubahan Data Saya</span>`;
             document.getElementById('formInputAlumniCard').classList.add('ring-2', 'ring-emerald-500');
 
@@ -1531,6 +1579,7 @@
             nimInput.readOnly = false;
             nimInput.classList.remove('bg-slate-100', 'text-slate-500', 'cursor-not-allowed');
             nimInput.classList.add('bg-slate-50');
+            updateNpmCounterBadge('pubNpmCounter', 0);
 
             document.getElementById('verifiedUpdateBanner').classList.add('hidden');
             document.getElementById('pubFormHeaderTitle').innerText = 'Formulir Pendataan Alumni Informatika (Input Mandiri)';
@@ -1539,11 +1588,20 @@
             document.getElementById('formInputAlumniCard').classList.remove('ring-2', 'ring-emerald-500');
         }
 
-        // Submit Form Mandiri dari Sisi Alumni Informatika
+        // Submit Form Mandiri dari Sisi Alumni Informatika (Dengan Validasi Ketat 15 Digit NPM)
         document.getElementById('publicAlumniForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const nim = document.getElementById('pub_nim').value.trim();
+            const nim = document.getElementById('pub_nim').value.replace(/\D+/g, '');
             const verifiedNim = document.getElementById('pub_verified_nim').value.trim();
+
+            if (!isValidNpm15(nim)) {
+                Swal.fire(
+                    'NPM Tidak Valid!',
+                    `NPM Informatika wajib terdiri dari tepat 15 angka tanpa huruf atau spasi (jumlah saat ini: ${nim.length} angka).`,
+                    'warning'
+                );
+                return;
+            }
 
             const newEntry = {
                 identity_number: nim,
@@ -1779,7 +1837,7 @@
             });
         }
 
-        // Tarik Data PDDikti Khusus Prodi Informatika
+        // Tarik Data PDDikti Khusus Prodi Informatika (15 Digit NPM)
         function syncInformatikaPDDikti() {
             Swal.fire({
                 title: 'Menarik Data PDDikti Informatika...',
@@ -1823,6 +1881,7 @@
             idInput.readOnly = false;
             idInput.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
             idInput.classList.add('bg-slate-50');
+            updateNpmCounterBadge('adminNpmCounter', 0);
             
             toggleModal('addModal');
         }
@@ -1832,7 +1891,7 @@
             if (!item) return;
 
             document.getElementById('modalTitle').innerText = 'Edit Data Alumni Informatika';
-            document.getElementById('modalSubtitle').innerText = `Perbarui informasi untuk NIM ${nim}`;
+            document.getElementById('modalSubtitle').innerText = `Perbarui informasi untuk NPM ${nim}`;
             document.getElementById('isEditMode').value = 'true';
             
             const idInput = document.getElementById('identityNumber');
@@ -1840,6 +1899,7 @@
             idInput.readOnly = true;
             idInput.classList.remove('bg-slate-50');
             idInput.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
+            updateNpmCounterBadge('adminNpmCounter', item.identity_number.length);
 
             document.getElementById('frontTitle').value = item.front_title || '';
             document.getElementById('name').value = item.name;
@@ -1864,7 +1924,7 @@
             if (!item) return;
 
             document.getElementById('modalTitle').innerText = 'Duplikat Data Alumni Informatika';
-            document.getElementById('modalSubtitle').innerText = 'Masukkan NIM Informatika baru untuk data hasil duplikasi ini';
+            document.getElementById('modalSubtitle').innerText = 'Masukkan 15 digit NPM Informatika baru untuk data hasil duplikasi ini';
             document.getElementById('isEditMode').value = 'false';
             
             const idInput = document.getElementById('identityNumber');
@@ -1872,6 +1932,7 @@
             idInput.readOnly = false;
             idInput.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
             idInput.classList.add('bg-slate-50');
+            updateNpmCounterBadge('adminNpmCounter', 0);
 
             document.getElementById('frontTitle').value = item.front_title || '';
             document.getElementById('name').value = item.name;
@@ -1891,10 +1952,20 @@
             toggleModal('addModal');
         }
 
+        // Submit Form Admin (Dengan Validasi Ketat 15 Digit NPM)
         document.getElementById('alumniForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const nim = document.getElementById('identityNumber').value.trim();
+            const nim = document.getElementById('identityNumber').value.replace(/\D+/g, '');
             const isEditMode = document.getElementById('isEditMode').value === 'true';
+
+            if (!isValidNpm15(nim)) {
+                Swal.fire(
+                    'NPM Tidak Valid!',
+                    `NPM Informatika wajib terdiri dari tepat 15 angka tanpa huruf atau spasi (jumlah saat ini: ${nim.length} angka).`,
+                    'warning'
+                );
+                return;
+            }
 
             const data = {
                 identity_number: nim,
@@ -1918,10 +1989,10 @@
                 const index = allAlumni.findIndex(a => a.identity_number === nim);
                 if (index !== -1) allAlumni[index] = data;
                 await pushDataToGoogleSheets('save', data);
-                Swal.fire('Diperbarui!', `Data alumni Informatika NIM ${nim} berhasil diperbarui.`, 'success');
+                Swal.fire('Diperbarui!', `Data alumni Informatika NPM ${nim} berhasil diperbarui.`, 'success');
             } else {
                 if (allAlumni.some(a => a.identity_number === nim)) {
-                    Swal.fire('NIM Sudah Ada', `NIM ${nim} sudah terdaftar di database Alumni Informatika.`, 'warning');
+                    Swal.fire('NPM Sudah Ada', `NPM ${nim} sudah terdaftar di database Alumni Informatika.`, 'warning');
                     return;
                 }
                 allAlumni.push(data);
@@ -1935,7 +2006,7 @@
         function deleteAlumni(nim) {
             Swal.fire({
                 title: 'Hapus Alumni Informatika?',
-                text: `Data dengan NIM ${nim} akan dihapus permanen dari sistem & Google Sheets.`,
+                text: `Data dengan NPM ${nim} akan dihapus permanen dari sistem & Google Sheets.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#e11d48',
@@ -1967,7 +2038,7 @@
             });
         }
 
-        // Import File Excel (Mendukung front_title & back_title opsional)
+        // Import File Excel (Menyaring hanya NPM yang tepat 15 digit angka)
         document.getElementById('importExcel').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1981,16 +2052,17 @@
                     const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
                     let addedCount = 0;
-                    let skippedNonInf = 0;
+                    let skippedInvalid = 0;
                     let batchToCloud = [];
 
                     rows.forEach(r => {
                         if (r.identity_number && r.name) {
-                            const nim = String(r.identity_number).trim();
+                            const nim = String(r.identity_number).replace(/\D+/g, '');
                             const rawDept = String(r.department || 'Informatika').trim();
 
-                            if (rawDept !== '' && !rawDept.toLowerCase().includes('informatika')) {
-                                skippedNonInf++;
+                            // Pastikan prodi Informatika dan NPM tepat 15 angka
+                            if ((rawDept !== '' && !rawDept.toLowerCase().includes('informatika')) || !isValidNpm15(nim)) {
+                                skippedInvalid++;
                                 return;
                             }
 
@@ -2031,7 +2103,7 @@
                     }
                     Swal.fire(
                         'Import Selesai',
-                        `${addedCount} data Alumni Informatika berhasil diproses & dikirim ke Google Sheets.${skippedNonInf > 0 ? ` (${skippedNonInf} data non-Informatika diabaikan)` : ''}`,
+                        `${addedCount} data Alumni Informatika (NPM 15 digit) berhasil diproses.${skippedInvalid > 0 ? ` (${skippedInvalid} baris diabaikan karena NPM bukan 15 angka / non-Informatika)` : ''}`,
                         'success'
                     );
                     document.getElementById('importExcel').value = '';
@@ -2057,7 +2129,7 @@
             if (filteredAlumni.length === 0) return Swal.fire('Kosong', 'Tidak ada data untuk diexport.', 'warning');
             
             const dataToExport = filteredAlumni.map(item => ({
-                "NIM": item.identity_number,
+                "NPM": item.identity_number,
                 "Gelar Depan": item.front_title || '',
                 "Nama Lengkap": item.name,
                 "Gelar Belakang": item.back_title || '',
