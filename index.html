@@ -89,14 +89,14 @@
                             Direktori & Ekosistem Karir <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Alumni Informatika UMMU</span>
                         </h1>
                         <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl">
-                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Perbarui data tracer study, unduh sertifikat akreditasi resmi Kampus & Prodi untuk persyaratan kerja/CPNS, serta manfaatkan program karier dan jejaring bisnis alumni.
+                            Selamat datang rekan-rekan Alumni Program Studi Informatika Fakultas Teknik UMMU. Perbarui data tracer study, lihat & unduh sertifikat akreditasi resmi Kampus & Prodi untuk persyaratan kerja/CPNS, serta manfaatkan program karier dan jejaring bisnis alumni.
                         </p>
                         <div class="pt-2 flex flex-wrap gap-2.5">
                             <a href="#formInputAlumniCard" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-extrabold px-4 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-2">
                                 <i class="fas fa-pen-to-square"></i> Input Data Alumni
                             </a>
                             <a href="#accreditationSection" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold px-4 py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center gap-2">
-                                <i class="fas fa-file-pdf"></i> Unduh Sertifikat Akreditasi
+                                <i class="fas fa-file-pdf"></i> Lihat & Unduh Akreditasi
                             </a>
                             <a href="#ecosystemHubSection" class="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/30 text-xs font-bold px-4 py-3.5 rounded-xl transition flex items-center gap-2">
                                 <i class="fas fa-rocket"></i> Karier & Bisnis
@@ -332,8 +332,8 @@
                     <div class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-2">
                         <i class="fas fa-award text-amber-600"></i> Dokumen Resmi Kelembagaan & Program Studi
                     </div>
-                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Unduh Sertifikat & SK Akreditasi (Kampus UMMU & Prodi Informatika)</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Layanan unduh salinan resmi Sertifikat dan SK Akreditasi Institusi (APT UMMU) serta Akreditasi Program Studi Informatika untuk persyaratan melamar kerja, CPNS/PPPK, maupun studi lanjut alumni.</p>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Lihat & Unduh Sertifikat Akreditasi (Kampus UMMU & Prodi Informatika)</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Klik tombol <strong>"Lihat (Pop-up)"</strong> untuk menampilkan sertifikat langsung di layar tanpa pindah tab, atau klik <strong>"Unduh Sertifikat"</strong> untuk menyimpan file PDF.</p>
                 </div>
                 <button id="btnAdminAddAccreditation" onclick="openAccreditationModal()" class="hidden bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold px-4 py-3 rounded-xl shadow-md transition items-center gap-2 shrink-0 self-start md:self-center">
                     <i class="fas fa-cloud-upload-alt"></i> <span>+ Tambah File Akreditasi (Admin)</span>
@@ -539,6 +539,51 @@
     </footer>
 
     <!-- =============================================================== -->
+    <!-- MODAL POP-UP PRATINJAU (VIEWER) SERTIFIKAT AKREDITASI           -->
+    <!-- =============================================================== -->
+    <div id="previewAccreditationModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50 p-3 sm:p-5">
+        <div class="modal-overlay absolute w-full h-full bg-slate-950/75 backdrop-blur-sm" onclick="closePreviewAccreditationModal()"></div>
+        <div class="modal-container bg-white w-full max-w-5xl h-[88vh] mx-auto rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col border border-slate-700">
+            <!-- Header Modal Viewer -->
+            <div class="bg-slate-900 px-5 py-4 text-white flex flex-wrap justify-between items-center gap-3 shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-lg font-extrabold shrink-0">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="truncate">
+                        <h3 id="previewAccModalTitle" class="text-sm sm:text-base font-extrabold truncate">Pratinjau Sertifikat Akreditasi</h3>
+                        <p id="previewAccModalMeta" class="text-[11px] text-amber-300 font-medium truncate">SK Akreditasi Resmi UMMU</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <a id="previewAccDownloadBtn" href="#" target="_blank" rel="noopener noreferrer" download class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 shadow">
+                        <i class="fas fa-download"></i> <span>Unduh File</span>
+                    </a>
+                    <button type="button" onclick="closePreviewAccreditationModal()" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white transition flex items-center justify-center" title="Tutup Pratinjau">
+                        <i class="fas fa-times text-base"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body Viewer (Iframe PDF / Gambar Sertifikat) -->
+            <div class="flex-1 bg-slate-100 relative overflow-hidden flex items-center justify-center">
+                <div id="previewAccLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 z-10 text-slate-500 text-xs font-bold gap-2">
+                    <i class="fas fa-circle-notch fa-spin text-2xl text-blue-600"></i>
+                    <span>Memuat pratinjau dokumen sertifikat akreditasi...</span>
+                </div>
+                <iframe id="previewAccIframe" src="about:blank" class="w-full h-full border-0 hidden" allow="autoplay"></iframe>
+                <img id="previewAccImage" src="" alt="Sertifikat Akreditasi" class="max-w-full max-h-full object-contain p-4 hidden">
+            </div>
+
+            <!-- Footer Info -->
+            <div class="bg-slate-50 px-5 py-2.5 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500 shrink-0">
+                <span><i class="fas fa-shield-check text-emerald-600 mr-1"></i> Dokumen Resmi Terverifikasi Prodi Informatika FT-UMMU</span>
+                <button type="button" onclick="closePreviewAccreditationModal()" class="font-extrabold text-slate-700 hover:text-rose-600 transition">Tutup Jendela [ESC]</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================================================== -->
     <!-- MODAL KELOLA FILE AKREDITASI KAMPUS & PRODI (KHUSUS ADMIN)      -->
     <!-- =============================================================== -->
     <div id="accreditationModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50 p-4">
@@ -588,9 +633,9 @@
                             <input type="text" id="acc_period" required placeholder="Contoh: Berlaku 2022 s/d 2027" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
                         <div class="sm:col-span-2">
-                            <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1.5">Link File PDF / Google Drive (Untuk Diunduh Alumni) *</label>
-                            <input type="url" id="acc_file_url" required placeholder="https://drive.google.com/file/d/... atau link langsung file PDF" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold focus:ring-2 focus:ring-blue-500 outline-none">
-                            <span class="text-[10px] text-slate-400 mt-1 block"><i class="fas fa-info-circle mr-1"></i>Mendukung tautan berbagi Google Drive (pastikan akses disetel ke "Siapa saja yang memiliki link") maupun tautan PDF langsung.</span>
+                            <label class="block text-[11px] font-extrabold uppercase text-slate-600 mb-1.5">Link File PDF / Gambar / Google Drive *</label>
+                            <input type="url" id="acc_file_url" required placeholder="https://drive.google.com/file/d/... atau link langsung file PDF/Gambar" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                            <span class="text-[10px] text-slate-400 mt-1 block"><i class="fas fa-info-circle mr-1"></i>Mendukung tautan berbagi Google Drive (otomatis tampil di dalam Pop-up Viewer tanpa keluar halaman) maupun tautan file PDF/JPG/PNG.</span>
                         </div>
                     </div>
                     <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
@@ -882,7 +927,7 @@
     </div>
 
     <!-- ================================================================ -->
-    <!-- LOGIKA JAVASCRIPT UTAMA + AKREDITASI + LOGO TERSIMPAN DI DATABASE-->
+    <!-- LOGIKA JAVASCRIPT UTAMA + POP-UP VIEWER AKREDITASI + CLOUD DB    -->
     <!-- ================================================================ -->
     <script>
         // TEMPELKAN URL GOOGLE APPS SCRIPT WEB APP (.../exec) ANDA DI SINI:
@@ -930,7 +975,7 @@
                 sk_number: "SK LAM INFOKOM / BAN-PT Prodi Informatika",
                 grade: "Baik Sekali",
                 valid_period: "Berlaku Aktif (Periode Berjalan)",
-                file_url: "https://ummu.ac.id"
+                file_url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
             },
             {
                 id: "acc-2",
@@ -939,7 +984,7 @@
                 sk_number: "SK BAN-PT Institusi UMMU Ternate",
                 grade: "Baik Sekali",
                 valid_period: "Berlaku Aktif (Institusi Kampus)",
-                file_url: "https://ummu.ac.id"
+                file_url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
             },
             {
                 id: "acc-3",
@@ -948,7 +993,7 @@
                 sk_number: "SK BAN-PT Arsip Lulusan Lama",
                 grade: "B",
                 valid_period: "Untuk Lulusan Periode Sebelumnya",
-                file_url: "https://ummu.ac.id"
+                file_url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
             }
         ];
 
@@ -1041,19 +1086,81 @@
         }
 
         // =========================================================================
-        // FITUR HALAMAN UNDUH DOKUMEN AKREDITASI KAMPUS & PRODI INFORMATIKA
+        // FITUR POP-UP PRATINJAU (VIEWER) & UNDUH DOKUMEN AKREDITASI
         // =========================================================================
-        function formatDownloadUrl(rawUrl) {
+        function formatAccreditationUrls(rawUrl) {
             const url = String(rawUrl || '').trim();
-            // Jika link Google Drive view, sediakan juga link direct download
-            const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            // Deteksi otomatis ID File Google Drive agar bisa ditampilkan di dalam Pop-up Iframe (/preview)
+            const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
             if (driveMatch && driveMatch[1]) {
+                const fileId = driveMatch[1];
                 return {
-                    viewUrl: url,
-                    downloadUrl: `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`
+                    embedUrl: `https://drive.google.com/file/d/${fileId}/preview`,
+                    downloadUrl: `https://drive.google.com/uc?export=download&id=${fileId}`,
+                    isImage: false
                 };
             }
-            return { viewUrl: url, downloadUrl: url };
+
+            // Cek apakah file berupa gambar langsung
+            const isImg = /\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(url) || url.startsWith('data:image/');
+            return {
+                embedUrl: url,
+                downloadUrl: url,
+                isImage: isImg
+            };
+        }
+
+        // Fungsi Membuka Pop-up Modal Lihat Sertifikat Akreditasi Tanpa Buka Tab Baru
+        function previewAccreditationInPopup(docId) {
+            const doc = allAccreditations.find(d => d.id === docId);
+            if (!doc) return;
+
+            const { embedUrl, downloadUrl, isImage } = formatAccreditationUrls(doc.file_url);
+
+            document.getElementById('previewAccModalTitle').innerText = doc.title;
+            document.getElementById('previewAccModalMeta').innerText = `${doc.type} • Peringkat: ${doc.grade} • No. SK: ${doc.sk_number || '-'}`;
+            document.getElementById('previewAccDownloadBtn').href = downloadUrl;
+
+            const loadingEl = document.getElementById('previewAccLoading');
+            const iframeEl = document.getElementById('previewAccIframe');
+            const imgEl = document.getElementById('previewAccImage');
+
+            loadingEl.classList.remove('hidden');
+            iframeEl.classList.add('hidden');
+            imgEl.classList.add('hidden');
+
+            if (isImage) {
+                imgEl.onload = function() {
+                    loadingEl.classList.add('hidden');
+                    imgEl.classList.remove('hidden');
+                };
+                imgEl.onerror = function() {
+                    loadingEl.classList.add('hidden');
+                    imgEl.classList.remove('hidden');
+                };
+                imgEl.src = embedUrl;
+            } else {
+                iframeEl.onload = function() {
+                    loadingEl.classList.add('hidden');
+                    iframeEl.classList.remove('hidden');
+                };
+                iframeEl.src = embedUrl;
+                // Fallback sembunyikan spinner setelah 1.5 detik jika cross-origin iframe
+                setTimeout(() => {
+                    loadingEl.classList.add('hidden');
+                    iframeEl.classList.remove('hidden');
+                }, 1500);
+            }
+
+            toggleModal('previewAccreditationModal');
+        }
+
+        function closePreviewAccreditationModal() {
+            const modal = document.getElementById('previewAccreditationModal');
+            if (modal.classList.contains('opacity-0')) return;
+            document.getElementById('previewAccIframe').src = 'about:blank';
+            document.getElementById('previewAccImage').src = '';
+            toggleModal('previewAccreditationModal');
         }
 
         function renderAccreditations() {
@@ -1090,7 +1197,7 @@
                     : 'bg-amber-50 text-amber-800 border-amber-200';
                 const iconClass = isProdi ? 'fa-laptop-code text-blue-600' : 'fa-university text-amber-600';
 
-                const { viewUrl, downloadUrl } = formatDownloadUrl(doc.file_url);
+                const { downloadUrl } = formatAccreditationUrls(doc.file_url);
 
                 const adminBtns = currentViewMode === 'admin'
                     ? `<div class="flex items-center gap-1">
@@ -1121,11 +1228,11 @@
                         </div>
                     </div>
                     <div class="pt-3 border-t border-slate-200/80 flex items-center justify-between gap-2 mt-auto">
-                        <a href="${viewUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold transition flex items-center gap-1.5">
-                            <i class="far fa-eye"></i> Lihat
-                        </a>
+                        <button type="button" onclick="previewAccreditationInPopup('${doc.id}')" class="px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white border border-blue-200 text-[11px] font-extrabold transition flex items-center gap-1.5 cursor-pointer">
+                            <i class="far fa-eye"></i> Lihat Sertifikat
+                        </button>
                         <a href="${downloadUrl}" target="_blank" rel="noopener noreferrer" download class="flex-1 justify-center px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-[11px] font-extrabold shadow-sm transition flex items-center gap-1.5">
-                            <i class="fas fa-download"></i> Unduh Sertifikat Akreditasi
+                            <i class="fas fa-download"></i> Unduh PDF
                         </a>
                     </div>
                 `;
@@ -1235,7 +1342,7 @@
 
             toggleModal('accreditationModal');
             await pushAccreditationToGoogleSheets('save_accreditation', newDoc);
-            Swal.fire('Tersimpan!', 'Dokumen akreditasi berhasil disimpan ke Google Sheets dan siap diunduh alumni.', 'success');
+            Swal.fire('Tersimpan!', 'Dokumen akreditasi berhasil disimpan ke Google Sheets dan siap dilihat/diunduh alumni.', 'success');
         });
 
         // =========================================================================
@@ -1439,7 +1546,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const maxDim = 180; // Ukuran optimal agar muat di sel Google Sheets (< 50.000 karakter)
+                    const maxDim = 180;
                     let w = img.width;
                     let h = img.height;
                     if (w > h) {
@@ -1623,7 +1730,7 @@
             });
         }
 
-        // Fungsi Ambil Seluruh Data (Alumni, Program, Akreditasi, & Logo Web) dari Google Sheets
+        // Fungsi Ambil Seluruh Data dari Google Sheets
         async function loadDataFromCloud(showNotification = false) {
             if (!gasWebAppUrl) {
                 updateDbStatusIndicator('local', 'Database: Memori Lokal');
@@ -1639,7 +1746,6 @@
                 const result = await res.json();
 
                 if (result.status === 'success') {
-                    // 1. Sinkronkan Data Alumni Informatika
                     if (Array.isArray(result.data) && result.data.length > 0) {
                         allAlumni = result.data
                             .filter(a => String(a.department || 'Informatika').toLowerCase().includes('informatika'))
@@ -1654,7 +1760,6 @@
                         await pushDataToGoogleSheets('save', allAlumni);
                     }
 
-                    // 2. Sinkronkan Data Program Karier, Pelatihan & Bisnis
                     if (Array.isArray(result.programs) && result.programs.length > 0) {
                         allPrograms = result.programs;
                         localStorage.setItem(PROGRAMS_STORAGE_KEY, JSON.stringify(allPrograms));
@@ -1662,7 +1767,6 @@
                         await pushProgramToGoogleSheets('save_program', allPrograms);
                     }
 
-                    // 3. Sinkronkan Dokumen Akreditasi Kampus & Prodi
                     if (Array.isArray(result.accreditations) && result.accreditations.length > 0) {
                         allAccreditations = result.accreditations;
                         localStorage.setItem(ACCREDITATION_STORAGE_KEY, JSON.stringify(allAccreditations));
@@ -1670,7 +1774,6 @@
                         await pushAccreditationToGoogleSheets('save_accreditation', allAccreditations);
                     }
 
-                    // 4. Sinkronkan Logo Web dari Database Google Sheets
                     if (result.settings && result.settings.app_logo !== undefined) {
                         if (result.settings.app_logo) {
                             localStorage.setItem(LOGO_STORAGE_KEY, result.settings.app_logo);
@@ -1749,6 +1852,13 @@
             renderPrograms();
             loadData();
             loadDataFromCloud(false);
+
+            // Tutup pop-up pratinjau sertifikat jika tombol ESC ditekan
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closePreviewAccreditationModal();
+                }
+            });
         }
 
         // Fungsi Berpindah Antara Sisi Alumni & Sisi Admin
